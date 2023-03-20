@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Contests</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+
+        <!-- Favicons -->
+        <link th:href="@{/images/nsu/nsu-school-badge-icon.ico}" rel="icon" type="image/x-icon">
+
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+              rel="stylesheet">
+
+
+        <!-- Vendor CSS Files -->
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <link th:href="@{/bootstrap/icons/bootstrap-icons.css}" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link th:href="@{/css/style.css}" rel="stylesheet">
+    </head>
+
+    <style>
+
+    </style>
+    <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center justify-content-between">
+            <div class="logo">
+                <a th:href="@{/index}">
+                    <img th:src="@{/images/nsu/nsu-school-badge.png}" alt="" class="img-fluid">&nbsp;
+                    <strong>NSU Online Judge</strong>
+                </a>
+            </div>
+
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li>
+                        <a th:href="@{/index}" class="nav-link scroll d-inline-block">
+                            <i class="home icon"></i>Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/problemset}" class="nav-link scrollto d-inline-block">
+                            <i class="book icon"></i>Problems
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/status}" class="nav-link scrollto d-inline-block">
+                            <i class="database icon"></i>Status
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/rating}" class="nav-link scrollto d-inline-block">
+                            <i class="chart bar icon"></i>Rating
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/contests}" class="nav-link scrollto d-inline-block active">
+                            <i class="trophy icon"></i>Contests
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/forum}" class="nav-link scrollto d-inline-block">
+                            <i class="chat dots fill icon"></i>Forum
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/faq}" class="nav-link scrollto d-inline-block">
+                            <i class="question circle icon"></i>F.A.Q
+                        </a>
+                    </li>
+
+                    <li th:if="${loginUser == null}">
+                        <a class="getstarted scrollto" th:href="@{/login}">Get Started</a>
+                    </li>
+
+                    <li class="align-items-center" style="display:flex;" th:if="${loginUser != null}">
+                        <a href="#" id="infoButton"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                         class="ui avatar image">
+                            Luminous</a>
+
+                        <div class="ui info flowing popup transition hidden m-radius" style="width: 280px;">
+                            <table class="table">
+                                <tr>
+                                    <td class="align-items-center" style="display: flex;">
+                                        <a th:href="@{/profile/preview}"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                                              style="height: 50px; width: 50px; margin-right: 10px;"
+                                                                              class="ui avatar image">
+                                            Luminous</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/setting}">
+                                            <div>
+                                                <i class="user icon" style="margin-right: 10px;"></i>Profile Settings
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/submissions}">
+                                            <div>
+                                                <i class="upload icon" style="margin-right: 10px;"></i>My Submissions
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/blogs}">
+                                            <div>
+                                                <i class="book icon" style="margin-right: 10px;"></i>My Blogs
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/message}">
+                                            <div>
+                                                <i class="mail icon" style="margin-right: 10px;"></i>Message
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr th:if="${loginUser.type > 0}">
+                                    <td>
+                                        <a th:href="@{/admin/dashboard}">
+                                            <div>
+                                                <i class="user md icon" style="margin-right: 10px;"></i>Administration
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="text-end">
+                                <button th:onclick="|window.location.href='@{/logout}'|" class="ui basic m-radius button">
+                                    Logout
+                                    <i class="sign-out icon" style="margin-left: 10px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+        </div>
+
+    </header><!-- End Header -->
+
+
+        <!-- ======= Main Section ======= -->
+
+
+        <div class="container" style="margin-top: 100px;">
+
+            <div class="row">
+                <div class="col-lg-9 col-md-7">
+                    <div class="ui segments m-radius">
+
+                        <div class="ui segment secondary m-top-radius">
+                            <h2 style="font-family: sans-serif">Contests</h2>
+                        </div>
+
+                        <div class="row ui segment m-bottom-radius">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th class="col-3" style="font-size: 2px;">Name</th>
+                                    <th class="col-1" style="font-size: 2px;">Author</th>
+                                    <th class="col-1" style="font-size: 2px;">Start</th>
+                                    <th class="col-1" style="font-size: 2px;">Length</th>
+                                    <th class="col-1" style="font-size: 2px;">Status</th>
+                                </tr>
+
+                                <tr>
+                                    <td><a href="#">2022ACM新生第一次周赛</a></td>
+                                    <td><a href="#">Luminous</a></td>
+                                    <td>2022-09-08 01:35:26</td>
+                                    <td>5:00:00</td>
+                                    <td class="text-secondary">Before Start(23:12:23)</td>
+                                </tr>
+
+                                <tr>
+                                    <td><a href="#">2022ACM新生第一次周赛</a></td>
+                                    <td><a href="#">Luminous</a></td>
+                                    <td>2022-09-08 01:35:26</td>
+                                    <td>5:00:00</td>
+                                    <td class="text-success">Running</td>
+                                </tr>
+
+                                <tr>
+                                    <td><a href="#">2022ACM新生第一次周赛</a></td>
+                                    <td><a href="#">Luminous</a></td>
+                                    <td>2022-09-08 01:35:26</td>
+                                    <td>5:00:00</td>
+                                    <td class="text-warning">Finished</td>
+                                </tr>
+
+                                <tr>
+                                    <td><a href="#">2022ACM新生第一次周赛</a></td>
+                                    <td><a href="#">Luminous</a></td>
+                                    <td>2022-09-08 01:35:26</td>
+                                    <td>5:00:00</td>
+                                    <td class="text-warning">Finished</td>
+                                </tr>
+
+                                <tr>
+                                    <td><a href="#">2022ACM新生第一次周赛</a></td>
+                                    <td><a href="#">Luminous</a></td>
+                                    <td>2022-09-08 01:35:26</td>
+                                    <td>5:00:00</td>
+                                    <td class="text-warning">Finished</td>
+                                </tr>
+
+                                <tr>
+                                    <td><a href="#">2022ACM新生第一次周赛</a></td>
+                                    <td><a href="#">Luminous</a></td>
+                                    <td>2022-09-08 01:35:26</td>
+                                    <td>5:00:00</td>
+                                    <td class="text-warning">Finished</td>
+                                </tr>
+
+                                <tr>
+                                    <td><a href="#">2022ACM新生第一次周赛</a></td>
+                                    <td><a href="#">Luminous</a></td>
+                                    <td>2022-09-08 01:35:26</td>
+                                    <td>5:00:00</td>
+                                    <td class="text-warning">Finished</td>
+                                </tr>
+
+                                <tr>
+                                    <td><a href="#">2022ACM新生第一次周赛</a></td>
+                                    <td><a href="#">Luminous</a></td>
+                                    <td>2022-09-08 01:35:26</td>
+                                    <td>5:00:00</td>
+                                    <td class="text-warning">Finished</td>
+                                </tr>
+
+                                <tr>
+                                    <td><a href="#">2022ACM新生第一次周赛</a></td>
+                                    <td><a href="#">Luminous</a></td>
+                                    <td>2022-09-08 01:35:26</td>
+                                    <td>5:00:00</td>
+                                    <td class="text-warning">Finished</td>
+                                </tr>
+
+                                <tr>
+                                    <td><a href="#">2022ACM新生第一次周赛</a></td>
+                                    <td><a href="#">Luminous</a></td>
+                                    <td>2022-09-08 01:35:26</td>
+                                    <td>5:00:00</td>
+                                    <td class="text-warning">Finished</td>
+                                </tr>
+
+                            </table>
+
+
+                            <!-- 分页 -->
+                            <nav aria-label="..." style="position: relative; margin-top: 50px;">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" style="color: #47536e">Previous</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link m-active" href="#" style="color: #47536e">1</a>
+                                    </li>
+                                    <li class="page-item" aria-current="page">
+                                        <a class="page-link" href="#" style="color: #47536e">2</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#" style="color: #47536e">3</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" style="color: #47536e">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 侧边栏 -->
+                <div class="col-lg-3 col-md-5">
+                    <div class="ui segments m-radius">
+                        <div class="ui segment secondary m-radius m-top-radius">
+                            <h3><i class="ui info circle icon"></i>Contest Filter</h3>
+                        </div>
+
+                        <form class="ui segment m-bottom-radius">
+                            <div><strong>Contest Name:</strong></div>
+                            <div class="row">
+                                <div class="ui input">
+                                    <input type="text" placeholder="Any Contest">
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 20px;"><strong>Status:</strong></div>
+                            <div class="ui fluid selection dropdown">
+                                <input class="row" type="hidden" name="language">
+                                <i class="dropdown icon"></i>
+                                <div class="default text" style="color: #616264;">Any Status</div>
+                                <div class="menu">
+                                    <div class="item" data-value="Accepted">
+                                        Not Start
+                                    </div>
+                                    <div class="item" data-value="Wrong Answer">
+                                        Running
+                                    </div>
+                                    <div class="item" data-value="Runtime Error">
+                                        Finished
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row justify-content-center">
+                                <button class="ui green button m-radius"
+                                        style="width: 200px; margin-top: 20px; " type="submit">Apply
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+
+
+        <!-- End Main -->
+
+
+        <!-- ======= Footer ======= -->
+
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-6 footer-contact">
+                            <h4>NSU Online Judge</h4>
+                            <p>
+                                <strong>A programming competition & algorithm training platform!</strong><br>
+                            </p>
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 footer-links">
+                            <h4>Our Social Networks</h4>
+                            <!--<p></p>-->
+                            <div class="social-links mt-3">
+                                <a href="#" class="qq" data-content="554648186" data-position="bottom center">
+                                    <i class="qq icon"></i>
+                                </a>
+                                <a href="#" class="email" data-content="NSU-ACM@outlook.com"
+                                   data-position="bottom center"><i class="envelope icon"></i></a>
+                                <a href="#" class="wechat"><i class="wechat icon"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container py-4">
+                <div class="copyright">
+                    &copy; Copyright <strong><span>NSU Online Judge</span></strong>. All Rights Reserved
+                </div>
+            </div>
+        </footer><!-- End Footer -->
+
+        <!-- Back To Top -->
+        <a href="#" class="back-to-top d-flex" style="justify-content: center; align-items: center">
+            <i class="bi bi-arrow-up-short"></i></a>
+
+
+    <!-- Vendor JS Files -->
+    <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+    <!-- Template Main JS File -->
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/global.js}"></script>
+
+        <script>
+            $('.qq').popup();
+            $('.email').popup();
+            $('.ui.dropdown')
+                .dropdown();
+            $('#infoButton').popup({
+                popup: $('.info.popup'),
+                on: 'click',
+                position: 'bottom center'
+            });
+        </script>
+    </body>
+</html>

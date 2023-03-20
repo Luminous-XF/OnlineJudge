@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Create Blog</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+
+        <!-- Favicons -->
+        <link th:href="@{/images/nsu/nsu-school-badge-icon.ico}" rel="icon" type="image/x-icon">
+
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+              rel="stylesheet">
+
+
+        <!-- Vendor CSS Files -->
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <link th:href="@{/bootstrap/icons/bootstrap-icons.css}" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link th:href="@{/css/style.css}" rel="stylesheet">
+        <link th:href="@{/lib/editormd/css/editormd.css}" rel="stylesheet">
+    </head>
+
+    <style>
+
+    </style>
+    <body>
+        <!-- ======= Header ======= -->
+        <header id="header" class="fixed-top">
+            <div class="container d-flex align-items-center justify-content-between">
+                <div class="logo">
+                    <a th:href="@{/index}">
+                        <img th:src="@{/images/nsu/nsu-school-badge.png}" alt="" class="img-fluid">&nbsp;
+                        <strong>NSU Online Judge</strong>
+                    </a>
+                </div>
+
+
+                <nav id="navbar" class="navbar">
+                    <ul>
+                        <li>
+                            <a th:href="@{/index}" class="nav-link scroll d-inline-block">
+                                <i class="home icon"></i>Home
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/problemset}" class="nav-link scrollto d-inline-block">
+                                <i class="book icon"></i>Problems
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/status}" class="nav-link scrollto d-inline-block">
+                                <i class="database icon"></i>Status
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/rating}" class="nav-link scrollto d-inline-block">
+                                <i class="chart bar icon"></i>Rating
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/contests}" class="nav-link scrollto d-inline-block">
+                                <i class="trophy icon"></i>Contests
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/forum}" class="nav-link scrollto d-inline-block active">
+                                <i class="chat dots fill icon"></i>Forum
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/faq}" class="nav-link scrollto d-inline-block">
+                                <i class="question circle icon"></i>F.A.Q
+                            </a>
+                        </li>
+
+                        <li th:if="${loginUser == null}">
+                            <a class="getstarted scrollto" th:href="@{/login}">Get Started</a>
+                        </li>
+
+                        <li class="align-items-center" style="display:flex;" th:if="${loginUser != null}">
+                            <a href="#" id="infoButton"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                             class="ui avatar image">
+                                Luminous</a>
+
+                            <div class="ui info flowing popup transition hidden m-radius" style="width: 280px;">
+                                <table class="table">
+                                    <tr>
+                                        <td class="align-items-center" style="display: flex;">
+                                            <a th:href="@{/profile/preview}"><img th:src="@{${loginUser.headerUrl}}"
+                                                                                  alt=""
+                                                                                  style="height: 50px; width: 50px; margin-right: 10px;"
+                                                                                  class="ui avatar image">
+                                                Luminous</a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/setting}">
+                                                <div>
+                                                    <i class="user icon" style="margin-right: 10px;"></i>Profile
+                                                    Settings
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/submissions}">
+                                                <div>
+                                                    <i class="upload icon" style="margin-right: 10px;"></i>My
+                                                    Submissions
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/blogs}">
+                                                <div>
+                                                    <i class="book icon" style="margin-right: 10px;"></i>My Blogs
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/message}">
+                                                <div>
+                                                    <i class="mail icon" style="margin-right: 10px;"></i>Message
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr th:if="${loginUser.type > 0}">
+                                        <td>
+                                            <a th:href="@{/admin/dashboard}">
+                                                <div>
+                                                    <i class="user md icon" style="margin-right: 10px;"></i>Administration
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <div class="text-end">
+                                    <button th:onclick="|window.location.href='@{/logout}'|"
+                                            class="ui basic m-radius button">
+                                        Logout
+                                        <i class="sign-out icon" style="margin-left: 10px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <i class="bi bi-list mobile-nav-toggle"></i>
+                </nav><!-- .navbar -->
+
+            </div>
+
+        </header><!-- End Header -->
+
+
+        <!-- ======= Main Section ======= -->
+
+
+        <div class="" style="margin-top: 65px;">
+            <div class="ui segment">
+                <form th:action="@{/add-post}" onsubmit="return check()" method="post" enctype="multipart/form-data">
+                    <div class="ui form">
+                        <div class="required field" style="margin-top: 20px;">
+                            <h1>Title</h1>
+                            <input class=""
+                                   id="title"
+                                   name="title"
+                                   onclick="hideInfo()"
+                                   type="text">
+
+                            <div class="text-danger" id="titleEmpty" style="margin-top: 5px; display: none">Title can
+                                not be empty!
+                            </div>
+                            <div class="text-danger" id="titleInvalid" style="margin-top: 5px; display: none">Title
+                                character exceeds limit!
+                            </div>
+                        </div>
+
+                        <div class="field" style="margin-top: 50px;">
+                            <h1>First image link</h1>
+                            <div class="input-group">
+                                <input type="file"
+                                       class="form-control"
+                                       name="firstImage"
+                                       id="inputGroupFile04"
+                                       aria-describedby="inputGroupFileAddon04"
+                                       aria-label="Upload">
+                            </div>
+                        </div>
+
+                        <div class="field" style="margin-top: 50px;">
+                            <h1>Content</h1>
+                            <div id="md-content" style="z-index: 1050 !important;">
+                                <textarea class=""
+                                          name="content"
+                                          id="content"
+                                          style="display: none"
+                                          onclick="hideInfo()">[TOC]
+#### Disabled options
+
+- TeX (Based on KaTeX);
+- Emoji;
+- Task lists;
+- HTML tags decode;
+- Flowchart and Sequence Diagram;
+
+#### Editor.md directory
+
+    editor.md/
+            lib/
+            css/
+            scss/
+            tests/
+            fonts/
+            images/
+            plugins/
+            examples/
+            languages/
+            editormd.js
+            ...
+                                </textarea>
+                            </div>
+                            <div class="text-danger" id="contentEmpty" style="margin-top: 5px; display: none">Content
+                                can not be empty!
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="container ui right aligned" style="margin-top: 80px; margin-bottom: 100px; width: 100%">
+                        <button class="ui orange button" id="save" style="width: 100px;">Save</button>
+                        <button class="ui green button" id="publish" style="width: 100px;">Publish</button>
+                    </div>
+
+                    <!--   Hint Info   -->
+                    <!--   Fail   -->
+                    <div class="ui negative message" style="display: none" id="emptyTitleHint">
+                        <i class="close icon"></i>
+                        <div class="header">Publish failed!</div>
+                        <p>Title can not be empty!</p>
+                    </div>
+
+                    <div class="ui negative message" style="display: none;" id="invalidTitleHint">
+                        <i class="close icon"></i>
+                        <div class="header">Publish failed!</div>
+                        <p>Title character exceeds limit!</p>
+                    </div>
+
+                    <div class="ui negative message" style="display: none;" id="emptyContentHint">
+                        <i class="close icon"></i>
+                        <div class="header">Publish failed!</div>
+                        <p>Content can not be empty!</p>
+                    </div>
+
+
+                    <!--   Success   -->
+                    <div class="ui success message" id="hintModel" style="display: none">
+                        <i class="close icon"></i>
+                        <div class="header" id="hintTitle">Published successfully!</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+
+        <!-- End Main -->
+
+
+        <!-- ======= Footer ======= -->
+
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-6 footer-contact">
+                            <h4>NSU Online Judge</h4>
+                            <p>
+                                <strong>A programming competition & algorithm training platform!</strong><br>
+                            </p>
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 footer-links">
+                            <h4>Our Social Networks</h4>
+                            <!--<p></p>-->
+                            <div class="social-links mt-3">
+                                <a href="#" class="qq" data-content="554648186" data-position="bottom center">
+                                    <i class="qq icon"></i>
+                                </a>
+                                <a href="#" class="email" data-content="NSU-ACM@outlook.com"
+                                   data-position="bottom center"><i class="envelope icon"></i></a>
+                                <a href="#" class="wechat"><i class="wechat icon"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container py-4">
+                <div class="copyright">
+                    &copy; Copyright <strong><span>NSU Online Judge</span></strong>. All Rights Reserved
+                </div>
+            </div>
+        </footer><!-- End Footer -->
+
+        <!-- Back To Top -->
+        <a href="#" class="back-to-top d-flex" style="justify-content: center; align-items: center">
+            <i class="bi bi-arrow-up-short"></i></a>
+
+
+        <!-- Vendor JS Files -->
+        <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+        <!-- Template Main JS File -->
+        <script th:src="@{/js/global.js}"></script>
+        <script th:src="@{/js/main.js}"></script>
+        <script th:src="@{/lib/editormd/editormd.min.js}"></script>
+
+        <script>
+            $('.qq').popup();
+            $('.email').popup();
+            $('.ui.dropdown')
+                .dropdown();
+            $('#infoButton').popup({
+                popup: $('.info.popup'),
+                on: 'click',
+                position: 'bottom center'
+            });
+
+            $('.blogEditorButton').popup({
+                popup: $('.blogEditor.popup'),
+                on: 'click',
+                position: 'bottom center'
+            });
+
+            jQuery.fn.shake = function (intShakes /*Amount of shakes*/, intDistance /*Shake distance*/, intDuration /*Time duration*/) {
+                this.each(function () {
+                    var jqNode = $(this);
+                    jqNode.css({position: 'relative'});
+                    for (var x = 1; x <= intShakes; x++) {
+                        jqNode.animate({left: (intDistance * -1)}, (((intDuration / intShakes) / 4)))
+                            .animate({left: intDistance}, ((intDuration / intShakes) / 2))
+                            .animate({left: 0}, (((intDuration / intShakes) / 4)));
+                    }
+                });
+                return this;
+            }
+
+            function hideInfo() {
+                $('#titleEmpty').hide();
+                $('#titleInvalid').hide();
+                $('#contentEmpty').hide();
+            }
+
+            function check() {
+                hideInfo();
+
+                var list = document.getElementsByTagName("input");
+
+                if (list[0].value === "") {
+                    // 显示提示框
+                    $('#emptyTitleHint').show();
+                    // 2秒后自动隐藏
+                    setTimeout(function () {
+                        $('#emptyTitleHint').hide();
+                    }, 2000);
+
+                    $(list[0]).shake(2, 10, 400);
+                    $('#titleEmpty').show();
+                    return false;
+                }
+
+                if (list[0].value.length >= 100) {
+                    // 显示提示框
+                    $('#invalidTitleHint').show();
+                    // 2秒后自动隐藏
+                    setTimeout(function () {
+                        $('#invalidTitleHint').hide();
+                    }, 2000);
+
+                    $(list[0]).shake(2, 10, 400);
+                    $('#titleInvalid').show();
+                    return false;
+                }
+
+                list = document.getElementsByTagName("textarea");
+
+                if (list[0].value === "") {
+                    // 显示提示框
+                    $('#emptyContentHint').show();
+                    // 2秒后自动隐藏
+                    setTimeout(function () {
+                        $('#emptyContentHint').hide();
+                    }, 2000);
+
+                    $(list[0]).shake(2, 10, 400);
+                    $('#contentEmpty').show();
+                    return false;
+                }
+
+                return true;
+            }
+
+            // 初始化 Markdown 编辑器
+            var testEditor;
+            $(function () {
+                testEditor = editormd("md-content", {
+                    width: "100%",
+                    height: 640,
+                    syncScrolling: "single",
+                    path: "lib/editormd/lib/",
+
+
+                    // theme : "dark",
+                    // previewTheme : "dark",
+                    // editorTheme : "pastel-on-dark",
+                    // markdown : md-content,
+                    // codeFold : true,
+                    // //syncScrolling : false,
+                    // saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
+                    // searchReplace : true,
+                    // //watch : false,                // 关闭实时预览
+                    // htmlDecode : "style,script,iframe|on*",            // 开启 HTML 标签解析，为了安全性，默认不开启
+                    // //toolbar  : false,             //关闭工具栏
+                    // //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
+                    // emoji : true,
+                    // taskList : true,
+                    // tocm            : true,         // Using [TOCM]
+                    // tex : true,                   // 开启科学公式TeX语言支持，默认关闭
+                    // flowChart : true,             // 开启流程图支持，默认关闭
+                    // sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
+                    // //dialogLockScreen : false,   // 设置弹出层对话框不锁屏，全局通用，默认为true
+                    // //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
+                    // //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true
+                    // //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
+                    // //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
+                    // imageUpload : true,
+                    // imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"]
+                });
+
+                /*
+                // or
+                testEditor = editormd({
+                    id      : "test-editormd",
+                    width   : "90%",
+                    height  : 640,
+                    path    : "../lib/"
+                });
+                */
+            });
+
+            // $(function () {
+            //     $("#publish").click(publish);
+            // });
+            //
+            // function publish() {
+            //     hideInfo();
+            //     if (!check()) return;
+            //
+            //     // 获取内容
+            //     var title = $("#title").val();
+            //     var content = $("#content").val();
+            //     var firstImage = $("#inputGroupFile04").val();
+            //
+            //     // 发送异步请求
+            //     $.post(
+            //         CONTEXT_PATH + "/add-post",
+            //         {"title": title, "content": content, "firstImage": firstImage},
+            //         function (data) {
+            //             data = $.parseJSON(data);
+            //             // 在提示框中显示返回消息
+            //             $("#hintTitle").text(data.msg);
+            //             // 显示提示框
+            //             $("#hintModel").modal("show");
+            //             // 2秒后自动隐藏
+            //             setTimeout(function () {
+            //                 $("#hintModel").modal("hide");
+            //                 // 刷新页面
+            //                 // if (data.code === 0) {
+            //                 //     window.location.reload();
+            //                 // }
+            //             }, 2000);
+            //         }
+            //     )
+            // }
+        </script>
+    </body>
+</html>

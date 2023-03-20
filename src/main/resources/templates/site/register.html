@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Registration</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+
+        <!-- Favicons -->
+        <link th:href="@{/images/nsu/nsu-school-badge-icon.ico}" rel="icon" type="image/x-icon">
+
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+              rel="stylesheet">
+
+
+        <!-- Vendor CSS Files -->
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <link th:href="@{/bootstrap/icons/bootstrap-icons.css}" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link th:href="@{/css/style.css}" rel="stylesheet">
+    </head>
+
+    <style>
+
+    </style>
+    <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center justify-content-between">
+            <div class="logo">
+                <a th:href="@{/index}">
+                    <img th:src="@{/images/nsu/nsu-school-badge.png}" alt="" class="img-fluid">&nbsp;
+                    <strong>NSU Online Judge</strong>
+                </a>
+            </div>
+
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li>
+                        <a th:href="@{/index}" class="nav-link scroll d-inline-block">
+                            <i class="home icon"></i>Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/problemset}" class="nav-link scrollto d-inline-block">
+                            <i class="book icon"></i>Problems
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/status}" class="nav-link scrollto d-inline-block">
+                            <i class="database icon"></i>Status
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/rating}" class="nav-link scrollto d-inline-block">
+                            <i class="chart bar icon"></i>Rating
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/contests}" class="nav-link scrollto d-inline-block">
+                            <i class="trophy icon"></i>Contests
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/forum}" class="nav-link scrollto d-inline-block">
+                            <i class="chat dots fill icon"></i>Forum
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/faq}" class="nav-link scrollto d-inline-block">
+                            <i class="question circle icon"></i>F.A.Q
+                        </a>
+                    </li>
+
+                    <li th:if="${loginUser == null}">
+                        <a class="getstarted scrollto" th:href="@{/login}">Get Started</a>
+                    </li>
+
+                    <li class="align-items-center" style="display:flex;" th:if="${loginUser != null}">
+                        <a href="#" id="infoButton"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                         class="ui avatar image">
+                            Luminous</a>
+
+                        <div class="ui info flowing popup transition hidden m-radius" style="width: 280px;">
+                            <table class="table">
+                                <tr>
+                                    <td class="align-items-center" style="display: flex;">
+                                        <a th:href="@{/profile/preview}"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                                              style="height: 50px; width: 50px; margin-right: 10px;"
+                                                                              class="ui avatar image">
+                                            Luminous</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/setting}">
+                                            <div>
+                                                <i class="user icon" style="margin-right: 10px;"></i>Profile Settings
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/submissions}">
+                                            <div>
+                                                <i class="upload icon" style="margin-right: 10px;"></i>My Submissions
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/blogs}">
+                                            <div>
+                                                <i class="book icon" style="margin-right: 10px;"></i>My Blogs
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/message}">
+                                            <div>
+                                                <i class="mail icon" style="margin-right: 10px;"></i>Message
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr th:if="${loginUser.type > 0}">
+                                    <td>
+                                        <a th:href="@{/admin/dashboard}">
+                                            <div>
+                                                <i class="user md icon" style="margin-right: 10px;"></i>Administration
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="text-end">
+                                <button th:onclick="|window.location.href='@{/logout}'|" class="ui basic m-radius button">
+                                    Logout
+                                    <i class="sign-out icon" style="margin-left: 10px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+        </div>
+
+    </header><!-- End Header -->
+
+
+        <!-- ======= Main Section ======= -->
+
+
+        <div class="container" style="margin-top: 100px;">
+
+            <form th:action="@{/register}" method="post" onsubmit="return check()">
+                <div class="row justify-content-center">
+                    <div class="col-6">
+                        <div class="ui segments m-radius">
+                            <div class="ui segment secondary m-radius m-top-radius">
+                                <h1 class="text-center">
+                                    <strong>Registration</strong>
+                                </h1>
+                            </div>
+
+                            <div class="ui segment m-bottom-radius">
+                                <div class="row justify-content-center" style="margin-top: 20px">
+                                    <div class="col-11" style="color: black; font-size: 16px;">
+                                        <strong>Username</strong>
+                                    </div>
+                                    <div th:class="|col-11 ui input ${usernameMsg != null ? 'is-invalid' : ''}|">
+                                        <input class="m-radius"
+                                               id="username"
+                                               name="username"
+                                               th:value="${user != null ? user.username : ''}"
+                                               onclick="hideUsernameInfo()"
+                                               style="margin-top: 5px" type="text">
+                                    </div>
+
+                                    <!-- UserName Info -->
+                                    <div id="usernameInfo"
+                                         class="invalid-feedback col-11"
+                                         style="margin-top: 5px; width: 90%"
+                                         th:text="${usernameMsg}">
+                                        This username already exists!
+                                    </div>
+
+                                    <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                         class="col-11 text-danger" id="usernameEmpty">
+                                        Please entry the username!
+                                    </div>
+
+                                    <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                         class="col-11 text-danger" id="usernameInvalid">
+                                        Your username must contain at least 3 characters and a maximum of 20 characters.
+                                        Your username can only consist of letters, numbers and underscores!
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center" style="margin-top: 20px">
+                                    <div class="col-11" style="color: black; font-size: 16px;">
+                                        <strong>Nickname</strong>
+                                    </div>
+                                    <div class="col-11 ui input">
+                                        <input class="m-radius "
+                                               name="nickname"
+                                               onclick="hideNicknameInfo()"
+                                               th:value="${user != null ? user.nickname : ''}"
+                                               style="margin-top: 5px" type="text">
+                                    </div>
+
+                                    <!-- NickName Info -->
+                                    <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                         class="col-11 text-danger" id="nicknameEmpty">
+                                        Please entry the nickname!
+                                    </div>
+
+                                    <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                         class="col-11 text-danger" id="nicknameInvalid">
+                                        Your nickname must contain at least 3 characters and a maximum of 20 characters.
+                                        Your nickname can only consist of Chinese characters, letters, numbers and
+                                        underscores!
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center" style="margin-top: 20px">
+                                    <div class="col-11" style="color: black; font-size: 16px;">
+                                        <strong>E-Mail</strong>
+                                    </div>
+                                    <div th:class="|col-11 ui input ${emailMsg != null ? 'is-invalid' : ''}|">
+                                        <input class="m-radius"
+                                               name="email"
+                                               th:value="${user != null ? user.email : ''}"
+                                               onclick="hideEmailInfo()"
+                                               style="margin-top: 5px" type="text">
+                                    </div>
+
+                                    <!-- Email Info -->
+                                    <div id="emailInfo"
+                                         class="invalid-feedback col-11"
+                                         style="margin-top: 5px; width: 90%"
+                                         th:text="${emailMsg}">
+                                        This email address has been registered!
+                                    </div>
+
+                                    <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                         class="col-11 text-danger" id="emailEmpty">
+                                        Please entry the email!
+                                    </div>
+
+                                    <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                         class="col-11 text-danger" id="emailInvalid">
+                                        Illegal email!
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center" style="margin-top: 20px">
+                                    <div class="col-11" style="color: black; font-size: 16px;">
+                                        <strong>Password</strong>
+                                    </div>
+                                    <div th:class="|col-11 ui input ${passwordMsg != null ? 'is-invalid' : ''}|">
+                                        <input class="m-radius"
+                                               name="password"
+                                               onclick="hidePasswordInfo()"
+                                               style="margin-top: 5px" type="password">
+                                    </div>
+
+                                    <!-- Password Info -->
+                                    <div id="passwordInfo"
+                                         class="invalid-feedback col-11"
+                                         style="margin-top: 5px; width: 90%"
+                                         th:text="${passwordMsg}">
+                                        Password cannot be empty!
+                                    </div>
+
+                                    <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                         class="col-11 text-danger" id="passwordEmpty">
+                                        Please entry the password!
+                                    </div>
+
+                                    <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                         class="col-11 text-danger" id="passwordInvalid">
+                                        Your password must contain at least 8 characters and a maximum of 16 characters.
+                                        Your password can only consist of letters, numbers and special character!
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center" style="margin-top: 20px">
+                                    <div class="col-11" style="color: black; font-size: 16px;">
+                                        <strong>Password (repeat)</strong>
+                                    </div>
+                                    <div class="col-11 ui input">
+                                        <input class="m-radius"
+                                               onclick="hidePasswordRepeatInfo()"
+                                               style="margin-top: 5px" type="password">
+                                    </div>
+
+                                    <!-- PasswordRepeat Info-->
+                                    <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                         class="col-11 text-danger" id="passwordRepeatEmpty">
+                                        Please entry the password repeat!
+                                    </div>
+
+                                    <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                         class="col-11 text-danger" id="passwordRepeatInvalid">
+                                        The two passwords do not match!
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center" style="margin-top: 20px">
+                                    <div class="col-11" style="color: black; font-size: 16px;">
+                                        <strong>Verification Code</strong>
+                                    </div>
+                                    <div class="col-11">
+                                        <div class="row justify-content-between">
+                                            <div class="col-md-8 ui input">
+                                                <input class="m-radius"
+                                                       onclick="hideVerificationCodeInfo()"
+                                                       style="margin-top: 5px" type="text">
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <a href="javascript:refresh_kaptcha();"
+                                                   class="font-size-12 align-bottom">
+                                                    <img th:src="@{/kaptcha}" id="kaptcha"
+                                                         style="width:120px;height:38px; margin-top: 10px;" class=""/>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <!-- Verification Code Info -->
+                                        <div id="verificationCodeInfo"
+                                             class="invalid-feedback col-11"
+                                             style="margin-top: 5px; width: 90%">
+                                            Verification code error!
+                                        </div>
+
+                                        <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                             class="col-11 text-danger" id="verificationCodeEmpty">
+                                            Please entry the verification code!
+                                        </div>
+
+                                        <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                             class="col-11 text-danger" id="verificationCodeInvalid">
+                                            Illegal verification code!
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row justify-content-start"
+                                     style="margin-top: 40px; margin-bottom: 20px; margin-left: 25px;">
+
+                                    <button id="register" type="submit"
+                                            class="col-3 ui green button m-radius"
+                                            style="margin-top: 10px; width: 180px;">Register
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+        </div>
+
+
+        <!-- End Main -->
+
+
+        <!-- ======= Footer ======= -->
+
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-6 footer-contact">
+                            <h4>NSU Online Judge</h4>
+                            <p>
+                                <strong>A programming competition & algorithm training platform!</strong><br>
+                            </p>
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 footer-links">
+                            <h4>Our Social Networks</h4>
+                            <!--<p></p>-->
+                            <div class="social-links mt-3">
+                                <a href="#" class="qq" data-content="554648186" data-position="bottom center">
+                                    <i class="qq icon"></i>
+                                </a>
+                                <a href="#" class="email" data-content="NSU-ACM@outlook.com"
+                                   data-position="bottom center"><i class="envelope icon"></i></a>
+                                <a href="#" class="wechat"><i class="wechat icon"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container py-4">
+                <div class="copyright">
+                    &copy; Copyright <strong><span>NSU Online Judge</span></strong>. All Rights Reserved
+                </div>
+            </div>
+        </footer><!-- End Footer -->
+
+        <!-- Back To Top -->
+        <a href="#" class="back-to-top d-flex" style="justify-content: center; align-items: center">
+            <i class="bi bi-arrow-up-short"></i></a>
+
+
+        <!-- Vendor JS Files -->
+        <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+        <!-- Template Main JS File -->
+        <script th:src="@{/js/main.js}"></script>
+        <script th:src="@{/js/global.js}"></script>
+
+        <script>
+            $('.qq').popup();
+            $('.email').popup();
+            $('.ui.dropdown')
+                .dropdown();
+
+            function refresh_kaptcha() {
+                var path = CONTEXT_PATH + "/kaptcha?p=" + Math.random();
+                $("#kaptcha").attr("src", path);
+            }
+
+            $('#infoButton').popup({
+                popup: $('.info.popup'),
+                on: 'click',
+                position: 'bottom center'
+            });
+
+            function hideUsernameInfo() {
+                $('#usernameInfo').hide();
+                $('#usernameEmpty').hide();
+                $('#usernameInvalid').hide();
+            }
+
+            function hideNicknameInfo() {
+                $('#nicknameEmpty').hide();
+                $('#nicknameInvalid').hide();
+            }
+
+            function hideEmailInfo() {
+                $('#emailInfo').hide();
+                $('#emailEmpty').hide();
+                $('#emailInvalid').hide();
+            }
+
+            function hidePasswordInfo() {
+                $('#passwordInfo').hide();
+                $('#passwordEmpty').hide();
+                $('#passwordInvalid').hide();
+            }
+
+            function hidePasswordRepeatInfo() {
+                $('#passwordRepeatEmpty').hide();
+                $('#passwordRepeatInvalid').hide();
+            }
+
+            function hideVerificationCodeInfo() {
+                $('#verificationCodeInfo').hide();
+                $('#verificationCodeEmpty').hide();
+                $('#verificationCodeInvalid').hide();
+            }
+
+
+            jQuery.fn.shake = function (intShakes /*Amount of shakes*/, intDistance /*Shake distance*/, intDuration /*Time duration*/) {
+                this.each(function () {
+                    var jqNode = $(this);
+                    jqNode.css({position: 'relative'});
+                    for (var x = 1; x <= intShakes; x++) {
+                        jqNode.animate({left: (intDistance * -1)}, (((intDuration / intShakes) / 4)))
+                            .animate({left: intDistance}, ((intDuration / intShakes) / 2))
+                            .animate({left: 0}, (((intDuration / intShakes) / 4)));
+                    }
+                });
+                return this;
+            }
+
+            function check() {
+                hideUsernameInfo();
+                hideNicknameInfo();
+                hideEmailInfo();
+                hidePasswordInfo();
+                hidePasswordRepeatInfo();
+                hideVerificationCodeInfo();
+
+                var list = document.getElementsByTagName("input")
+
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i].value === "") {
+                        $(list[i]).shake(2, 10, 400);
+                        showEmptyInfo(i);
+                        return false;
+                    }
+
+                    if (i === 0 && !checkUsername(list[i].value)) {
+                        $(list[i]).shake(2, 10, 400);
+                        showInvalidInfo(i);
+                        return false;
+                    }
+
+                    if (i === 1 && !checkNickname(list[i].value)) {
+                        $(list[i]).shake(2, 10, 400);
+                        showInvalidInfo(i);
+                        return false;
+                    }
+
+                    if (i === 2 && !checkEmail(list[i].value)) {
+                        $(list[i]).shake(2, 10, 400);
+                        showInvalidInfo(i);
+                        return false;
+                    }
+
+                    if (i === 3 && !checkPassword(list[i].value)) {
+                        $(list[i]).shake(2, 10, 400);
+                        showInvalidInfo(i);
+                        return false;
+                    }
+
+                    if (i === 4 && !checkPasswordRepeat(list[i - 1].value, list[i].value)) {
+                        $(list[i]).shake(2, 10, 400);
+                        showInvalidInfo(i);
+                        return false;
+                    }
+
+                    if (i === 5 && !checkVerificationCode(list[i].value)) {
+                        $(list[i]).shake(2, 10, 400);
+                        showInvalidInfo(i);
+                        return false;
+                    }
+                }
+
+
+                return true;
+            }
+
+            function showEmptyInfo(i) {
+                if (i === 0) $('#usernameEmpty').show();
+                if (i === 1) $('#nicknameEmpty').show();
+                if (i === 2) $('#emailEmpty').show();
+                if (i === 3) $('#passwordEmpty').show();
+                if (i === 4) $('#passwordRepeatEmpty').show();
+                if (i === 5) $('#verificationCodeEmpty').show();
+            }
+
+            function showInvalidInfo(i) {
+                if (i === 0) $('#usernameInvalid').show();
+                if (i === 1) $('#nicknameInvalid').show();
+                if (i === 2) $('#emailInvalid').show();
+                if (i === 3) $('#passwordInvalid').show();
+                if (i === 4) $('#passwordRepeatInvalid').show();
+                if (i === 5) $('#verificationCodeInvalid').show();
+            }
+
+            function checkUsername(str) {
+                /* 字母、数字、下划线*/
+                var re = /^\w{3,20}$/;
+                return re.test(str);
+            }
+
+            function checkNickname(str) {
+                /* 汉字、字母、数字、下划线*/
+                var re = /^[\u4E00-\u9FA5a-zA-Z0-9_]{3,20}$/;
+                return re.test(str);
+            }
+
+            function checkEmail(str) {
+                var re = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+                return re.test(str);
+            }
+
+            function checkPassword(str) {
+                /* 字母、数字、特殊符号*/
+                var re = /^[a-zA-Z0-9!@#$%^&*()\-_=+<>?,./`~]{8,16}$/
+                return re.test(str);
+            }
+
+            function checkPasswordRepeat(str1, str2) {
+                return str1 === str2;
+            }
+
+            function checkVerificationCode(str) {
+                var re = /^[a-zA-Z0-9]{4}$/;
+                return re.test(str);
+            }
+        </script>
+    </body>
+</html>

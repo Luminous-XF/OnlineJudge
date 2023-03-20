@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nsu.onlinejudge.dao.UserMapper">
+
+    <sql id="selectFields">
+        user_id, username, nickname, password, salt,
+        email, type, status, activation_code, header_url,
+        create_time, submit, solved, defunct, rating, ranks, school, gender, brief
+    </sql>
+
+    <sql id="insertFields">
+        username, nickname, password, salt,
+        email, type, status, activation_code, header_url,
+        create_time, submit, solved, defunct, rating, ranks, school, gender, brief
+    </sql>
+
+    <select id="selectByUserId" resultType="User">
+        SELECT
+        <include refid="selectFields"></include>
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="selectByUsername" resultType="User">
+        SELECT
+        <include refid="selectFields"></include>
+        FROM user
+        WHERE username = #{username}
+    </select>
+
+    <select id="selectByEmail" resultType="User">
+        SELECT
+        <include refid="selectFields"></include>
+        FROM user
+        WHERE email = #{email}
+    </select>
+
+    <insert id="insertUser" parameterType="User" keyProperty="userId">
+        INSERT INTO user (<include refid="insertFields"></include>)
+        VALUES (#{username}, #{nickname}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode},
+        #{headerUrl}, #{createTime}, #{submit}, #{solved}, #{defunct}, #{rating}, #{ranks}, #{school}, #{gender}, #{brief})
+    </insert>
+    
+    <update id="updateNickname">
+        UPDATE user
+        SET nickname = #{nickname}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateType">
+        UPDATE user
+        SET type = #{type}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateSubmit">
+        UPDATE user
+        SET submit = #{submit}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateSolved">
+        UPDATE user
+        SET solved = #{solved}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateDefunct">
+        UPDATE user
+        SET defunct = #{defunct}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateRating">
+        UPDATE user
+        SET rating = #{rating}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateRanks">
+        UPDATE user
+        SET ranks = #{ranks}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateSchool">
+        UPDATE user
+        SET school = #{school}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE user
+        SET status = #{status}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateHeaderUrl">
+        UPDATE user
+        SET header_url = #{headerUrl}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE user
+        SET password = #{password}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateGender">
+        UPDATE user
+        SET gender = #{gender}
+        WHERE user_id = #{userId}
+    </update>
+
+    <update id="updateBrief">
+        UPDATE user
+        SET brief = #{brief}
+        WHERE user_id = #{userId}
+    </update>
+</mapper>

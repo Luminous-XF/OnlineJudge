@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Problem</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+
+        <!-- Favicons -->
+        <link href="../../static/images/nsu/nsu-school-badge-icon.ico" rel="icon" type="image/x-icon">
+
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+              rel="stylesheet">
+
+
+        <!-- Vendor CSS Files -->
+        <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../static/bootstrap/icons/bootstrap-icons.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
+
+
+        <!-- Template Main CSS File -->
+        <link href="../../static/css/typo.css" rel="stylesheet">
+        <link href="../../static/css/style.css" rel="stylesheet">
+    </head>
+
+    <style>
+
+    </style>
+    <body>
+        <!-- ======= Header ======= -->
+        <header id="header" class="fixed-top">
+            <div class="container d-flex align-items-center justify-content-between">
+                <div class="logo">
+                    <a th:href="@{/index}">
+                        <img th:src="@{/images/nsu/nsu-school-badge.png}" alt="" class="img-fluid">&nbsp;
+                        <strong>NSU Online Judge</strong>
+                    </a>
+                </div>
+
+
+                <nav id="navbar" class="navbar">
+                    <ul>
+                        <li>
+                            <a th:href="@{/index}" class="nav-link scroll d-inline-block">
+                                <i class="home icon"></i>Home
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/problemset}" class="nav-link scrollto d-inline-block active">
+                                <i class="book icon"></i>Problems
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/status}" class="nav-link scrollto d-inline-block">
+                                <i class="database icon"></i>Status
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/rating}" class="nav-link scrollto d-inline-block">
+                                <i class="chart bar icon"></i>Rating
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/contests}" class="nav-link scrollto d-inline-block">
+                                <i class="trophy icon"></i>Contests
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/forum}" class="nav-link scrollto d-inline-block">
+                                <i class="chat dots fill icon"></i>Forum
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/faq}" class="nav-link scrollto d-inline-block">
+                                <i class="question circle icon"></i>F.A.Q
+                            </a>
+                        </li>
+
+                        <li th:if="${loginUser == null}">
+                            <a class="getstarted scrollto" th:href="@{/login}">Get Started</a>
+                        </li>
+
+                        <li class="align-items-center" style="display:flex;" th:if="${loginUser != null}">
+                            <a href="#" id="infoButton"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                             class="ui avatar image">
+                                Luminous</a>
+
+                            <div class="ui info flowing popup transition hidden m-radius" style="width: 280px;">
+                                <table class="table">
+                                    <tr>
+                                        <td class="align-items-center" style="display: flex;">
+                                            <a th:href="@{/profile/preview}"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                                                  style="height: 50px; width: 50px; margin-right: 10px;"
+                                                                                  class="ui avatar image">
+                                                Luminous</a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/setting}">
+                                                <div>
+                                                    <i class="user icon" style="margin-right: 10px;"></i>Profile Settings
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/submissions}">
+                                                <div>
+                                                    <i class="upload icon" style="margin-right: 10px;"></i>My Submissions
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/blogs}">
+                                                <div>
+                                                    <i class="book icon" style="margin-right: 10px;"></i>My Blogs
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/message}">
+                                                <div>
+                                                    <i class="mail icon" style="margin-right: 10px;"></i>Message
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr th:if="${loginUser.type > 0}">
+                                        <td>
+                                            <a th:href="@{/admin/dashboard}">
+                                                <div>
+                                                    <i class="user md icon" style="margin-right: 10px;"></i>Administration
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <div class="text-end">
+                                    <button th:onclick="|window.location.href='@{/logout}'|" class="ui basic m-radius button">
+                                        Logout
+                                        <i class="sign-out icon" style="margin-left: 10px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <i class="bi bi-list mobile-nav-toggle"></i>
+                </nav><!-- .navbar -->
+
+            </div>
+
+        </header><!-- End Header -->
+
+
+        <!-- ======= Main Section ======= -->
+
+
+        <div class="container" style="margin-top: 100px;">
+
+
+            <div class="row">
+                <!-- 题目 -->
+                <div class="col-lg-9 col-md-7">
+                    <!-- Problem Body -->
+                    <div class="ui segment m-radius typo typo-selection">
+                        <h1 class="text-center m-problem-h">ISBN号码</h1>
+
+                        <hr style="height: 1px;">
+
+                        <p class="m-problem-text">
+                            &nbsp;&nbsp;&nbsp;&nbsp;每一本正式出版的图书都有一个ISBN号码与之对应，ISBN码包括9位数字、1位识别码和3位分隔符，
+                            其规定格式如“x-xxx-xxxxx-x”，其中符号“-”就是分隔符（键盘上的减号），最后一位是识别码，例如0-670-82162-4就是一个
+                            标准的ISBN码。ISBN码的首位数字表示书籍的出版语言，例如0代表英语；第一个分隔符“-”之后的三位数字代表出版社，例如670代
+                            表维京出版社；第二个分隔符后的五位数字代表该书在该出版社的编号；最后一位为识别码。
+                        </p>
+
+                        <p class="m-problem-text">
+                            识别码的计算方法如下： <br>首位数字乘以1
+                            加上次位数字乘以2……以此类推，用所得的结果mod 11，所得的余数即为识别码，如果余数为10，则识别码为大写字母X。例如ISBN号
+                            码0-670-82162-4中的识别码4是这样得到的：对067082162这9个数字，从左至右，分别乘以1，2，...,9,再求和，即0×1+6×2+
+                            ……+2×9=158，然后取158 mod 11的结果4作为识别码。
+                        </p>
+
+                        <p class="m-problem-text">
+                            &nbsp;&nbsp;&nbsp;&nbsp;你的任务是编写程序判断输入的ISBN号码中识别码是否正确，如果正确，则 仅输出“Right”；如果错
+                            误，则输出你认为是正确的ISBN号码。
+                        </p>
+
+                        <h3 class="m-problem-h">Input</h3>
+                        <p class="m-problem-text">
+                            只有一行，是一个字符序列，表示一本书的ISBN号码（保证输入符合ISBN号码的格式要求）。
+                        </p>
+
+                        <h3 class="m-problem-h">Output</h3>
+                        <p class="m-problem-text">
+                            只有一行，假如输入的ISBN号码的识别码正确，那么输出“Right”，否则，按照规定的格式，输出正确的ISBN号码（包括分隔符“-”）。
+                        </p>
+
+                        <div style="margin-top: 75px;">
+                            <!--                            <div class="row" style="margin-left: 9px;">-->
+                            <!--                                <h2 class="col-11 m-sample-h">Sample Input 1</h2>-->
+                            <!--                                <i class="col-1 btn one wide btn ui copy icon"></i>-->
+                            <!--                            </div>-->
+                            <!--                            <pre class="ui segment m-problem-sample m-problem-text"-->
+                            <!--                                 style="margin-left: 20px; margin-right: 20px; margin-top: -5px;!important;">1 2 3123</pre>-->
+
+
+                            <h3 class="m-sample-h" style="margin-left: 20px; margin-right: 20px;">Sample Input 1</h3>
+                            <pre class="ui segment m-problem-sample m-problem-text user-select-all">1 2 3123</pre>
+
+                            <h3 class="m-sample-h" style="margin-left: 20px; margin-right: 20px;">Sample Output 1</h3>
+                            <pre class="ui segment m-problem-sample m-problem-text user-select-all">123</pre>
+
+
+                            <h3 class="m-sample-h" style="margin-left: 20px; margin-right: 20px;">Sample Input 2</h3>
+                            <pre class="ui segment m-problem-sample m-problem-text user-select-all">4 5 6456</pre>
+
+                            <h3 class="m-sample-h" style="margin-left: 20px; margin-right: 20px;">Sample Output 2</h3>
+                            <pre class="ui segment m-problem-sample m-problem-text user-select-all">123</pre>
+                        </div>
+
+
+                        <h3 class="m-problem-h">Note</h3>
+                        <p class="m-problem-text">
+                            注意输入输入出格式！
+                        </p>
+
+
+                        <hr style="height: 1px; margin-top: 75px">
+
+
+                        <h3 class="m-problem-h">Submit Code</h3>
+                        <!-- CodeEditor -->
+                        <form class="m-editor">
+                            <div class="ui segments">
+                                <div class="ui segment row">
+                                    <div class="ui fluid selection dropdown" style="width: 160px;">
+                                        <input type="hidden" name="language">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text" style="color: #616264;">Select Language
+                                        </div>
+                                        <div class="menu">
+                                            <div class="item" data-value="c">
+                                                C
+                                            </div>
+                                            <div class="item" data-value="c++">
+                                                C++
+                                            </div>
+                                            <div class="item" data-value="java">
+                                                Java
+                                            </div>
+                                            <div class="item" data-value="python">
+                                                Python
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <textarea class="ui segment" name="" id="editor"
+                                          style="width: 100%; height: 500px; outline: none; font-size: 16px;"></textarea>
+                            </div>
+
+                            <button class="ui green button m-radius"
+                                    style="width: 200px; margin-top: 20px; " type="submit">Submit
+                            </button>
+                        </form>
+
+                        <br>
+                    </div>
+                </div>
+
+
+                <!-- 侧边栏 -->
+                <div class="col-lg-3 col-md-5">
+                    <!-- 题目信息 -->
+                    <div class="ui segments m-radius">
+                        <div class="ui segment secondary m-radius m-top-radius">
+                            <h3><i class="ui info circle icon"></i>Problem Info</h3>
+                        </div>
+
+                        <div class=" ui segment m-bottom-radius">
+                            <table class="table " style="border: transparent">
+                                <tr class="row" style="margin:0 auto">
+                                    <td class="col-lg-6 col-md-4 col-sm-12">
+                                        <strong>ID</strong>
+                                    </td>
+                                    <td class="col-lg-6 col-md-8 col-sm-8">
+                                        10019
+                                    </td>
+                                </tr>
+
+                                <tr class="row" style="margin: 0 auto;">
+                                    <td class="col-lg-6 col-md-4 col-sm-12">
+                                        <strong><i class="ui stopwatch icon"></i></strong>
+                                    </td>
+
+                                    <td class="col-lg-6 col-md-8 col-sm-8">2000ms</td>
+                                </tr>
+
+                                <tr class="row" style="margin:0 auto">
+                                    <td class="col-lg-6 col-md-4 col-sm-12">
+                                        <strong><i class="ui microchip icon"></i></strong>
+                                    </td>
+
+                                    <td class="col-lg-6 col-md-8 col-sm-8">65536K</td>
+                                </tr>
+
+                                <tr class="row" style="margin:0 auto">
+                                    <td class="col-lg-6 col-md-12 col-sm-12">
+                                        <strong>Difficulty</strong>
+                                    </td>
+
+                                    <td class="col-lg-6 col-md-8 col-sm-8">easy</td>
+                                </tr>
+
+                                <tr class="row" style="margin:0 auto">
+                                    <td class="col-lg-6 col-md-12 col-sm-12">
+                                        <strong>Statistics</strong>
+                                    </td>
+
+                                    <td class="col-lg-6 col-md-8 col-sm-8"><a href="#">Show</a></td>
+                                </tr>
+
+                                <tr class="row" style="margin:0 auto">
+                                    <td class="col-lg-6 col-md-12 col-sm-12">
+                                        <strong>My Submissions</strong>
+                                    </td>
+
+                                    <td class="col-lg-6 col-md-8 col-sm-8"><a href="#">Show</a></td>
+                                </tr>
+
+                                <tr class="row" style="margin:0 auto">
+                                    <td class="col-lg-6 col-md-12 col-sm-12">
+                                        <strong>Source</strong>
+                                    </td>
+
+                                    <td class="col-lg-6 col-md-8 col-sm-8"><a href="#">Hong Kong Regional Online
+                                        Preliminary 2016</a></td>
+                                </tr>
+
+                                <tr class="row" style="margin:0 auto">
+                                    <td class="col-lg-6 col-md-12 col-sm-12">
+                                        <strong>Tutorial</strong>
+                                    </td>
+
+                                    <td class="col-lg-6 col-md-8 col-sm-8"><a href="#">Show</a></td>
+                                </tr>
+
+                                <tr class="row" style="margin:0 auto">
+                                    <td class="col-lg-6 col-md-12 col-sm-12">
+                                        <strong>Author</strong>
+                                    </td>
+
+                                    <td class="col-lg-6 col-md-8 col-sm-8"><a href="#">Luminous</a></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <!-- 提交 -->
+                    <!--                    <div class="ui segments m-radius">-->
+                    <!--                        <div class="ui segment secondary m-radius m-top-radius">-->
+                    <!--                            <h3><i class="ui paper plane icon"></i>Submit File</h3>-->
+                    <!--                        </div>-->
+
+                    <!--                        <div class="ui segment m-bottom-radius">-->
+                    <!--                            <table class="table" style="border: transparent">-->
+                    <!--                                <tr>-->
+                    <!--                                    <td><strong>Language:</strong></td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <div class="ui fluid selection dropdown" style="width: 150px;">-->
+                    <!--                                            <input type="hidden" name="language">-->
+                    <!--                                            <i class="dropdown icon"></i>-->
+                    <!--                                            <div class="default text" style="color: #616264;">Select Language</div>-->
+                    <!--                                            <div class="menu">-->
+                    <!--                                                <div class="item" data-value="c">-->
+                    <!--                                                    C-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="item" data-value="c++">-->
+                    <!--                                                    C++-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="item" data-value="java">-->
+                    <!--                                                    Java-->
+                    <!--                                                </div>-->
+                    <!--                                                <div class="item" data-value="python">-->
+                    <!--                                                    Python-->
+                    <!--                                                </div>-->
+                    <!--                                            </div>-->
+                    <!--                                        </div>-->
+                    <!--                                    </td>-->
+                    <!--                                </tr>-->
+
+                    <!--                                <tr>-->
+                    <!--                                    <td><strong>File:</strong></td>-->
+                    <!--                                    <td>-->
+                    <!--                                        <div>-->
+                    <!--                                            <input type="file" id="btn_file">-->
+                    <!--                                        </div>-->
+
+                    <!--                                    </td>-->
+                    <!--                                </tr>-->
+
+                    <!--                                <tr>-->
+                    <!--                                    <td colspan="2">-->
+                    <!--                                        <button class="ui green button m-radius"-->
+                    <!--                                                style="width: 200px; margin-left: 30px;">Submit-->
+                    <!--                                        </button>-->
+                    <!--                                    </td>-->
+                    <!--                                </tr>-->
+                    <!--                            </table>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+
+                    <!-- 标签栏 -->
+                    <div class="ui segments m-radius" style="margin-top: 2em">
+                        <div class="ui segment secondary m-top-radius">
+                            <h3><i class="ui tags icon"></i>Tags</h3>
+                        </div>
+
+                        <div class="ui segment m-bottom-radius">
+                            <button class="ui orange tiny basic button m-radius margin-md">贪心</button>
+                            <button class="ui yellow tiny basic button m-radius margin-md">二分</button>
+                            <button class="ui olive tiny basic button m-radius margin-md">排序</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- End Main -->
+
+
+        <!-- ======= Footer ======= -->
+
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-6 footer-contact">
+                            <h4>NSU Online Judge</h4>
+                            <p>
+                                <strong>A programming competition & algorithm training platform!</strong><br>
+                            </p>
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 footer-links">
+                            <h4>Our Social Networks</h4>
+                            <!--<p></p>-->
+                            <div class="social-links mt-3">
+                                <a href="#" class="qq" data-content="554648186" data-position="bottom center">
+                                    <i class="qq icon"></i>
+                                </a>
+                                <a href="#" class="email" data-content="NSU-ACM@outlook.com"
+                                   data-position="bottom center"><i class="envelope icon"></i></a>
+                                <a href="#" class="wechat"><i class="wechat icon"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container py-4">
+                <div class="copyright">
+                    &copy; Copyright <strong><span>NSU Online Judge</span></strong>. All Rights Reserved
+                </div>
+            </div>
+        </footer><!-- End Footer -->
+
+        <!-- Back To Top -->
+        <a href="#" class="back-to-top d-flex" style="justify-content: center; align-items: center">
+            <i class="bi bi-arrow-up-short"></i></a>
+
+
+        <!-- Vendor JS Files -->
+        <script src="../../static/js/jquery-3.6.1.min.js"></script>
+        <script src="../../static/bootstrap/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+        <!-- Template Main JS File -->
+        <script src="../../static/js/main.js"></script>
+
+        <script>
+            $('.qq').popup();
+            $('.email').popup();
+            $('.ui.dropdown')
+                .dropdown();
+            $('#infoButton').popup({
+                popup: $('.info.popup'),
+                on: 'click',
+                position: 'bottom center'
+            });
+        </script>
+    </body>
+</html>

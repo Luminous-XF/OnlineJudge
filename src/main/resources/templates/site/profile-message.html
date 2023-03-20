@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Message</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+
+        <!-- Favicons -->
+        <link th:href="@{/images/nsu/nsu-school-badge-icon.ico}" rel="icon" type="image/x-icon">
+
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+              rel="stylesheet">
+
+
+        <!-- Vendor CSS Files -->
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <link th:href="@{/bootstrap/icons/bootstrap-icons.css}" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link th:href="@{/css/style.css}" rel="stylesheet">
+    </head>
+
+    <style>
+        .m-background {
+            background: url("../../static/images/background/bg-2.jpg");
+            background-attachment: fixed;
+            background-size: 100%;
+        }
+    </style>
+    <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center justify-content-between">
+            <div class="logo">
+                <a th:href="@{/index}">
+                    <img th:src="@{/images/nsu/nsu-school-badge.png}" alt="" class="img-fluid">&nbsp;
+                    <strong>NSU Online Judge</strong>
+                </a>
+            </div>
+
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li>
+                        <a th:href="@{/index}" class="nav-link scroll d-inline-block">
+                            <i class="home icon"></i>Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/problemset}" class="nav-link scrollto d-inline-block">
+                            <i class="book icon"></i>Problems
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/status}" class="nav-link scrollto d-inline-block">
+                            <i class="database icon"></i>Status
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/rating}" class="nav-link scrollto d-inline-block">
+                            <i class="chart bar icon"></i>Rating
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/contests}" class="nav-link scrollto d-inline-block">
+                            <i class="trophy icon"></i>Contests
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/forum}" class="nav-link scrollto d-inline-block">
+                            <i class="chat dots fill icon"></i>Forum
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/faq}" class="nav-link scrollto d-inline-block">
+                            <i class="question circle icon"></i>F.A.Q
+                        </a>
+                    </li>
+
+                    <li th:if="${loginUser == null}">
+                        <a class="getstarted scrollto" th:href="@{/login}">Get Started</a>
+                    </li>
+
+                    <li class="align-items-center" style="display:flex;" th:if="${loginUser != null}">
+                        <a href="#" id="infoButton"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                         class="ui avatar image">
+                            Luminous</a>
+
+                        <div class="ui info flowing popup transition hidden m-radius" style="width: 280px;">
+                            <table class="table">
+                                <tr>
+                                    <td class="align-items-center" style="display: flex;">
+                                        <a th:href="@{/profile/preview}"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                                              style="height: 50px; width: 50px; margin-right: 10px;"
+                                                                              class="ui avatar image">
+                                            Luminous</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/setting}">
+                                            <div>
+                                                <i class="user icon" style="margin-right: 10px;"></i>Profile Settings
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/submissions}">
+                                            <div>
+                                                <i class="upload icon" style="margin-right: 10px;"></i>My Submissions
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/blogs}">
+                                            <div>
+                                                <i class="book icon" style="margin-right: 10px;"></i>My Blogs
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/message}">
+                                            <div>
+                                                <i class="mail icon" style="margin-right: 10px;"></i>Message
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr th:if="${loginUser.type > 0}">
+                                    <td>
+                                        <a th:href="@{/admin/dashboard}">
+                                            <div>
+                                                <i class="user md icon" style="margin-right: 10px;"></i>Administration
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="text-end">
+                                <button th:onclick="|window.location.href='@{/logout}'|" class="ui basic m-radius button">
+                                    Logout
+                                    <i class="sign-out icon" style="margin-left: 10px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+        </div>
+
+    </header><!-- End Header -->
+
+
+        <!-- ======= Main Section ======= -->
+
+        <div class="ui container" style="margin-top: 100px;">
+            <div class="ui segment m-radius">
+                <div class="ui tabular menu">
+                    <a class="item" th:href="@{/profile/preview}">Profile</a>
+                    <a class="item" th:href="@{/profile/setting}">Profile Setting</a>
+                    <a class="item" th:href="@{/profile/submissions}">My Submissions</a>
+                    <a class="item" th:href="@{/profile/blogs}">My Blogs</a>
+                    <a class="item active" th:href="@{/profile/message}">Message</a>
+                </div>
+
+                <div style="margin: 30px;">
+                    <div>
+                        <div class="ui segment align-items-center m-radius" style="margin-top: 20px;">
+                            <div class="ui grid align-items-center">
+                                <div class="ui three wide column">
+                                    <div class="align-items-center" style="display: flex;">
+                                        <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; width: 30px;" class="ui avatar image"></a>
+                                        <a href="#" class="overflow-hidden" style="margin-left: 5px;">19380120319</a>
+                                    </div>
+                                </div>
+
+                                <div class="ui thirteen wide column">
+                                    <a href="">
+                                        <p class="m-text-overflow-two m-problem-text">
+                                            网络上有许多服务可以生成随机文本-看起来像真实文本的随机单词的无意义集合。每个单词单独地都具有某种含义，但在一起读起来就是异端。为了获得正常的文本，仅凭随机替换是不够的-您需要神经网络。用于填充测试站点和布局的随机文本。成功的政客的语音发生器。由于使用此类文本的目的纯粹是说明性的，因此不必承担语义负担。此外，在评估布局的感知质量时，文本的可读性将发挥作用。
+                                            伪可读文本生成器对于设计者和布局设计者在填写布局和测试站点时很有用。此技术使您可以轻松地创建用文本内容填充网站的效果。故意使文本fish或Lorem Ipsum缺乏逻辑含义，以便用户可以专注于布局的视觉感知。对于布局设计师和需要随机文本来填写站点和布局的设计师，此文本生成器将非常有用。文本的生成是根据段落数进行的。您不应将生成的文本用于实际项目。
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="ui grid">
+                                <div class="eleven wide column">
+                                    <div class="ui middle horizontal link list">
+                                        <div class="item">
+                                            <i class="calendar icon"></i> 2021-12-02
+                                        </div>
+
+                                        <div class="item">
+                                            <i class="clock icon"></i> 19:24:12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui segment align-items-center m-radius" style="margin-top: 20px;">
+                            <div class="ui grid align-items-center">
+                                <div class="ui three wide column">
+                                    <div class="align-items-center" style="display: flex;">
+                                        <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; width: 30px;" class="ui avatar image"></a>
+                                        <a href="#" class="overflow-hidden" style="margin-left: 5px;">19380120319</a>
+                                    </div>
+                                </div>
+
+                                <div class="ui thirteen wide column">
+                                    <a href="">
+                                        <p class="m-text-overflow-two m-problem-text">
+                                            网络上有许多服务可以生成随机文本-看起来像真实文本的随机单词的无意义集合。每个单词单独地都具有某种含义，但在一起读起来就是异端。为了获得正常的文本，仅凭随机替换是不够的-您需要神经网络。用于填充测试站点和布局的随机文本。成功的政客的语音发生器。由于使用此类文本的目的纯粹是说明性的，因此不必承担语义负担。此外，在评估布局的感知质量时，文本的可读性将发挥作用。
+                                            伪可读文本生成器对于设计者和布局设计者在填写布局和测试站点时很有用。此技术使您可以轻松地创建用文本内容填充网站的效果。故意使文本fish或Lorem Ipsum缺乏逻辑含义，以便用户可以专注于布局的视觉感知。对于布局设计师和需要随机文本来填写站点和布局的设计师，此文本生成器将非常有用。文本的生成是根据段落数进行的。您不应将生成的文本用于实际项目。
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="ui grid">
+                                <div class="eleven wide column">
+                                    <div class="ui middle horizontal link list">
+                                        <div class="item">
+                                            <i class="calendar icon"></i> 2021-12-02
+                                        </div>
+
+                                        <div class="item">
+                                            <i class="clock icon"></i> 19:24:12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui segment align-items-center m-radius" style="margin-top: 20px;">
+                            <div class="ui grid align-items-center">
+                                <div class="ui three wide column">
+                                    <div class="align-items-center" style="display: flex;">
+                                        <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; width: 30px;" class="ui avatar image"></a>
+                                        <a href="#" class="overflow-hidden" style="margin-left: 5px;">19380120319</a>
+                                    </div>
+                                </div>
+
+                                <div class="ui thirteen wide column">
+                                    <a href="">
+                                        <p class="m-text-overflow-two m-problem-text">
+                                            网络上有许多服务可以生成随机文本-看起来像真实文本的随机单词的无意义集合。每个单词单独地都具有某种含义，但在一起读起来就是异端。为了获得正常的文本，仅凭随机替换是不够的-您需要神经网络。用于填充测试站点和布局的随机文本。成功的政客的语音发生器。由于使用此类文本的目的纯粹是说明性的，因此不必承担语义负担。此外，在评估布局的感知质量时，文本的可读性将发挥作用。
+                                            伪可读文本生成器对于设计者和布局设计者在填写布局和测试站点时很有用。此技术使您可以轻松地创建用文本内容填充网站的效果。故意使文本fish或Lorem Ipsum缺乏逻辑含义，以便用户可以专注于布局的视觉感知。对于布局设计师和需要随机文本来填写站点和布局的设计师，此文本生成器将非常有用。文本的生成是根据段落数进行的。您不应将生成的文本用于实际项目。
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="ui grid">
+                                <div class="eleven wide column">
+                                    <div class="ui middle horizontal link list">
+                                        <div class="item">
+                                            <i class="calendar icon"></i> 2021-12-02
+                                        </div>
+
+                                        <div class="item">
+                                            <i class="clock icon"></i> 19:24:12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui segment align-items-center m-radius" style="margin-top: 20px;">
+                            <div class="ui grid align-items-center">
+                                <div class="ui three wide column">
+                                    <div class="align-items-center" style="display: flex;">
+                                        <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; width: 30px;" class="ui avatar image"></a>
+                                        <a href="#" class="overflow-hidden" style="margin-left: 5px;">19380120319</a>
+                                    </div>
+                                </div>
+
+                                <div class="ui thirteen wide column">
+                                    <a href="">
+                                        <p class="m-text-overflow-two m-problem-text">
+                                            网络上有许多服务可以生成随机文本-看起来像真实文本的随机单词的无意义集合。每个单词单独地都具有某种含义，但在一起读起来就是异端。为了获得正常的文本，仅凭随机替换是不够的-您需要神经网络。用于填充测试站点和布局的随机文本。成功的政客的语音发生器。由于使用此类文本的目的纯粹是说明性的，因此不必承担语义负担。此外，在评估布局的感知质量时，文本的可读性将发挥作用。
+                                            伪可读文本生成器对于设计者和布局设计者在填写布局和测试站点时很有用。此技术使您可以轻松地创建用文本内容填充网站的效果。故意使文本fish或Lorem Ipsum缺乏逻辑含义，以便用户可以专注于布局的视觉感知。对于布局设计师和需要随机文本来填写站点和布局的设计师，此文本生成器将非常有用。文本的生成是根据段落数进行的。您不应将生成的文本用于实际项目。
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="ui grid">
+                                <div class="eleven wide column">
+                                    <div class="ui middle horizontal link list">
+                                        <div class="item">
+                                            <i class="calendar icon"></i> 2021-12-02
+                                        </div>
+
+                                        <div class="item">
+                                            <i class="clock icon"></i> 19:24:12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui segment align-items-center m-radius" style="margin-top: 20px;">
+                            <div class="ui grid align-items-center">
+                                <div class="ui three wide column">
+                                    <div class="align-items-center" style="display: flex;">
+                                        <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; width: 30px;" class="ui avatar image"></a>
+                                        <a href="#" class="overflow-hidden" style="margin-left: 5px;">19380120319</a>
+                                    </div>
+                                </div>
+
+                                <div class="ui thirteen wide column">
+                                    <a href="">
+                                        <p class="m-text-overflow-two m-problem-text">
+                                            网络上有许多服务可以生成随机文本-看起来像真实文本的随机单词的无意义集合。每个单词单独地都具有某种含义，但在一起读起来就是异端。为了获得正常的文本，仅凭随机替换是不够的-您需要神经网络。用于填充测试站点和布局的随机文本。成功的政客的语音发生器。由于使用此类文本的目的纯粹是说明性的，因此不必承担语义负担。此外，在评估布局的感知质量时，文本的可读性将发挥作用。
+                                            伪可读文本生成器对于设计者和布局设计者在填写布局和测试站点时很有用。此技术使您可以轻松地创建用文本内容填充网站的效果。故意使文本fish或Lorem Ipsum缺乏逻辑含义，以便用户可以专注于布局的视觉感知。对于布局设计师和需要随机文本来填写站点和布局的设计师，此文本生成器将非常有用。文本的生成是根据段落数进行的。您不应将生成的文本用于实际项目。
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="ui grid">
+                                <div class="eleven wide column">
+                                    <div class="ui middle horizontal link list">
+                                        <div class="item">
+                                            <i class="calendar icon"></i> 2021-12-02
+                                        </div>
+
+                                        <div class="item">
+                                            <i class="clock icon"></i> 19:24:12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui segment align-items-center m-radius" style="margin-top: 20px;">
+                            <div class="ui grid align-items-center">
+                                <div class="ui three wide column">
+                                    <div class="align-items-center" style="display: flex;">
+                                        <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; width: 30px;" class="ui avatar image"></a>
+                                        <a href="#" class="overflow-hidden" style="margin-left: 5px;">19380120319</a>
+                                    </div>
+                                </div>
+
+                                <div class="ui thirteen wide column">
+                                    <a href="">
+                                        <p class="m-text-overflow-two m-problem-text">
+                                            网络上有许多服务可以生成随机文本-看起来像真实文本的随机单词的无意义集合。每个单词单独地都具有某种含义，但在一起读起来就是异端。为了获得正常的文本，仅凭随机替换是不够的-您需要神经网络。用于填充测试站点和布局的随机文本。成功的政客的语音发生器。由于使用此类文本的目的纯粹是说明性的，因此不必承担语义负担。此外，在评估布局的感知质量时，文本的可读性将发挥作用。
+                                            伪可读文本生成器对于设计者和布局设计者在填写布局和测试站点时很有用。此技术使您可以轻松地创建用文本内容填充网站的效果。故意使文本fish或Lorem Ipsum缺乏逻辑含义，以便用户可以专注于布局的视觉感知。对于布局设计师和需要随机文本来填写站点和布局的设计师，此文本生成器将非常有用。文本的生成是根据段落数进行的。您不应将生成的文本用于实际项目。
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="ui grid">
+                                <div class="eleven wide column">
+                                    <div class="ui middle horizontal link list">
+                                        <div class="item">
+                                            <i class="calendar icon"></i> 2021-12-02
+                                        </div>
+
+                                        <div class="item">
+                                            <i class="clock icon"></i> 19:24:12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui segment align-items-center m-radius" style="margin-top: 20px;">
+                            <div class="ui grid align-items-center">
+                                <div class="ui three wide column">
+                                    <div class="align-items-center" style="display: flex;">
+                                        <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; width: 30px;" class="ui avatar image"></a>
+                                        <a href="#" class="overflow-hidden" style="margin-left: 5px;">19380120319</a>
+                                    </div>
+                                </div>
+
+                                <div class="ui thirteen wide column">
+                                    <a href="">
+                                        <p class="m-text-overflow-two m-problem-text">
+                                            网络上有许多服务可以生成随机文本-看起来像真实文本的随机单词的无意义集合。每个单词单独地都具有某种含义，但在一起读起来就是异端。为了获得正常的文本，仅凭随机替换是不够的-您需要神经网络。用于填充测试站点和布局的随机文本。成功的政客的语音发生器。由于使用此类文本的目的纯粹是说明性的，因此不必承担语义负担。此外，在评估布局的感知质量时，文本的可读性将发挥作用。
+                                            伪可读文本生成器对于设计者和布局设计者在填写布局和测试站点时很有用。此技术使您可以轻松地创建用文本内容填充网站的效果。故意使文本fish或Lorem Ipsum缺乏逻辑含义，以便用户可以专注于布局的视觉感知。对于布局设计师和需要随机文本来填写站点和布局的设计师，此文本生成器将非常有用。文本的生成是根据段落数进行的。您不应将生成的文本用于实际项目。
+                                        </p>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="ui grid">
+                                <div class="eleven wide column">
+                                    <div class="ui middle horizontal link list">
+                                        <div class="item">
+                                            <i class="calendar icon"></i> 2021-12-02
+                                        </div>
+
+                                        <div class="item">
+                                            <i class="clock icon"></i> 19:24:12
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 分页 -->
+                    <nav aria-label="..." style="position: relative; margin-top: 50px;">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" style="color: #47536e">Previous</a>
+                            </li>
+                            <li class="page-item"><a class="page-link m-active" href="#"
+                                                     style="color: #47536e">1</a>
+                            </li>
+                            <li class="page-item" aria-current="page">
+                                <a class="page-link" href="#" style="color: #47536e">2</a>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#" style="color: #47536e">3</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" style="color: #47536e">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+
+        <!-- End Main -->
+
+
+        <!-- ======= Footer ======= -->
+
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-6 footer-contact">
+                            <h4>NSU Online Judge</h4>
+                            <p>
+                                <strong>A programming competition & algorithm training platform!</strong><br>
+                            </p>
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 footer-links">
+                            <h4>Our Social Networks</h4>
+                            <!--<p></p>-->
+                            <div class="social-links mt-3">
+                                <a href="#" class="qq" data-content="554648186" data-position="bottom center">
+                                    <i class="qq icon"></i>
+                                </a>
+                                <a href="#" class="email" data-content="NSU-ACM@outlook.com"
+                                   data-position="bottom center"><i class="envelope icon"></i></a>
+                                <a href="#" class="wechat"><i class="wechat icon"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container py-4">
+                <div class="copyright">
+                    &copy; Copyright <strong><span>NSU Online Judge</span></strong>. All Rights Reserved
+                </div>
+            </div>
+        </footer><!-- End Footer -->
+
+        <!-- Back To Top -->
+        <a href="#" class="back-to-top d-flex" style="justify-content: center; align-items: center">
+            <i class="bi bi-arrow-up-short"></i></a>
+
+
+        <!-- Vendor JS Files -->
+        <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+        <!-- Template Main JS File -->
+        <script th:src="@{/js/main.js}"></script>
+        <script th:src="@{/js/global.js}"></script>
+
+        <script>
+            $('.qq').popup();
+            $('.email').popup();
+            $('.ui.dropdown')
+                .dropdown();
+            $('#infoButton').popup({
+                popup: $('.info.popup'),
+                on: 'click',
+                position: 'bottom center'
+            });
+
+            function scrollToComment() {
+                document.getElementById('goToComment').scrollIntoView({
+                    block: 'start',
+                    inline: 'nearest',
+                    behavior: 'smooth'
+                })
+            }
+
+            $('.blogEditorButton').popup({
+                popup: $('.blogEditor.popup'),
+                on: 'click',
+                position: 'bottom center'
+            });
+        </script>
+    </body>
+</html>

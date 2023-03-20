@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Problems</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+
+        <!-- Favicons -->
+        <link th:href="@{/images/nsu/nsu-school-badge-icon.ico}" rel="icon" type="image/x-icon">
+
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+              rel="stylesheet">
+
+
+        <!-- Vendor CSS Files -->
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <link th:href="@{/bootstrap/icons/bootstrap-icons.css}" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link th:href="@{/css/style.css}" rel="stylesheet">
+    </head>
+
+
+    <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center justify-content-between">
+            <div class="logo">
+                <a th:href="@{/index}">
+                    <img th:src="@{/images/nsu/nsu-school-badge.png}" alt="" class="img-fluid">&nbsp;
+                    <strong>NSU Online Judge</strong>
+                </a>
+            </div>
+
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li>
+                        <a th:href="@{/index}" class="nav-link scroll d-inline-block">
+                            <i class="home icon"></i>Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/problemset}" class="nav-link scrollto d-inline-block active">
+                            <i class="book icon"></i>Problems
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/status}" class="nav-link scrollto d-inline-block">
+                            <i class="database icon"></i>Status
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/rating}" class="nav-link scrollto d-inline-block">
+                            <i class="chart bar icon"></i>Rating
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/contests}" class="nav-link scrollto d-inline-block">
+                            <i class="trophy icon"></i>Contests
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/forum}" class="nav-link scrollto d-inline-block">
+                            <i class="chat dots fill icon"></i>Forum
+                        </a>
+                    </li>
+
+                    <li>
+                        <a th:href="@{/faq}" class="nav-link scrollto d-inline-block">
+                            <i class="question circle icon"></i>F.A.Q
+                        </a>
+                    </li>
+
+                    <li th:if="${loginUser == null}">
+                        <a class="getstarted scrollto" th:href="@{/login}">Get Started</a>
+                    </li>
+
+                    <li class="align-items-center" style="display:flex;" th:if="${loginUser != null}">
+                        <a href="#" id="infoButton"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                         class="ui avatar image">
+                            Luminous</a>
+
+                        <div class="ui info flowing popup transition hidden m-radius" style="width: 280px;">
+                            <table class="table">
+                                <tr>
+                                    <td class="align-items-center" style="display: flex;">
+                                        <a th:href="@{/profile/preview}"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                                              style="height: 50px; width: 50px; margin-right: 10px;"
+                                                                              class="ui avatar image">
+                                            Luminous</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/setting}">
+                                            <div>
+                                                <i class="user icon" style="margin-right: 10px;"></i>Profile Settings
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/submissions}">
+                                            <div>
+                                                <i class="upload icon" style="margin-right: 10px;"></i>My Submissions
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/blogs}">
+                                            <div>
+                                                <i class="book icon" style="margin-right: 10px;"></i>My Blogs
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <a th:href="@{/profile/message}">
+                                            <div>
+                                                <i class="mail icon" style="margin-right: 10px;"></i>Message
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+
+                                <tr th:if="${loginUser.type > 0}">
+                                    <td>
+                                        <a th:href="@{/admin/dashboard}">
+                                            <div>
+                                                <i class="user md icon" style="margin-right: 10px;"></i>Administration
+                                            </div>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <div class="text-end">
+                                <button th:onclick="|window.location.href='@{/logout}'|" class="ui basic m-radius button">
+                                    Logout
+                                    <i class="sign-out icon" style="margin-left: 10px;"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+        </div>
+
+    </header><!-- End Header -->
+
+
+        <!-- ======= Main Section ======= -->
+
+        <div class="container" style="margin-top: 100px;">
+
+
+            <div class="row">
+                <!-- 题目列表 -->
+                <div class="col-lg-9 col-md-12">
+                    <div class="ui segments m-radius">
+                        <div class="ui segment secondary m-top-radius">
+                            <h2>Problems</h2>
+                        </div>
+
+                        <div class="row ui segment m-bottom-radius">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th class="col-1" style="font-size: 2px;">ID</th>
+                                    <th class="col-3" style="font-size: 2px;">Name</th>
+                                    <th class="col-5" style="font-size: 2px;">Tags</th>
+                                    <th class="col-1" style="font-size: 2px;">Difficulty</th>
+                                    <th class="col-1">
+                                        <div class="btn" style="font-size: 2px; font-weight: 900">Solved
+                                            <i class="sort icon"></i>
+                                        </div>
+                                    </th>
+                                </tr>
+
+
+                                <tr class="solved">
+                                    <td style="height: 50px;">
+                                        <div>10001</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">A+B=?</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <!--<button class="ui teal tiny basic button m-radius">模拟</button>-->
+                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">102</div>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td style="height: 50px;">
+                                        <div>10002</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">陶陶摘苹果</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">133</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="attempted">
+                                    <td style="height: 50px;">
+                                        <div>10003</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">不高兴的津津</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="solved">
+                                    <td style="height: 50px;">
+                                        <div>10004</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">数字反转</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟，字符串</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center medium"><strong>medium</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>10005</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">校门外的树</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">数据结构，字符串</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center hard"><strong>hard</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>10006</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">A+B=?</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">102</div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="height: 50px;">
+                                        <div>10007</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">陶陶摘苹果</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟，排序</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">133</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="attempted">
+                                    <td style="height: 50px;">
+                                        <div>10008</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">不高兴的津津</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>10009</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">数字反转</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟，字符串</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center medium"><strong>medium</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>100010</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">校门外的树</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">数据结构，线段树</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center hard"><strong>hard</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>10011</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">A+B=?</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">102</div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td style="height: 50px;">
+                                        <div>10012</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">陶陶摘苹果</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">133</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>10013</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">不高兴的津津</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="solved">
+                                    <td style="height: 50px;">
+                                        <div>10014</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">数字反转</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟，字符串</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center medium"><strong>medium</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>10015</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">校门外的树</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">数据结构，线段树</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center hard"><strong>hard</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>10016</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">A+B=?</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">102</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>10017</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">陶陶摘苹果</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟，排序</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">133</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>10018</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">不高兴的津津</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center easy"><strong>easy</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>10019</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">数字反转</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">模拟，字符串，字符串， 字符串，字符串</div>
+
+                                    </td>
+                                    <td>
+                                        <div class="text-center medium"><strong>medium</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+
+                                <tr class="">
+                                    <td style="height: 50px;">
+                                        <div>10020</div>
+                                    </td>
+                                    <td>
+                                        <a href="#">校门外的树</a>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="text-secondary" style="font-size: 7px;">数据结构，线段树，线段树，线段树，线段树</div>
+                                    </td>
+                                    <td>
+                                        <div class="text-center hard"><strong>hard</strong></div>
+                                    </td>
+
+                                    <td>
+                                        <div class="text-center">443</div>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- 分页 -->
+                            <nav aria-label="..." style="position: relative; margin-top: 50px;">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" style="color: #47536e">Previous</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link m-active" href="#" style="color: #47536e">1</a>
+                                    </li>
+                                    <li class="page-item" aria-current="page">
+                                        <a class="page-link" href="#" style="color: #47536e">2</a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="#" style="color: #47536e">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" style="color: #47536e">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- 侧边栏 -->
+                <div class="col-lg-3 col-md-9">
+                    <!-- 搜索框 -->
+                    <div class="ui segments m-radius">
+                        <div class="ui segment secondary m-radius m-top-radius">
+                            <h3><i class="ui search icon"></i>Search Problem</h3>
+                        </div>
+
+                        <div class="ui segment m-bottom-radius">
+                            <div class="ui search">
+                                <div class="ui icon input">
+                                    <input class="prompt" type="text" placeholder="Search ID or Name">
+                                    <i class="search icon"></i>
+                                </div>
+                                <div class="results"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- 周AC排名 -->
+                    <div class="ui segments m-radius" style="margin-top: 2em;">
+                        <div class="ui segment secondary m-top-radius">
+                            <h3><i class="ui chart line icon"></i>Top Rated</h3>
+                        </div>
+
+                        <div class="row ui segment m-bottom-radius">
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <th class="col-2 text-center">Rank</th>
+                                    <th class="col-8 text-center">Name</th>
+                                    <th class="col-2 text-center">AC</th>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">1</td>
+                                    <td class="text-center"><strong>AAA</strong></td>
+                                    <td class="text-center">1000</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">2</td>
+                                    <td class="text-center"><strong>BBB</strong></td>
+                                    <td class="text-center">999</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">3</td>
+                                    <td class="text-center"><strong>CCC</strong></td>
+                                    <td class="text-center">888</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">4</td>
+                                    <td class="text-center"><strong>DDD</strong></td>
+                                    <td class="text-center">777</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">5</td>
+                                    <td class="text-center"><strong>EEE</strong></td>
+                                    <td class="text-center">666</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">6</td>
+                                    <td class="text-center"><strong>FFF</strong></td>
+                                    <td class="text-center">555</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">7</td>
+                                    <td class="text-center"><strong>GGG</strong></td>
+                                    <td class="text-center">444</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">8</td>
+                                    <td class="text-center"><strong>HHH</strong></td>
+                                    <td class="text-center">333</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">9</td>
+                                    <td class="text-center"><strong>III</strong></td>
+                                    <td class="text-center">222</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="text-center">10</td>
+                                    <td class="text-center"><strong>JJJ</strong></td>
+                                    <td class="text-center">111</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <!-- 标签栏 -->
+                    <div class="ui segments m-radius" style="margin-top: 2em">
+                        <div class="ui segment secondary m-top-radius">
+                            <h3><i class="ui tags icon"></i>Tags</h3>
+                        </div>
+
+                        <div class="ui segment m-bottom-radius">
+                            <button class="ui red button tiny basic m-radius margin-md">字符串</button>
+                            <button class="ui orange button tiny basic m-radius margin-md">数据结构</button>
+                            <button class="ui yellow button tiny basic m-radius margin-md">动态规划</button>
+                            <button class="ui olive button tiny basic m-radius margin-md">搜索</button>
+                            <button class="ui green button tiny basic m-radius margin-md">计算几何</button>
+                            <button class="ui teal button tiny basic m-radius margin-md">贪心</button>
+                            <button class="ui blue button tiny basic m-radius margin-md">树</button>
+                            <button class="ui violet button tiny basic m-radius margin-md">图</button>
+                            <button class="ui purple button tiny basic m-radius margin-md">数论</button>
+                            <button class="ui pink button tiny basic m-radius margin-md">模拟</button>
+                            <button class="ui brown button tiny basic m-radius margin-md">博弈</button>
+                            <button class="ui grey button tiny basic m-radius margin-md">组合数学</button>
+                            <button class="ui black button tiny basic m-radius margin-md">线性代数</button>
+                            <button class="ui red button tiny basic m-radius margin-md">高精度</button>
+                            <button class="ui orange button tiny basic m-radius margin-md">排序</button>
+                            <button class="ui yellow button tiny basic m-radius margin-md">二分</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- End Main -->
+
+
+
+        <!-- ======= Footer ======= -->
+
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-6 footer-contact">
+                            <h4>NSU Online Judge</h4>
+                            <p>
+                                <strong>A programming competition & algorithm training platform!</strong><br>
+                            </p>
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 footer-links">
+                            <h4>Our Social Networks</h4>
+                            <!--<p></p>-->
+                            <div class="social-links mt-3">
+                                <a href="#" class="qq" data-content="554648186" data-position="bottom center">
+                                    <i class="qq icon"></i>
+                                </a>
+                                <a href="#" class="email" data-content="NSU-ACM@outlook.com"
+                                   data-position="bottom center"><i class="envelope icon"></i></a>
+                                <a href="#" class="wechat"><i class="wechat icon"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container py-4">
+                <div class="copyright">
+                    &copy; Copyright <strong><span>NSU Online Judge</span></strong>. All Rights Reserved
+                </div>
+            </div>
+        </footer><!-- End Footer -->
+
+        <!-- Back To Top -->
+        <a href="#" class="back-to-top d-flex" style="justify-content: center; align-items: center">
+            <i class="bi bi-arrow-up-short"></i></a>
+
+
+        <!-- Vendor JS Files -->
+        <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+        <!-- Template Main JS File -->
+        <script th:src="@{/js/main.js}"></script>
+        <script th:src="@{/js/global.js}"></script>
+
+        <script>
+            $('.qq').popup();
+            $('.email').popup();
+            $('#infoButton').popup({
+                popup: $('.info.popup'),
+                on: 'click',
+                position: 'bottom center'
+            });
+        </script>
+    </body>
+</html>

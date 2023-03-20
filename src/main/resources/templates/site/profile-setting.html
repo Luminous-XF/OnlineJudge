@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <title>Profile Setting</title>
+        <meta content="" name="description">
+        <meta content="" name="keywords">
+
+        <!-- Favicons -->
+        <link th:href="@{/images/nsu/nsu-school-badge-icon.ico}" rel="icon" type="image/x-icon">
+
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+              rel="stylesheet">
+
+
+        <!-- Vendor CSS Files -->
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <link th:href="@{/bootstrap/icons/bootstrap-icons.css}" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
+
+        <!-- Template Main CSS File -->
+        <link th:href="@{/css/style.css}" rel="stylesheet">
+    </head>
+
+    <style>
+        .m-background {
+            background: url("../../static/images/background/bg-2.jpg");
+            background-attachment: fixed;
+            background-size: 100%;
+        }
+    </style>
+    <body>
+        <!-- ======= Header ======= -->
+        <header id="header" class="fixed-top">
+            <div class="container d-flex align-items-center justify-content-between">
+                <div class="logo">
+                    <a th:href="@{/index}">
+                        <img th:src="@{/images/nsu/nsu-school-badge.png}" alt="" class="img-fluid">&nbsp;
+                        <strong>NSU Online Judge</strong>
+                    </a>
+                </div>
+
+
+                <nav id="navbar" class="navbar">
+                    <ul>
+                        <li>
+                            <a th:href="@{/index}" class="nav-link scroll d-inline-block">
+                                <i class="home icon"></i>Home
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/problemset}" class="nav-link scrollto d-inline-block">
+                                <i class="book icon"></i>Problems
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/status}" class="nav-link scrollto d-inline-block">
+                                <i class="database icon"></i>Status
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/rating}" class="nav-link scrollto d-inline-block">
+                                <i class="chart bar icon"></i>Rating
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/contests}" class="nav-link scrollto d-inline-block">
+                                <i class="trophy icon"></i>Contests
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/forum}" class="nav-link scrollto d-inline-block">
+                                <i class="chat dots fill icon"></i>Forum
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/faq}" class="nav-link scrollto d-inline-block">
+                                <i class="question circle icon"></i>F.A.Q
+                            </a>
+                        </li>
+
+                        <li th:if="${loginUser == null}">
+                            <a class="getstarted scrollto" th:href="@{/login}">Get Started</a>
+                        </li>
+
+                        <li class="align-items-center" style="display:flex;" th:if="${loginUser != null}">
+                            <a href="#" id="infoButton"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                             class="ui avatar image">
+                                Luminous</a>
+
+                            <div class="ui info flowing popup transition hidden m-radius" style="width: 280px;">
+                                <table class="table">
+                                    <tr>
+                                        <td class="align-items-center" style="display: flex;">
+                                            <a th:href="@{/profile/preview}"><img th:src="@{${loginUser.headerUrl}}"
+                                                                                  alt=""
+                                                                                  style="height: 50px; width: 50px; margin-right: 10px;"
+                                                                                  class="ui avatar image">
+                                                Luminous</a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/setting}">
+                                                <div>
+                                                    <i class="user icon" style="margin-right: 10px;"></i>Profile
+                                                    Settings
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/submissions}">
+                                                <div>
+                                                    <i class="upload icon" style="margin-right: 10px;"></i>My
+                                                    Submissions
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/blogs}">
+                                                <div>
+                                                    <i class="book icon" style="margin-right: 10px;"></i>My Blogs
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/message}">
+                                                <div>
+                                                    <i class="mail icon" style="margin-right: 10px;"></i>Message
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr th:if="${loginUser.type > 0}">
+                                        <td>
+                                            <a th:href="@{/admin/dashboard}">
+                                                <div>
+                                                    <i class="user md icon" style="margin-right: 10px;"></i>Administration
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <div class="text-end">
+                                    <button th:onclick="|window.location.href='@{/logout}'|"
+                                            class="ui basic m-radius button">
+                                        Logout
+                                        <i class="sign-out icon" style="margin-left: 10px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <i class="bi bi-list mobile-nav-toggle"></i>
+                </nav><!-- .navbar -->
+
+            </div>
+
+        </header><!-- End Header -->
+
+
+        <!-- ======= Main Section ======= -->
+
+        <div class="ui container" style="margin-top: 100px;">
+            <div class="ui segment m-radius">
+                <div class="ui tabular menu">
+                    <a class="item" th:href="@{/profile/preview}">Profile</a>
+                    <a class="item active" th:href="@{/profile/setting}">Profile Setting</a>
+                    <a class="item" th:href="@{/profile/submissions}">My Submissions</a>
+                    <a class="item" th:href="@{/profile/blogs}">My Blogs</a>
+                    <a class="item" th:href="@{/profile/message}">Message</a>
+                </div>
+
+                <div style="margin: 30px;">
+                    <h2>Change avatar</h2>
+
+                    <form th:action="@{/upload/header}" method="post" enctype="multipart/form-data"
+                          style="margin-top: 30px;">
+                        <div class="ui list">
+                            <div class="item">
+                                <img th:src="@{${loginUser.headerUrl}}" alt=""
+                                     style="height: 300px; width: 300px;">
+                            </div>
+
+                            <div th:class="|input-group ${error != null ? 'is-Invalid' : ''}|" style="width: 300px;">
+                                <input type="file" class="form-control" id="inputGroupFile04" name="headerImage"
+                                       aria-describedby="inputGroupFileAddon04" aria-label="Upload" required="">
+                                <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">
+                                    Upload
+                                </button>
+                            </div>
+
+                            <div id="headerImageInfo"
+                                 class="invalid-feedback"
+                                 style="margin-top: 5px; width: 90%"
+                                 th:text="${error}">
+                                The image format is incorrect
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="ui horizontal divider" style="margin-top: 50px; margin-bottom: 50px;">
+                        Or
+                    </div>
+
+                    <h2>Change profile</h2>
+                    <form class="ui form" th:action="@{/change-profile}" method="post" style="margin-top: 30px;">
+                        <div class="ui list">
+                            <div class="item">
+                                <div style="margin-bottom: 10px;"><strong>New Nickname</strong></div>
+                                <div class="ui input">
+                                    <input style="width: 300px;"
+                                           name="nickname"
+                                           th:value="${loginUser.nickname}">
+                                </div>
+                            </div>
+
+                            <div class="item" style="margin-top: 30px;">
+                                <div style="margin-bottom: 10px;"><strong>Change Gender</strong></div>
+                                <div class="inline fields">
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" name="gender" value="1" th:checked="${loginUser.gender == 1}">
+                                            <label>Male</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="field">
+                                        <div class="ui radio checkbox">
+                                            <input type="radio" name="gender" value="2" th:checked="${loginUser.gender == 2}">
+                                            <label>Female</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item" style="margin-top: 30px;">
+                                <div style="margin-bottom: 10px;"><strong>New Brief</strong></div>
+                                <div class="ui input">
+                                    <div class="field" style="width: 500px;">
+                                        <textarea th:utext="${loginUser.brief}" name="brief"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item" style="margin-top: 20px;">
+                                <button type="submit" class="ui green button m-radius">Save Change</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="ui horizontal divider" style="margin-top: 50px; margin-bottom: 50px;">
+                        Or
+                    </div>
+
+                    <h2>Change password</h2>
+                    <form th:action="@{/change-password}" method="post" onsubmit="return check()"
+                          style="margin-top: 30px;">
+                        <div class="ui list">
+                            <div class="item">
+                                <div style="margin-bottom: 10px;"><strong>Old Password</strong></div>
+                                <div th:class="|ui input ${oldPasswordMsg != null ? 'is-invalid' : ''}|">
+                                    <input style="width: 300px;"
+                                           onclick="hideInfo()"
+                                           name="oldPassword"
+                                           type="password">
+                                </div>
+
+                                <!-- Old PasswordRepeat Info-->
+                                <div id="oldPasswordInfo"
+                                     class="invalid-feedback col-11 text-danger"
+                                     style="margin-top: 5px; width: 90%"
+                                     th:utext="${oldPasswordMsg}">
+                                    Password error!
+                                </div>
+
+                                <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                     class="col-11 text-danger" id="oldPasswordEmpty">
+                                    Please entry the old password!
+                                </div>
+                            </div>
+
+                            <div class="item" style="margin-top: 20px;">
+                                <div style="margin-bottom: 10px;"><strong>New Password</strong></div>
+                                <div class="ui input">
+                                    <input style="width: 300px;"
+                                           name="newPassword"
+                                           onclick="hideInfo()"
+                                           type="password">
+                                </div>
+
+                                <!-- New PasswordRepeat Info-->
+                                <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                     class="col-11 text-danger" id="newPasswordEmpty">
+                                    Please entry the new password!
+                                </div>
+
+                                <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                     class="col-11 text-danger" id="newPasswordInvalid">
+                                    Your password must contain at least 8 characters and a maximum of 16 characters.
+                                    Your password can only consist of letters, numbers and special character!
+                                </div>
+                            </div>
+
+                            <div class="item" style="margin-top: 20px;">
+                                <div style="margin-bottom: 10px;"><strong>New Password (repeat)</strong></div>
+                                <div class="ui input">
+                                    <input style="width: 300px;"
+                                           onclick="hideInfo()"
+                                           type="password">
+                                </div>
+
+                                <!-- PasswordRepeat Info-->
+                                <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                     class="col-11 text-danger" id="passwordRepeatEmpty">
+                                    Please entry the password repeat!
+                                </div>
+
+                                <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545; display: none"
+                                     class="col-11 text-danger" id="passwordRepeatInvalid">
+                                    The two passwords do not match!
+                                </div>
+
+                                <div style="margin-top: 5px; width: 90%; font-size: .875em; color: #dc3545;"
+                                     class="col-11 text-success"
+                                     id="passWordSuccess"
+                                     th:if="${success != null}" th:utext="${success}">
+                                    Reset password successful!
+                                </div>
+                            </div>
+
+                            <div class="item" style="margin-top: 30px;">
+                                <button type="submit" class="ui green button m-radius">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+
+        <!-- End Main -->
+
+
+        <!-- ======= Footer ======= -->
+
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-3 col-md-6 footer-contact">
+                            <h4>NSU Online Judge</h4>
+                            <p>
+                                <strong>A programming competition & algorithm training platform!</strong><br>
+                            </p>
+                        </div>
+
+
+                        <div class="col-lg-3 col-md-6 footer-links">
+                            <h4>Our Social Networks</h4>
+                            <!--<p></p>-->
+                            <div class="social-links mt-3">
+                                <a href="#" class="qq" data-content="554648186" data-position="bottom center">
+                                    <i class="qq icon"></i>
+                                </a>
+                                <a href="#" class="email" data-content="NSU-ACM@outlook.com"
+                                   data-position="bottom center"><i class="envelope icon"></i></a>
+                                <a href="#" class="wechat"><i class="wechat icon"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container py-4">
+                <div class="copyright">
+                    &copy; Copyright <strong><span>NSU Online Judge</span></strong>. All Rights Reserved
+                </div>
+            </div>
+        </footer><!-- End Footer -->
+
+        <!-- Back To Top -->
+        <a href="#" class="back-to-top d-flex" style="justify-content: center; align-items: center">
+            <i class="bi bi-arrow-up-short"></i></a>
+
+
+        <!-- Vendor JS Files -->
+        <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+
+        <!-- Template Main JS File -->
+        <script th:src="@{/js/main.js}"></script>
+        <script th:src="@{/js/global.js}"></script>
+
+        <script>
+            $('.qq').popup();
+            $('.email').popup();
+            $('.ui.dropdown')
+                .dropdown();
+            $('#infoButton').popup({
+                popup: $('.info.popup'),
+                on: 'click',
+                position: 'bottom center'
+            });
+
+            function scrollToComment() {
+                document.getElementById('goToComment').scrollIntoView({
+                    block: 'start',
+                    inline: 'nearest',
+                    behavior: 'smooth'
+                })
+            }
+
+            $('.blogEditorButton').popup({
+                popup: $('.blogEditor.popup'),
+                on: 'click',
+                position: 'bottom center'
+            });
+
+
+            function hideInfo() {
+                $('#oldPasswordInfo').hide();
+                $('#oldPasswordEmpty').hide();
+                $('#newPasswordEmpty').hide();
+                $('#newPasswordInvalid').hide();
+                $('#passwordRepeatEmpty').hide();
+                $('#passwordRepeatInvalid').hide();
+                $('#passWordSuccess').hide();
+            }
+
+            jQuery.fn.shake = function (intShakes /*Amount of shakes*/, intDistance /*Shake distance*/, intDuration /*Time duration*/) {
+                this.each(function () {
+                    var jqNode = $(this);
+                    jqNode.css({position: 'relative'});
+                    for (var x = 1; x <= intShakes; x++) {
+                        jqNode.animate({left: (intDistance * -1)}, (((intDuration / intShakes) / 4)))
+                            .animate({left: intDistance}, ((intDuration / intShakes) / 2))
+                            .animate({left: 0}, (((intDuration / intShakes) / 4)));
+                    }
+                });
+                return this;
+            }
+
+            function check() {
+                hideInfo();
+
+                var list = document.getElementsByTagName("input")
+
+                for (var i = 4; i < list.length; i++) {
+                    if (list[i].value === "") {
+                        $(list[i]).shake(2, 10, 400);
+                        showEmptyInfo(i);
+                        return false;
+                    }
+
+                    if (i === 5 && !checkPassword(list[i].value)) {
+                        $(list[i]).shake(2, 10, 400);
+                        showInvalidInfo(i);
+                        return false;
+                    }
+
+                    if (i === 6 && !checkPasswordRepeat(list[i - 1].value, list[i].value)) {
+                        $(list[i]).shake(2, 10, 400);
+                        showInvalidInfo(i);
+                        return false;
+                    }
+                }
+
+
+                return true;
+            }
+
+            function showEmptyInfo(i) {
+                if (i === 4) $('#oldPasswordEmpty').show();
+                if (i === 5) $('#newPasswordEmpty').show();
+                if (i === 6) $('#passwordRepeatEmpty').show();
+            }
+
+            function showInvalidInfo(i) {
+                if (i === 5) $('#newPasswordInvalid').show();
+                if (i === 6) $('#passwordRepeatInvalid').show();
+            }
+
+
+            function checkPassword(str) {
+                /* 字母、数字、特殊符号*/
+                var re = /^[a-zA-Z0-9!@#$%^&*()\-_=+<>?,./`~]{8,16}$/
+                return re.test(str);
+            }
+
+            function checkPasswordRepeat(str1, str2) {
+                return str1 === str2;
+            }
+
+        </script>
+    </body>
+</html>

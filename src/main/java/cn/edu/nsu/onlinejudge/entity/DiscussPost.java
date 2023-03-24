@@ -1,5 +1,8 @@
 package cn.edu.nsu.onlinejudge.entity;
 
+import cn.edu.nsu.onlinejudge.common.Enum.PostStatusEnum;
+import cn.edu.nsu.onlinejudge.common.Enum.PostTypeEnum;
+
 import java.util.Date;
 
 public class DiscussPost {
@@ -7,13 +10,15 @@ public class DiscussPost {
     private int userId;
     private String title;
     private String content;
-    private int type;
+    private PostTypeEnum type;
     private Date createTime;
     private int commentCount;
     private double score;
-    private int status;
+    private PostStatusEnum status;
     private int likes;
-    private String firstImage;
+    private String firstImageUrl;
+
+    private int topWeight;
 
     public int getPostId() {
         return postId;
@@ -47,11 +52,11 @@ public class DiscussPost {
         this.content = content;
     }
 
-    public int getType() {
+    public PostTypeEnum getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(PostTypeEnum type) {
         this.type = type;
     }
 
@@ -79,11 +84,11 @@ public class DiscussPost {
         this.score = score;
     }
 
-    public int getStatus() {
+    public PostStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(PostStatusEnum status) {
         this.status = status;
     }
 
@@ -95,12 +100,20 @@ public class DiscussPost {
         this.likes = likes;
     }
 
-    public String getFirstImage() {
-        return firstImage;
+    public String getFirstImageUrl() {
+        return firstImageUrl;
     }
 
-    public void setFirstImage(String firstImage) {
-        this.firstImage = firstImage;
+    public void setFirstImageUrl(String firstImageUrl) {
+        this.firstImageUrl = firstImageUrl;
+    }
+
+    public int getTopWeight() {
+        return topWeight;
+    }
+
+    public void setTopWeight(int topWeight) {
+        this.topWeight = topWeight;
     }
 
     @Override
@@ -116,7 +129,8 @@ public class DiscussPost {
                 ", score=" + score +
                 ", status=" + status +
                 ", likes=" + likes +
-                ", firstImage='" + firstImage + '\'' +
+                ", firstImageUrl='" + firstImageUrl + '\'' +
+                ", topWeight=" + topWeight +
                 '}';
     }
 }

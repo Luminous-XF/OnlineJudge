@@ -21,10 +21,11 @@
         <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
         <link th:href="@{/bootstrap/icons/bootstrap-icons.css}" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
+        <link href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" rel="stylesheet"/>
 
         <!-- Template Main CSS File -->
         <link th:href="@{/css/style.css}" rel="stylesheet">
-        <link th:href="@{/lib/editormd/css/editormd.css}" rel="stylesheet">
+        <!--        <link th:href="@{/lib/editormd/css/editormd.css}" rel="stylesheet">-->
     </head>
 
     <style>
@@ -149,7 +150,7 @@
                                         </td>
                                     </tr>
 
-                                    <tr th:if="${loginUser.type > 0}">
+                                    <tr th:if="${loginUser.type.key == 1}">
                                         <td>
                                             <a th:href="@{/admin/dashboard}">
                                                 <div>
@@ -184,7 +185,7 @@
 
         <div class="" style="margin-top: 65px;">
             <div class="ui segment">
-                <form th:action="@{/add-post}" onsubmit="return check()" method="post" enctype="multipart/form-data">
+                <form>
                     <div class="ui form">
                         <div class="required field" style="margin-top: 20px;">
                             <h1>Title</h1>
@@ -193,13 +194,6 @@
                                    name="title"
                                    onclick="hideInfo()"
                                    type="text">
-
-                            <div class="text-danger" id="titleEmpty" style="margin-top: 5px; display: none">Title can
-                                not be empty!
-                            </div>
-                            <div class="text-danger" id="titleInvalid" style="margin-top: 5px; display: none">Title
-                                character exceeds limit!
-                            </div>
                         </div>
 
                         <div class="field" style="margin-top: 50px;">
@@ -209,66 +203,32 @@
                                        class="form-control"
                                        name="firstImage"
                                        id="inputGroupFile04"
+                                       onchange="showFirstImage()"
                                        aria-describedby="inputGroupFileAddon04"
                                        aria-label="Upload">
                             </div>
                         </div>
 
+                        <img src="../../static/images/background/bg-1.jpg" id="firstImage" style="width: 900px; display: none">
+
                         <div class="field" style="margin-top: 50px;">
                             <h1>Content</h1>
-                            <div id="md-content" style="z-index: 1050 !important;">
-                                <textarea class=""
-                                          name="content"
-                                          id="content"
-                                          style="display: none"
-                                          onclick="hideInfo()">[TOC]
-#### Disabled options
-
-- TeX (Based on KaTeX);
-- Emoji;
-- Task lists;
-- HTML tags decode;
-- Flowchart and Sequence Diagram;
-
-#### Editor.md directory
-
-    editor.md/
-            lib/
-            css/
-            scss/
-            tests/
-            fonts/
-            images/
-            plugins/
-            examples/
-            languages/
-            editormd.js
-            ...
-                                </textarea>
-                            </div>
-                            <div class="text-danger" id="contentEmpty" style="margin-top: 5px; display: none">Content
-                                can not be empty!
-                            </div>
+                            <div id="editor" style="z-index: 1050 !important;"></div>
                         </div>
                     </div>
 
+
                     <div class="container ui right aligned" style="margin-top: 80px; margin-bottom: 100px; width: 100%">
-                        <button class="ui orange button" id="save" style="width: 100px;">Save</button>
-                        <button class="ui green button" id="publish" style="width: 100px;">Publish</button>
+<!--                        <a class="ui orange button" id="save" style="width: 100px;">Save</a>-->
+                        <a class="ui green button" id="publish" style="width: 100px;">Publish</a>
                     </div>
 
                     <!--   Hint Info   -->
                     <!--   Fail   -->
-                    <div class="ui negative message" style="display: none" id="emptyTitleHint">
+                    <div class="ui negative message" style="display: none" id="hintFailModel">
                         <i class="close icon"></i>
                         <div class="header">Publish failed!</div>
-                        <p>Title can not be empty!</p>
-                    </div>
-
-                    <div class="ui negative message" style="display: none;" id="invalidTitleHint">
-                        <i class="close icon"></i>
-                        <div class="header">Publish failed!</div>
-                        <p>Title character exceeds limit!</p>
+                        <p id="hintFailContent">Title can not be empty!</p>
                     </div>
 
                     <div class="ui negative message" style="display: none;" id="emptyContentHint">
@@ -279,9 +239,10 @@
 
 
                     <!--   Success   -->
-                    <div class="ui success message" id="hintModel" style="display: none">
+                    <div class="ui success message" id="hintSuccessModel" style="display: none">
                         <i class="close icon"></i>
-                        <div class="header" id="hintTitle">Published successfully!</div>
+                        <div class="header">Publish successfully!</div>
+                        <p id="hintSuccessContent">Content can not be empty!</p>
                     </div>
                 </form>
             </div>
@@ -346,11 +307,12 @@
         <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
         <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
         <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+        <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
         <!-- Template Main JS File -->
         <script th:src="@{/js/global.js}"></script>
         <script th:src="@{/js/main.js}"></script>
-        <script th:src="@{/lib/editormd/editormd.min.js}"></script>
+        <!--        <script th:src="@{/lib/editormd/editormd.min.js}"></script>-->
 
         <script>
             $('.qq').popup();
@@ -369,156 +331,115 @@
                 position: 'bottom center'
             });
 
-            jQuery.fn.shake = function (intShakes /*Amount of shakes*/, intDistance /*Shake distance*/, intDuration /*Time duration*/) {
-                this.each(function () {
-                    var jqNode = $(this);
-                    jqNode.css({position: 'relative'});
-                    for (var x = 1; x <= intShakes; x++) {
-                        jqNode.animate({left: (intDistance * -1)}, (((intDuration / intShakes) / 4)))
-                            .animate({left: intDistance}, ((intDuration / intShakes) / 2))
-                            .animate({left: 0}, (((intDuration / intShakes) / 4)));
-                    }
-                });
-                return this;
-            }
-
-            function hideInfo() {
-                $('#titleEmpty').hide();
-                $('#titleInvalid').hide();
-                $('#contentEmpty').hide();
-            }
-
-            function check() {
-                hideInfo();
-
-                var list = document.getElementsByTagName("input");
-
-                if (list[0].value === "") {
-                    // 显示提示框
-                    $('#emptyTitleHint').show();
-                    // 2秒后自动隐藏
-                    setTimeout(function () {
-                        $('#emptyTitleHint').hide();
-                    }, 2000);
-
-                    $(list[0]).shake(2, 10, 400);
-                    $('#titleEmpty').show();
-                    return false;
-                }
-
-                if (list[0].value.length >= 100) {
-                    // 显示提示框
-                    $('#invalidTitleHint').show();
-                    // 2秒后自动隐藏
-                    setTimeout(function () {
-                        $('#invalidTitleHint').hide();
-                    }, 2000);
-
-                    $(list[0]).shake(2, 10, 400);
-                    $('#titleInvalid').show();
-                    return false;
-                }
-
-                list = document.getElementsByTagName("textarea");
-
-                if (list[0].value === "") {
-                    // 显示提示框
-                    $('#emptyContentHint').show();
-                    // 2秒后自动隐藏
-                    setTimeout(function () {
-                        $('#emptyContentHint').hide();
-                    }, 2000);
-
-                    $(list[0]).shake(2, 10, 400);
-                    $('#contentEmpty').show();
-                    return false;
-                }
-
-                return true;
-            }
 
             // 初始化 Markdown 编辑器
-            var testEditor;
-            $(function () {
-                testEditor = editormd("md-content", {
-                    width: "100%",
-                    height: 640,
-                    syncScrolling: "single",
-                    path: "lib/editormd/lib/",
-
-
-                    // theme : "dark",
-                    // previewTheme : "dark",
-                    // editorTheme : "pastel-on-dark",
-                    // markdown : md-content,
-                    // codeFold : true,
-                    // //syncScrolling : false,
-                    // saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
-                    // searchReplace : true,
-                    // //watch : false,                // 关闭实时预览
-                    // htmlDecode : "style,script,iframe|on*",            // 开启 HTML 标签解析，为了安全性，默认不开启
-                    // //toolbar  : false,             //关闭工具栏
-                    // //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
-                    // emoji : true,
-                    // taskList : true,
-                    // tocm            : true,         // Using [TOCM]
-                    // tex : true,                   // 开启科学公式TeX语言支持，默认关闭
-                    // flowChart : true,             // 开启流程图支持，默认关闭
-                    // sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
-                    // //dialogLockScreen : false,   // 设置弹出层对话框不锁屏，全局通用，默认为true
-                    // //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
-                    // //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true
-                    // //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
-                    // //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
-                    // imageUpload : true,
-                    // imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"]
-                });
-
-                /*
-                // or
-                testEditor = editormd({
-                    id      : "test-editormd",
-                    width   : "90%",
-                    height  : 640,
-                    path    : "../lib/"
-                });
-                */
+            const Editor = toastui.Editor;
+            const editor = new Editor({
+                el: document.querySelector('#editor'),
+                height: '500px',
+                initialEditType: 'markdown',
+                previewStyle: 'vertical'
             });
 
-            // $(function () {
-            //     $("#publish").click(publish);
-            // });
-            //
-            // function publish() {
-            //     hideInfo();
-            //     if (!check()) return;
-            //
-            //     // 获取内容
-            //     var title = $("#title").val();
-            //     var content = $("#content").val();
-            //     var firstImage = $("#inputGroupFile04").val();
-            //
-            //     // 发送异步请求
-            //     $.post(
-            //         CONTEXT_PATH + "/add-post",
-            //         {"title": title, "content": content, "firstImage": firstImage},
-            //         function (data) {
-            //             data = $.parseJSON(data);
-            //             // 在提示框中显示返回消息
-            //             $("#hintTitle").text(data.msg);
-            //             // 显示提示框
-            //             $("#hintModel").modal("show");
-            //             // 2秒后自动隐藏
-            //             setTimeout(function () {
-            //                 $("#hintModel").modal("hide");
-            //                 // 刷新页面
-            //                 // if (data.code === 0) {
-            //                 //     window.location.reload();
-            //                 // }
-            //             }, 2000);
-            //         }
-            //     )
-            // }
+
+            $("#publish").click(publish);
+
+            function publish() {
+                // 获取内容
+                var title = $("#title").val();
+                var firstImage = $("#inputGroupFile04")[0].files[0];
+                var content = editor.getMarkdown();
+
+                var formData = new FormData();
+                formData.append('title', title);
+                formData.append('firstImage', firstImage);
+                formData.append('content', content);
+
+                // 发送异步请求
+                // $.post(
+                //     CONTEXT_PATH + "/add-post",
+                //     // {"title": title, "content": content, "firstImage": firstImage},
+                //     formData,
+                //     function (data) {
+                //         data = $.parseJSON(data);
+                //         alert(data)
+                //         // 在提示框中显示返回消息
+                //         $("#hintTitle").text(data.msg);
+                //         // 显示提示框
+                //         $("#hintModel").modal("show");
+                //         // 2秒后自动隐藏
+                //         setTimeout(function () {
+                //             $("#hintModel").modal("hide");
+                //             // 刷新页面
+                //             // if (data.code === 0) {
+                //             //     window.location.reload();
+                //             // }
+                //         }, 2000);
+                //     }
+                // )
+
+                $.ajax({
+                    type: 'POST',
+                    url: CONTEXT_PATH + "/add-post",
+                    data: formData,
+                    datatype: 'json',
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        data = $.parseJSON(data);
+                        // 在提示框中显示返回消息并显示提示框
+                        if (data.code === 0) {
+                            $("#hintSuccessContent").text(data.msg);
+                            $("#hintSuccessModel").show();
+                        } else {
+                            $("#hintFailContent").text(data.msg);
+                            $("#hintFailModel").show();
+                        }
+                        // 2秒后自动隐藏
+                        setTimeout(function () {
+                            $("#hintSuccessModel").hide();
+                            $("#hintFailModel").hide();
+                            // 刷新页面
+                            // if (data.code === 0) {
+                            //     window.location.reload();
+                            // }
+                        }, 3000);
+                    }
+                });
+            }
+
+            function showFirstImage() {
+                var file = $('#inputGroupFile04').get(0).files[0]
+                if (!file || file.length === 0) {
+                    return;
+                }
+
+                var fileName = file.name;
+                var fileType = fileName.substr(fileName.lastIndexOf(".")).toUpperCase();
+                if (fileType !== ".GIF" && fileType !== ".PNG" && fileType !== ".JPG" && fileType !== ".JPEG") {
+                    return;
+                }
+
+                // const isLt2M = file.size / 1024 / 1024 < 2;
+                // if (!isLt2M) {
+                //     alert('上传图片大小不能超过 2MB！')
+                //     $('#inputGroupFile04').get(0).value = ''
+                //     return;
+                // }
+
+                // 展示图片
+                $('#firstImage').attr('src', fileToBase64(file))
+                $('#firstImage').show();
+            }
+
+            /**
+             * 文件流转为 base64
+             * @param {*} file
+             */
+            function fileToBase64(file) {
+                var URL = window.URL || window.webkitURL;
+                return URL.createObjectURL(file);
+            }
         </script>
     </body>
 </html>

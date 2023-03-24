@@ -333,3 +333,7 @@
 .typo img {
   max-width: 100%;
 }
+
+ul>li:before {
+  background-color: transparent !important;
+}

@@ -3,9 +3,9 @@ package cn.edu.nsu.onlinejudge.controller.interceptor;
 import cn.edu.nsu.onlinejudge.entity.LoginTicket;
 import cn.edu.nsu.onlinejudge.entity.User;
 import cn.edu.nsu.onlinejudge.service.UserService;
-import cn.edu.nsu.onlinejudge.util.Constant.LoginTicketStatusConstant;
 import cn.edu.nsu.onlinejudge.util.CookieUtil;
-import cn.edu.nsu.onlinejudge.util.HostHolder;
+import cn.edu.nsu.onlinejudge.common.Enum.LoginTicketStatusEnum;
+import cn.edu.nsu.onlinejudge.common.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @Component
-public class LoginTicketInterceptor implements HandlerInterceptor, LoginTicketStatusConstant {
+public class LoginTicketInterceptor implements HandlerInterceptor{
 
     @Autowired
     UserService userService;
@@ -43,7 +43,7 @@ public class LoginTicketInterceptor implements HandlerInterceptor, LoginTicketSt
             LoginTicket loginTicket = userService.findLoginTicket(ticket);
 
             // 检查登录凭证是否有效
-            if (loginTicket != null && loginTicket.getStatus() == LOGIN_TICKET_SUCCESS && loginTicket.getExpired().after(new Date())) {
+            if (loginTicket != null && loginTicket.getStatus() == LoginTicketStatusEnum.SUCCESS && loginTicket.getExpired().after(new Date())) {
                 // 根据凭证查询用户
                 User user = userService.findUserByUserId(loginTicket.getUserId());
 

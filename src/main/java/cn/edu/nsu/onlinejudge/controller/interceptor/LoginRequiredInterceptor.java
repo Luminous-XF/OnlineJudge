@@ -2,7 +2,7 @@ package cn.edu.nsu.onlinejudge.controller.interceptor;
 
 
 import cn.edu.nsu.onlinejudge.annotation.LoginRequired;
-import cn.edu.nsu.onlinejudge.util.HostHolder;
+import cn.edu.nsu.onlinejudge.common.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;

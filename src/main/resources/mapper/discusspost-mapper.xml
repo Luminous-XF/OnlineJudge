@@ -7,13 +7,13 @@
     <sql id="selectFields">
         post_id, user_id, title, content, type,
         create_time, comment_count, score, status,
-        likes
+        likes, first_image_url, top_weight
     </sql>
 
     <sql id="insertFields">
         user_id, title, content, type,
         create_time, comment_count, score, status,
-        likes
+        likes, first_image_url, top_weight
     </sql>
     
     
@@ -24,7 +24,7 @@
         <if test="userId != 0">
             AND user_id = #{userId}
         </if>
-        ORDER BY type DESC, create_time DESC
+        ORDER BY top_weight DESC, create_time DESC
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -39,6 +39,13 @@
 
     <insert id="insertDiscussPost" parameterType="DiscussPost">
         INSERT INTO discuss_post(<include refid="insertFields"></include>)
-        VALUES (#{userId}, #{title}, #{content}, #{type}, #{createTime}, #{commentCount}, #{score}, #{status}, #{likes})
+        VALUES (#{userId}, #{title}, #{content}, #{type}, #{createTime}, #{commentCount}, #{score}, #{status}, #{likes}, #{firstImageUrl}, #{topWeight})
     </insert>
+
+    <select id="selectDiscussPostById" resultType="DiscussPost">
+        SELECT <include refid="selectFields"></include>
+        FROM discuss_post
+        WHERE post_id = #{postId}
+    </select>
+
 </mapper>

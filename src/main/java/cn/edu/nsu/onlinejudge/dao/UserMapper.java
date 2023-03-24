@@ -1,6 +1,8 @@
 package cn.edu.nsu.onlinejudge.dao;
 
 import cn.edu.nsu.onlinejudge.entity.User;
+import cn.edu.nsu.onlinejudge.common.Enum.GenderEnum;
+import cn.edu.nsu.onlinejudge.common.Enum.UserActivationStatusEnum;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -30,13 +32,13 @@ public interface UserMapper {
 
     int updateSchool(int userId, String school);
 
-    int updateStatus(int userId, int status);
+    int updateStatus(int userId, UserActivationStatusEnum status);
 
     int updateHeaderUrl(int userId, String headerUrl);
 
     int updatePassword(int userId, String password);
 
-    int updateGender(int userId, int gender);
+    int updateGender(int userId, GenderEnum gender);
 
     int updateBrief(int userId, String brief);
 }

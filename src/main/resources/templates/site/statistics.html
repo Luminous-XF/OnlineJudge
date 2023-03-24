@@ -146,7 +146,7 @@
                                     </td>
                                 </tr>
 
-                                <tr th:if="${loginUser.type > 0}">
+                                <tr th:if="${loginUser.type.key == 1}">
                                     <td>
                                         <a th:href="@{/admin/dashboard}">
                                             <div>

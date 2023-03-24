@@ -1,14 +1,12 @@
 package cn.edu.nsu.onlinejudge;
 
-import cn.edu.nsu.onlinejudge.util.MailClient;
+import cn.edu.nsu.onlinejudge.common.MailClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
-import javax.annotation.Resource;
 
 @SpringBootTest
 @ContextConfiguration(classes = OnlineJudgeApplication.class)

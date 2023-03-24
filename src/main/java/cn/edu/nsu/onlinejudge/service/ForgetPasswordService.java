@@ -5,7 +5,7 @@ import cn.edu.nsu.onlinejudge.dao.ForgetPasswordTokenMapper;
 import cn.edu.nsu.onlinejudge.dao.UserMapper;
 import cn.edu.nsu.onlinejudge.entity.ForgetPasswordToken;
 import cn.edu.nsu.onlinejudge.entity.User;
-import cn.edu.nsu.onlinejudge.util.MailClient;
+import cn.edu.nsu.onlinejudge.common.MailClient;
 import cn.edu.nsu.onlinejudge.util.OnlineJudgeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

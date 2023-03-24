@@ -152,7 +152,7 @@
                                         </td>
                                     </tr>
 
-                                    <tr th:if="${loginUser.type > 0}">
+                                    <tr th:if="${loginUser.type.key == 1}">
                                         <td>
                                             <a th:href="@{/admin/dashboard}">
                                                 <div>
@@ -243,14 +243,14 @@
                                 <div class="inline fields">
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                            <input type="radio" name="gender" value="1" th:checked="${loginUser.gender == 1}">
+                                            <input type="radio" name="gender" value="1" th:checked="${loginUser.gender.key == 1}">
                                             <label>Male</label>
                                         </div>
                                     </div>
 
                                     <div class="field">
                                         <div class="ui radio checkbox">
-                                            <input type="radio" name="gender" value="2" th:checked="${loginUser.gender == 2}">
+                                            <input type="radio" name="gender" value="2" th:checked="${loginUser.gender.key == 2}">
                                             <label>Female</label>
                                         </div>
                                     </div>

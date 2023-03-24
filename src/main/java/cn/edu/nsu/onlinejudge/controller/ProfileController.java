@@ -4,15 +4,13 @@ package cn.edu.nsu.onlinejudge.controller;
 import cn.edu.nsu.onlinejudge.annotation.LoginRequired;
 import cn.edu.nsu.onlinejudge.entity.User;
 import cn.edu.nsu.onlinejudge.service.ProfileService;
-import cn.edu.nsu.onlinejudge.util.HostHolder;
+import cn.edu.nsu.onlinejudge.common.HostHolder;
 import cn.edu.nsu.onlinejudge.util.OnlineJudgeUtil;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -35,8 +32,8 @@ public class ProfileController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
-    @Value("${onlinejudge.path.upload}")
-    private String uploadPath;
+    @Value("${onlinejudge.path.uploadHeader}")
+    private String uploadPathHeader;
 
     @Value("${onlinejudge.path.domain}")
     private String domain;
@@ -133,12 +130,12 @@ public class ProfileController {
         // 生产随机文件名
         fileName = OnlineJudgeUtil.generateUUID() + suffix;
         // 确定文件存放位置
-        File dest = new File(uploadPath + "/" + fileName);
+        File dest = new File(uploadPathHeader + "/" + fileName);
         try {
             headerImage.transferTo(dest);
         } catch (IOException e) {
-            logger.error("上传文件失败: " + e.getMessage());
-            throw new RuntimeException("上传文件失败,服务器发生异常!", e);
+            logger.error("上传头像失败: " + e.getMessage());
+            throw new RuntimeException("上传头像失败,服务器发生异常!", e);
         }
 
 
@@ -146,7 +143,7 @@ public class ProfileController {
 
         // 删除老的头像文件
         String oldHeaderUrl = user.getHeaderUrl();
-        String oldFileName = uploadPath + "/" + oldHeaderUrl.substring(oldHeaderUrl.lastIndexOf("/") + 1);
+        String oldFileName = uploadPathHeader + "/" + oldHeaderUrl.substring(oldHeaderUrl.lastIndexOf("/") + 1);
         File file = new File(oldFileName);
         if (file.exists()) {
             if (file.delete()) {
@@ -179,7 +176,7 @@ public class ProfileController {
     @RequestMapping(path = "/header/{fileName}", method = RequestMethod.GET)
     public void getHeader(@PathVariable("fileName") String fileName, HttpServletResponse response) {
         // 服务器存放路径
-        fileName = uploadPath + "/" + fileName;
+        fileName = uploadPathHeader + "/" + fileName;
         // 解析文件后缀
         String suffix = fileName.substring(fileName.lastIndexOf("."));
         // 响应图片

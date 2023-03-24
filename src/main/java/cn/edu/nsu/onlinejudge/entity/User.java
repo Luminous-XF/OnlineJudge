@@ -1,5 +1,10 @@
 package cn.edu.nsu.onlinejudge.entity;
 
+import cn.edu.nsu.onlinejudge.common.Enum.GenderEnum;
+import cn.edu.nsu.onlinejudge.common.Enum.UserActivationStatusEnum;
+import cn.edu.nsu.onlinejudge.common.Enum.UserDefunctStatusEnum;
+import cn.edu.nsu.onlinejudge.common.Enum.UserTypeEnum;
+
 import java.util.Date;
 
 
@@ -11,18 +16,18 @@ public class User {
     private String password;
     private String salt;
     private String email;
-    private int type;
-    private int status;
+    private UserTypeEnum type;
+    private UserActivationStatusEnum status;
     private String activationCode;
     private String headerUrl;
     private Date createTime;
     private int submit;
     private int solved;
-    private int defunct;
+    private UserDefunctStatusEnum defunct;
     private int rating;
     private int ranks;
     private String school;
-    private int gender;
+    private GenderEnum gender;
     private String brief;
 
     public int getUserId() {
@@ -73,19 +78,19 @@ public class User {
         this.email = email;
     }
 
-    public int getType() {
+    public UserTypeEnum getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(UserTypeEnum type) {
         this.type = type;
     }
 
-    public int getStatus() {
+    public UserActivationStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(UserActivationStatusEnum status) {
         this.status = status;
     }
 
@@ -129,11 +134,11 @@ public class User {
         this.solved = solved;
     }
 
-    public int getDefunct() {
+    public UserDefunctStatusEnum getDefunct() {
         return defunct;
     }
 
-    public void setDefunct(int defunct) {
+    public void setDefunct(UserDefunctStatusEnum defunct) {
         this.defunct = defunct;
     }
 
@@ -161,11 +166,11 @@ public class User {
         this.school = school;
     }
 
-    public int getGender() {
+    public GenderEnum getGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(GenderEnum gender) {
         this.gender = gender;
     }
 

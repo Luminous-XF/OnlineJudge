@@ -1,13 +1,11 @@
 package cn.edu.nsu.onlinejudge.service;
 
+import cn.edu.nsu.onlinejudge.common.Enum.*;
 import cn.edu.nsu.onlinejudge.dao.LoginTicketMapper;
 import cn.edu.nsu.onlinejudge.dao.UserMapper;
 import cn.edu.nsu.onlinejudge.entity.LoginTicket;
 import cn.edu.nsu.onlinejudge.entity.User;
-import cn.edu.nsu.onlinejudge.util.Constant.LoginTicketStatusConstant;
-import cn.edu.nsu.onlinejudge.util.Constant.UsernameActivationStatusConstant;
-import cn.edu.nsu.onlinejudge.util.MailClient;
-import cn.edu.nsu.onlinejudge.util.Constant.ActivationStatuesConstant;
+import cn.edu.nsu.onlinejudge.common.MailClient;
 import cn.edu.nsu.onlinejudge.util.OnlineJudgeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +14,14 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import javax.annotation.Resource;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+
 @Service
-public class UserService implements ActivationStatuesConstant, UsernameActivationStatusConstant,
-        LoginTicketStatusConstant {
+public class UserService {
 
     @Autowired
     private UserMapper userMapper;
@@ -104,12 +101,12 @@ public class UserService implements ActivationStatuesConstant, UsernameActivatio
         // 注册用户
         user.setSalt(OnlineJudgeUtil.generateUUID().substring(0, 6));
         user.setPassword(OnlineJudgeUtil.md5(user.getPassword() + user.getSalt()));
-        user.setType(0);
-        user.setStatus(0);
+        user.setType(UserTypeEnum.COMMON);
+        user.setStatus(UserActivationStatusEnum.FAIL);
         user.setActivationCode(OnlineJudgeUtil.generateUUID());
         user.setHeaderUrl(String.format("http://images.nowcoder.com/head/%dt.png", new Random().nextInt(1000)));
         user.setCreateTime(new Date());
-        user.setGender(0);
+        user.setGender(GenderEnum.UNCERTAIN);
 
         // 将用户信息加入数据库
         userMapper.insertUser(user);
@@ -136,17 +133,17 @@ public class UserService implements ActivationStatuesConstant, UsernameActivatio
      * @param code
      * @return
      */
-    public int activation(int userId, String code) {
+    public UserActivationResultEnum activation(int userId, String code) {
         User user = userMapper.selectByUserId(userId);
 
         // 校验账号激活状态
-        if (user.getStatus() == USERNAME_STATUES_SUCCESS) {
-            return ACTIVATION_REPEAT;
+        if (user.getStatus() == UserActivationStatusEnum.SUCCESS) {
+            return UserActivationResultEnum.REPEAT;
         } else if (user.getActivationCode().equals(code)) {
-            userMapper.updateStatus(userId, 1);
-            return ACTIVATION_SUCCESS;
+            userMapper.updateStatus(userId, UserActivationStatusEnum.SUCCESS);
+            return UserActivationResultEnum.SUCCESS;
         } else {
-            return ACTIVATION_FAILURE;
+            return UserActivationResultEnum.FAIL;
         }
     }
 
@@ -182,7 +179,7 @@ public class UserService implements ActivationStatuesConstant, UsernameActivatio
         }
 
         // 验证账号激活状态
-        if (user.getStatus() == USERNAME_STATUES_FAIL) {
+        if (user.getStatus() == UserActivationStatusEnum.FAIL) {
             map.put("usernameMsg", "This username does not activation!");
             return map;
         }
@@ -198,7 +195,7 @@ public class UserService implements ActivationStatuesConstant, UsernameActivatio
         LoginTicket loginTicket = new LoginTicket();
         loginTicket.setUserId(user.getUserId());
         loginTicket.setTicket(OnlineJudgeUtil.generateUUID());
-        loginTicket.setStatus(LOGIN_TICKET_SUCCESS);
+        loginTicket.setStatus(LoginTicketStatusEnum.SUCCESS);
         loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000L));
         loginTicketMapper.insertLoginTicket(loginTicket);
 
@@ -213,7 +210,7 @@ public class UserService implements ActivationStatuesConstant, UsernameActivatio
      * @param ticket
      */
     public void logout(String ticket) {
-        loginTicketMapper.updateStatus(ticket, LOGIN_TICKET_FAIL);
+        loginTicketMapper.updateStatus(ticket, LoginTicketStatusEnum.FAIL);
     }
 
 

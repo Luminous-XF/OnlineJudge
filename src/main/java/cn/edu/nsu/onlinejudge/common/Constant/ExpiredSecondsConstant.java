@@ -1,4 +1,4 @@
-package cn.edu.nsu.onlinejudge.util.Constant;
+package cn.edu.nsu.onlinejudge.common.Constant;
 
 
 /**

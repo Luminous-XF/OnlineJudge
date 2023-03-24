@@ -3,7 +3,8 @@ package cn.edu.nsu.onlinejudge.service;
 
 import cn.edu.nsu.onlinejudge.dao.UserMapper;
 import cn.edu.nsu.onlinejudge.entity.User;
-import cn.edu.nsu.onlinejudge.util.HostHolder;
+import cn.edu.nsu.onlinejudge.common.Enum.GenderEnum;
+import cn.edu.nsu.onlinejudge.common.HostHolder;
 import cn.edu.nsu.onlinejudge.util.OnlineJudgeUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,8 @@ public class ProfileService {
             userMapper.updateNickname(user.getUserId(), nickname);
         }
 
-        if (user.getGender() != gender) {
-            userMapper.updateGender(user.getUserId(), gender);
+        if (user.getGender() != GenderEnum.fromKey(gender)) {
+            userMapper.updateGender(user.getUserId(), GenderEnum.fromKey(gender));
         }
 
 

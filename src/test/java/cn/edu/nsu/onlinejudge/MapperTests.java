@@ -6,6 +6,9 @@ import cn.edu.nsu.onlinejudge.dao.UserMapper;
 import cn.edu.nsu.onlinejudge.entity.DiscussPost;
 import cn.edu.nsu.onlinejudge.entity.LoginTicket;
 import cn.edu.nsu.onlinejudge.entity.User;
+import cn.edu.nsu.onlinejudge.common.Enum.GenderEnum;
+import cn.edu.nsu.onlinejudge.common.Enum.LoginTicketStatusEnum;
+import cn.edu.nsu.onlinejudge.common.Enum.UserActivationStatusEnum;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -83,7 +86,7 @@ public class MapperTests {
         rows = userMapper.updateSchool(3, "CNU");
         System.out.println(rows);
 
-        rows = userMapper.updateStatus(3, 1);
+        rows = userMapper.updateStatus(3, UserActivationStatusEnum.FAIL);
         System.out.println(rows);
 
         rows = userMapper.updateHeaderUrl(3, "aa/aa/aa");
@@ -92,7 +95,7 @@ public class MapperTests {
         rows = userMapper.updatePassword(3, "aaaa");
         System.out.println(rows);
 
-        rows = userMapper.updateGender(3, 1);
+        rows = userMapper.updateGender(3, GenderEnum.FEMALE);
         System.out.println(rows);
 
         rows = userMapper.updateBrief(3, "Why sleep long, when forever rest after death！");
@@ -118,7 +121,7 @@ public class MapperTests {
 
         loginTicket.setUserId(101);
         loginTicket.setTicket("abc");
-        loginTicket.setStatus(0);
+        loginTicket.setStatus(LoginTicketStatusEnum.FAIL);
         loginTicket.setExpired(new Date(System.currentTimeMillis() + 1000  * 60 * 10));
 
         loginTicketMapper.insertLoginTicket(loginTicket);
@@ -130,7 +133,7 @@ public class MapperTests {
 
         System.out.println(loginTicket);
 
-        loginTicketMapper.updateStatus("abc", 1);
+        loginTicketMapper.updateStatus("abc", LoginTicketStatusEnum.FAIL);
 
         loginTicket = loginTicketMapper.selectByTicket("abc");
 

@@ -1,5 +1,7 @@
 package cn.edu.nsu.onlinejudge.entity;
 
+import cn.edu.nsu.onlinejudge.common.Enum.LoginTicketStatusEnum;
+
 import java.util.Date;
 
 public class LoginTicket {
@@ -7,7 +9,7 @@ public class LoginTicket {
     private int ticketId;
     private int userId;
     private String ticket;
-    private int status;
+    private LoginTicketStatusEnum status;
     private Date expired;
 
     public int getTicketId() {
@@ -34,11 +36,11 @@ public class LoginTicket {
         this.ticket = ticket;
     }
 
-    public int getStatus() {
+    public LoginTicketStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(LoginTicketStatusEnum status) {
         this.status = status;
     }
 

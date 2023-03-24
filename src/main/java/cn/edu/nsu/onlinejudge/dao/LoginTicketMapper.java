@@ -1,6 +1,7 @@
 package cn.edu.nsu.onlinejudge.dao;
 
 import cn.edu.nsu.onlinejudge.entity.LoginTicket;
+import cn.edu.nsu.onlinejudge.common.Enum.LoginTicketStatusEnum;
 import org.apache.ibatis.annotations.*;
 
 @Mapper
@@ -25,5 +26,5 @@ public interface LoginTicketMapper {
             "SET status = #{status} ",
             "WHERE ticket = #{ticket}"
     })
-    int updateStatus(String ticket, int status);
+    int updateStatus(String ticket, LoginTicketStatusEnum status);
 }

@@ -4,8 +4,8 @@ import cn.edu.nsu.onlinejudge.annotation.LoginRequired;
 import cn.edu.nsu.onlinejudge.entity.User;
 import cn.edu.nsu.onlinejudge.service.ForgetPasswordService;
 import cn.edu.nsu.onlinejudge.service.UserService;
-import cn.edu.nsu.onlinejudge.util.Constant.ActivationStatuesConstant;
-import cn.edu.nsu.onlinejudge.util.Constant.ExpiredSecondsConstant;
+import cn.edu.nsu.onlinejudge.common.Constant.ExpiredSecondsConstant;
+import cn.edu.nsu.onlinejudge.common.Enum.UserActivationResultEnum;
 import com.google.code.kaptcha.Producer;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -27,14 +27,13 @@ import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Deque;
 import java.util.Map;
 
 /**
  * 登录相关入口
  */
 @Controller
-public class LoginController implements ActivationStatuesConstant, ExpiredSecondsConstant {
+public class LoginController implements ExpiredSecondsConstant {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
@@ -152,20 +151,24 @@ public class LoginController implements ActivationStatuesConstant, ExpiredSecond
     public String activation(Model model,
                              @PathVariable("userId") int userId,
                              @PathVariable("code") String code) {
-        int result = userService.activation(userId, code);
+        UserActivationResultEnum result = userService.activation(userId, code);
 
-        if (result == ACTIVATION_SUCCESS) {
-            model.addAttribute("msg",
-                    "The activation is successful, and your account can be used normally!");
-            model.addAttribute("target", "/login");
-        } else if (result == ACTIVATION_REPEAT) {
-            model.addAttribute("msg",
-                    "Invalid operation, the account has been successfully activated, please do not repeat the operation!");
-            model.addAttribute("target", "/index");
-        } else {
-            model.addAttribute("msg",
-                    "Activation failed, the activation code you provided is incorrect!");
-            model.addAttribute("target", "/index");
+        switch (result) {
+            case SUCCESS:
+                model.addAttribute("msg",
+                        "The activation is successful, and your account can be used normally!");
+                model.addAttribute("target", "/login");;
+                break;
+            case REPEAT:
+                model.addAttribute("msg",
+                        "Invalid operation, the account has been successfully activated, please do not repeat the operation!");
+                model.addAttribute("target", "/index");
+                break;
+            case FAIL:
+                model.addAttribute("msg",
+                        "Activation failed, the activation code you provided is incorrect!");
+                model.addAttribute("target", "/index");
+                break;
         }
 
         return "/site/operate-result";

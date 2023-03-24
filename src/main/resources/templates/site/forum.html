@@ -21,11 +21,13 @@
         <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
         <link th:href="@{/bootstrap/icons/bootstrap-icons.css}" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
-
+        <link href="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.css" rel="stylesheet"/>
 
         <!-- Template Main CSS File -->
         <link th:href="@{/css/style.css}" rel="stylesheet">
         <link th:href="@{/css/typo.css}" rel="stylesheet">
+        <link th:href="@{/lib/prism/tomorrow/prism.css}" rel="stylesheet">
+
     </head>
 
     <style>
@@ -150,7 +152,7 @@
                                         </td>
                                     </tr>
 
-                                    <tr th:if="${loginUser.type > 0}">
+                                    <tr th:if="${loginUser.type.key == 1}">
                                         <td>
                                             <a th:href="@{/admin/dashboard}">
                                                 <div>
@@ -209,8 +211,8 @@
 
                             <a class="ui middle button violet m-radius"
                                th:href="@{/create-post}"
-                                    style="margin: 20px;"
-                                    th:if="${loginUser != null}">Create Blog
+                               style="margin: 20px;"
+                               th:if="${loginUser != null}">Create Blog
                             </a>
 
                         </div>
@@ -222,15 +224,16 @@
                     <div class="ui attached segment" th:each="map:${discussPosts}">
                         <div class="ui padded vertical segment">
                             <div class="ui mobile reversed stackable grid">
-                                <div class="nine wide column typo typo-selection">
+                                <div th:class="|${map.post.firstImageUrl == null ? 'sixteen' : 'nine'} wide column typo typo-selection|">
                                     <h2 class=" ui header">
-                                        <a href="#" style="color: black; border-bottom: transparent;"
+                                        <a th:href="@{|/blog/detail/${map.post.postId}|}" style="color: black; border-bottom: transparent;"
                                            th:utext="${map.post.title}">你真的了解编程吗？</a>
                                         <a class="ui violet label item" th:if="${map.post.type} == 1">置顶</a>
                                         <a class="ui orange label item" th:if="${map.post.status} == 1">精华</a>
                                     </h2>
 
-                                    <p class="m-text m-text-overflow" th:utext="${map.post.content}">和我们日常使用的中文、英语一样,
+                                    <div class="blog-content m-text m-text-overflow" th:utext="${map.post.content}">
+                                        和我们日常使用的中文、英语一样,
                                         编程语言也是一门用于沟通的语言.
                                         只不过"编程语言"是和计算机沟通的语言. 而"
                                         程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务,
@@ -261,12 +264,12 @@
                                         将解决问题的步骤,
                                         用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行,
                                         最后完成任务.
-                                    </p>
+                                    </div>
                                 </div>
 
-                                <div class="seven wide column">
-                                    <a href="#" target="_blank">
-                                        <img src="https://picsum.photos/id/0/800/450" alt=""
+                                <div class="seven wide column" th:if="${map.post.firstImageUrl != null}">
+                                    <a th:href="@{|/blog/detail/${map.post.postId}|}" target="_blank">
+                                        <img th:src="@{${map.post.firstImageUrl}}" alt=""
                                              class="ui rounded image">
                                     </a>
                                 </div>
@@ -461,9 +464,12 @@
         <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
         <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
         <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+        <script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.js"></script>
+        <script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.js"></script>
 
         <!-- Template Main JS File -->
         <script th:src="@{/js/main.js}"></script>
+        <script th:src="@{/lib/prism/tomorrow/prism.js}"></script>
 
         <script>
             $('.qq').popup();
@@ -480,6 +486,22 @@
                 popup: $('.blogEditor.popup'),
                 on: 'click',
                 position: 'bottom center'
+            });
+
+
+            const {Editor} = toastui;
+            $(function () {
+                var p = document.querySelectorAll('.blog-content');
+                var viewer = new Array(p.length);
+                for (var i = 0; i < p.length; i++) {
+                    var content = p[i].textContent;
+                    viewer[i] = new Editor({
+                        el: p[i],
+                        initialValue: content,
+                        viewer: true,
+                        height: '600px',
+                    });
+                }
             });
         </script>
     </body>

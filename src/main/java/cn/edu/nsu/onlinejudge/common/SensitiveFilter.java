@@ -1,4 +1,4 @@
-package cn.edu.nsu.onlinejudge.util;
+package cn.edu.nsu.onlinejudge.common;
 
 
 import org.apache.commons.lang3.CharUtils;

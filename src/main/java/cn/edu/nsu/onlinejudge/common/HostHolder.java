@@ -1,4 +1,4 @@
-package cn.edu.nsu.onlinejudge.util;
+package cn.edu.nsu.onlinejudge.common;
 
 
 import cn.edu.nsu.onlinejudge.entity.User;

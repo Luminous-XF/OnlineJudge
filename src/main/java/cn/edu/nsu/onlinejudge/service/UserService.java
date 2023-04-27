@@ -109,7 +109,7 @@ public class UserService {
         user.setGender(GenderEnum.UNCERTAIN);
 
         // 将用户信息加入数据库
-        userMapper.insertUser(user);
+        userMapper. insertUser(user);
 
         // 发送激活邮件
         Context context = new Context();

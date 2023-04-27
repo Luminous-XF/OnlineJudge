@@ -2,9 +2,11 @@ package cn.edu.nsu.onlinejudge;
 
 import cn.edu.nsu.onlinejudge.dao.DiscussPostMapper;
 import cn.edu.nsu.onlinejudge.dao.LoginTicketMapper;
+import cn.edu.nsu.onlinejudge.dao.MessageMapper;
 import cn.edu.nsu.onlinejudge.dao.UserMapper;
 import cn.edu.nsu.onlinejudge.entity.DiscussPost;
 import cn.edu.nsu.onlinejudge.entity.LoginTicket;
+import cn.edu.nsu.onlinejudge.entity.Message;
 import cn.edu.nsu.onlinejudge.entity.User;
 import cn.edu.nsu.onlinejudge.common.Enum.GenderEnum;
 import cn.edu.nsu.onlinejudge.common.Enum.LoginTicketStatusEnum;
@@ -29,6 +31,9 @@ public class MapperTests {
 
     @Autowired
     private LoginTicketMapper loginTicketMapper;
+
+    @Autowired
+    private MessageMapper messageMapper;
 
     @Test
     public void testSelectUser() {
@@ -138,5 +143,28 @@ public class MapperTests {
         loginTicket = loginTicketMapper.selectByTicket("abc");
 
         System.out.println(loginTicket);
+    }
+
+    @Test
+    public void testMessageMapper() {
+        List<Message> list = messageMapper.selectConversations(1, 0, 10);
+
+        for (Message message : list) {
+            System.out.println(message);
+        }
+
+        int count = messageMapper.selectConversationCount(1);
+        System.out.println(count);
+
+        list = messageMapper.selectLetters("1_2", 0, 10);
+        for (Message message : list) {
+            System.out.println(message);
+        }
+
+        count = messageMapper.selectLetterCount("1_2");
+        System.out.println(count);
+
+        count = messageMapper.selectLetterUnreadCount(2, null);
+        System.out.println(count);
     }
 }

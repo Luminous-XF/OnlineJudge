@@ -9,6 +9,13 @@ import java.util.List;
 @Mapper
 public interface DiscussPostMapper {
 
+    /**
+     * 查询帖子
+     * @param userId
+     * @param offset
+     * @param limit
+     * @return
+     */
     List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit);
 
 
@@ -29,5 +36,20 @@ public interface DiscussPostMapper {
     int insertDiscussPost(DiscussPost discussPost);
 
 
+    /**
+     * 通过 postId 查找帖子
+     * @param postId
+     * @return
+     */
     DiscussPost selectDiscussPostById(int postId);
+
+    /**
+     * 更新帖子评论数
+     * @param postId
+     * @param commentCount
+     * @return
+     */
+    int updateCommentCount(int postId, int commentCount);
+
+    int updateDiscussPost(DiscussPost discussPost);
 }

@@ -573,6 +573,10 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #5777ba !important;
 }
 
+.m-active-green {
+    background-color: #fcfff5 !important;
+}
+
 /*--------------------------------------------------------------
 # Text
 --------------------------------------------------------------*/
@@ -604,6 +608,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .m-text-overflow {
+    max-height: 280px; !important;
     overflow:hidden; !important;
     text-overflow:ellipsis; !important;
     display:-webkit-box; !important;

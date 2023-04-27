@@ -3,9 +3,10 @@ package cn.edu.nsu.onlinejudge.entity;
 import cn.edu.nsu.onlinejudge.common.Enum.CommentStatusEnum;
 import cn.edu.nsu.onlinejudge.common.Enum.CommentTypeEnum;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Comment {
+public class Comment implements Serializable {
 
     private int commentId;
 

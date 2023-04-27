@@ -18,16 +18,13 @@ import java.util.Map;
 public class FileUtil {
     private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 
-    @Value("${onlinejudge.path.uploadFirstImage}")
-    private String uploadPath;
-
     @Value("${onlinejudge.path.domain}")
     private String domain;
 
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
-    public Map<String, Object> uploadImage(MultipartFile Image) {
+    public Map<String, Object> uploadImage(String uploadPath, MultipartFile Image) {
         Map<String, Object> res = new HashMap<>();
 
         String fileName = Image.getOriginalFilename();
@@ -52,6 +49,18 @@ public class FileUtil {
         res.put("firstImageUrl", firstImageUrl);
 
         return res;
+    }
+
+    public void deleteOldFirstImage(String uploadPath, String url) {
+        String oldFileName = uploadPath + "/" + url.substring(url.lastIndexOf("/") + 1);
+        File file = new File(oldFileName);
+        if (file.exists()) {
+            if (file.delete()) {
+                logger.info("原头像文件删除成功!");
+            } else {
+                logger.info("原头像文件删除失败,原图像文件可能不存在!");
+            }
+        }
     }
 
     public static String getFileSuffix(String fileName) {

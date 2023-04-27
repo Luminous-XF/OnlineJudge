@@ -270,10 +270,10 @@
                                 <div class="seven wide column" th:if="${map.post.firstImageUrl != null}">
                                     <a th:href="@{|/blog/detail/${map.post.postId}|}" target="_blank">
                                         <img th:src="@{${map.post.firstImageUrl}}" alt=""
-                                             class="ui rounded image">
+                                             class="ui rounded image" style="height: 282px; width: 452px;">
                                     </a>
                                 </div>
-                            </div>
+                            </div >
 
                             <div class="ui grid">
                                 <div class="eleven wide column">
@@ -286,7 +286,7 @@
                                                          class="ui avatar image">
                                                 </a>
 
-                                                <a href="#" th:utext="${map.user.username}"></a>
+                                                <a href="#" th:utext="${map.user.nickname}"></a>
                                             </div>
                                         </div>
                                         <div class="item">
@@ -316,7 +316,7 @@
                                                 <table class="table">
                                                     <tr th:if="${loginUser.userId == map.user.userId}">
                                                         <td>
-                                                            <a href="#">
+                                                            <a th:href="@{|/edit-post/${map.post.postId}|}">
                                                                 <div class="text-start">
                                                                     <i class="edit icon"
                                                                        style="margin-right: 10px;"></i>Edit

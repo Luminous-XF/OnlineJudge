@@ -1,11 +1,18 @@
 package cn.edu.nsu.onlinejudge.common.Enum;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import org.omg.CORBA.UNKNOWN;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public enum CommentTypeEnum {
 
-    POST(0, "博客的评论");
+    POST(0, "博客的评论"),
+
+    COMMENT(1, "评论回复");
 
 
     public final int key;
@@ -17,6 +24,10 @@ public enum CommentTypeEnum {
     CommentTypeEnum (int key, String value) {
         this.key = key;
         this.value = value;
+    }
+
+    public int getKey() {
+        return key;
     }
 
     static {

@@ -191,6 +191,7 @@
                             <h1>Title</h1>
                             <input class=""
                                    id="title"
+                                   th:value="${post.title}"
                                    name="title"
                                    onclick="hideInfo()"
                                    type="text">
@@ -209,8 +210,10 @@
                             </div>
                         </div>
 
-                        <img src="../../static/images/background/bg-1.jpg" id="firstImage" style="width: 900px; display: none">
+                        <img src="" id="firstImage" style="width: 900px; display: none">
+                        <img th:src="@{${post.firstImageUrl}}" th:if="${editFlag != null}" id="initFirstImage" style="width: 900px;">
 
+                        <div id="content" th:utext="${post.content}" style="display: none"></div>
                         <div class="field" style="margin-top: 50px;">
                             <h1>Content</h1>
                             <div id="editor" style="z-index: 1050 !important;"></div>
@@ -220,7 +223,8 @@
 
                     <div class="container ui right aligned" style="margin-top: 80px; margin-bottom: 100px; width: 100%">
 <!--                        <a class="ui orange button" id="save" style="width: 100px;">Save</a>-->
-                        <a class="ui green button" id="publish" style="width: 100px;">Publish</a>
+                        <a class="ui green button" th:if="${editFlag == null}" id="publish" style="width: 100px;">Publish</a>
+                        <a class="ui green button" th:if="${editFlag != null}" id="update" style="width: 100px;">Update</a>
                     </div>
 
                     <!--   Hint Info   -->
@@ -333,28 +337,34 @@
 
 
             // 初始化 Markdown 编辑器
+            var content = document.querySelector('#content');
             const Editor = toastui.Editor;
             const editor = new Editor({
                 el: document.querySelector('#editor'),
                 height: '500px',
+                initialValue: content.textContent,
                 initialEditType: 'markdown',
                 previewStyle: 'vertical'
             });
 
 
             $("#publish").click(publish);
+            $("#update").click(publish);
 
             function publish() {
                 // 获取内容
                 var title = $("#title").val();
                 var firstImage = $("#inputGroupFile04")[0].files[0];
                 var content = editor.getMarkdown();
+                var uri = [[${editFlag == null}]] ? "/add-post" : "/edit-post/" + [[${post.postId}]];
 
                 var formData = new FormData();
                 formData.append('title', title);
                 formData.append('firstImage', firstImage);
                 formData.append('content', content);
-
+                if ([[${editFlag != null}]]) {
+                    formData.append('firstImageChangeFlag', firstImageChangeFlag);
+                }
                 // 发送异步请求
                 // $.post(
                 //     CONTEXT_PATH + "/add-post",
@@ -380,7 +390,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: CONTEXT_PATH + "/add-post",
+                    url: CONTEXT_PATH + uri,
                     data: formData,
                     datatype: 'json',
                     processData: false,
@@ -391,9 +401,15 @@
                         if (data.code === 0) {
                             $("#hintSuccessContent").text(data.msg);
                             $("#hintSuccessModel").show();
+                            document.querySelector('#hintSuccessModel').scrollIntoView({
+                                behavior: "smooth",
+                            });
                         } else {
                             $("#hintFailContent").text(data.msg);
                             $("#hintFailModel").show();
+                            document.querySelector('#hintFailModel').scrollIntoView({
+                                behavior: "smooth",
+                            });
                         }
                         // 2秒后自动隐藏
                         setTimeout(function () {
@@ -408,7 +424,11 @@
                 });
             }
 
+            var firstImageChangeFlag = false;
             function showFirstImage() {
+                $('#initFirstImage').hide();
+                firstImageChangeFlag = true;
+
                 var file = $('#inputGroupFile04').get(0).files[0]
                 if (!file || file.length === 0) {
                     return;
@@ -416,7 +436,7 @@
 
                 var fileName = file.name;
                 var fileType = fileName.substr(fileName.lastIndexOf(".")).toUpperCase();
-                if (fileType !== ".GIF" && fileType !== ".PNG" && fileType !== ".JPG" && fileType !== ".JPEG") {
+                if (fileType !== ".GIF" && fileType !== ".PNG" && fileType !== ".JPG" && fileType !== ".JPEG" && fileType !== ".WEBP") {
                     return;
                 }
 

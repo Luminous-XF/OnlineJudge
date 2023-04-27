@@ -227,7 +227,7 @@
                             <div class="item">
                                 <a href="#"><i class="thumbs up outline icon"></i></a>
                                 <span th:utext="${post.likes}">19</span>
-                                <!--                                <a href="#"><i class="violet thumbs up outline icon"></i></a> 19-->
+                                <!-- <a href="#"><i class="violet thumbs up outline icon"></i></a> 19-->
                             </div>
 
                             <div class="item">
@@ -308,85 +308,99 @@
                         <div id="comment-container" class="ui violet segment">
                             <div class="ui comments">
                                 <h3 class="ui dividing header">Comments</h3>
-                                <div class="comment">
+                                <div class="comment" th:each="cvo:${comments}">
                                     <a class="avatar">
-                                        <img src="https://picsum.photos/id/1005/100/100">
+                                        <img th:src="@{${cvo.user.headerUrl}}">
                                     </a>
                                     <div class="content">
-                                        <a class="author">Matt</a>
+                                        <a class="author" th:utext="${cvo.user.nickname}">Matt</a>
                                         <div class="metadata">
-                                            <span class="date">today 5:42 PM</span>
+                                            <!--                                            <span class="date">today 5:42 PM</span>-->
+                                            <span class="date">[(${#dates.format(cvo.comment.createTime,'yyyy-MM-dd HH:mm:ss')})]</span>
                                         </div>
-                                        <div class="text">太赞了！</div>
+                                        <div class="text" th:utext="${cvo.comment.content}">太赞了！</div>
                                         <div class="actions">
-                                            <a class="reply">Reply</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="comment">
-                                    <a class="avatar">
-                                        <img src="https://picsum.photos/id/1005/100/100">
-                                    </a>
-                                    <div class="content">
-                                        <a class="author">Elliot Fu</a>
-                                        <div class="metadata">
-                                            <span class="date">yesterday 12:30 AM</span>
-                                        </div>
-                                        <div class="text">
-                                            <p>这对我的研究是非常有用。谢谢!</p>
-                                        </div>
-                                        <div class="actions">
-                                            <a class="reply">Reply</a>
+                                            <a class="reply"
+                                               th:data-commentid="${cvo.comment.commentId}"
+                                               th:data-commentnickname="${cvo.user.nickname}"
+                                               th:data-commentuserid="${cvo.user.userId}"
+                                               onclick="reply(this)">Reply</a>
                                         </div>
                                     </div>
                                     <div class="comments">
-                                        <div class="comment">
+                                        <div class="comment" th:each="rvo:${cvo.replys}">
                                             <a class="avatar">
-                                                <img src="https://picsum.photos/id/1005/100/100">
+                                                <img th:src="@{${rvo.user.headerUrl}}">
                                             </a>
                                             <div class="content">
-                                                <a class="author">Jenny Hess</a>
+                                                <a class="author" th:utext="${rvo.user.nickname}">Jenny Hess</a>
+                                                <i class="long arrow alternate right icon"></i>
+                                                <a class="author" th:utext="${rvo.target.nickname}">Elliot Fu</a>
                                                 <div class="metadata">
-                                                    <span class="date">recently</span>
+                                                    <!--                                                    <span class="date">recently</span>-->
+                                                    <span class="date">[(${#dates.format(rvo.reply.createTime,'yyyy-MM-dd HH:mm:ss')})]</span>
                                                 </div>
-                                                <div class="text">你永远是多么正确！</div>
+                                                <div class="text" th:utext="${rvo.reply.content}">你永远是多么正确！
+                                                </div>
                                                 <div class="actions">
-                                                    <a class="reply">Reply</a>
+                                                    <a class="reply"
+                                                       th:data-commentid="${cvo.comment.commentId}"
+                                                       th:data-commentnickname="${rvo.user.nickname}"
+                                                       th:data-commentuserid="${rvo.user.userId}"
+                                                       onclick="reply(this)">Reply</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="comment" id="comment">
-                                    <a class="avatar">
-                                        <img src="https://picsum.photos/id/1005/100/100">
-                                    </a>
-                                    <div class="content">
-                                        <a class="author">Joe Henderson</a>
-                                        <div class="metadata">
-                                            <span class="date">5 days ago</span>
-                                        </div>
-                                        <div class="text">老兄，这太棒了。非常感谢。</div>
-                                        <div class="actions">
-                                            <a class="reply">Reply</a>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
+
+
+                            <!-- 分页 -->
+                            <nav aria-label="..." style="position: relative; margin-top: 50px;"
+                                 th:if="${page.rows} > 0">
+                                <ul class="pagination justify-content-center">
+                                    <li th:class="|page-item ${page.current==1?'disabled':''}|">
+                                        <a class="page-link" th:href="@{${page.path}(current=${page.current-1})}"
+                                           style="color: #47536e">Previous</a>
+                                    </li>
+                                    <li class="page-item"
+                                        th:each="idx:${#numbers.sequence(page.from, page.to)}">
+                                        <a th:class="|page-link ${page.current==idx?'m-active-green':''}|"
+                                           th:href="@{${page.path}(current=${idx})}" style="color: #a3c293"
+                                           th:text="${idx}">1</a>
+                                    </li>
+                                    <li th:class="|page-item ${page.current==page.total?'disabled':''}|">
+                                        <a class="page-link" th:href="@{${page.path}(current=${page.current+1})}"
+                                           style="color: #47536e">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+
                         </div>
 
                         <div class="ui form">
-                            <div class="field">
-                            <textarea name="content" placeholder="Please enter your comment..." id="" cols="30"
-                                      rows="10">
-
-                            </textarea>
+                            <div class="field" id="commentField">
+                                <textarea name="content"
+                                          placeholder="Please enter your comment..."
+                                          onclick="removeClass()"
+                                          id="commentEditor"
+                                          cols="30"
+                                          rows="10"></textarea>
                             </div>
 
                             <div class="fields">
                                 <div class="field m-mobile-wide m-margin-bottom-small">
-                                    <button class="ui green button m-mobile-wide m-radius"><i class="edit icon"></i>发布
-                                    </button>
+                                    <a id="publish" class="ui green button m-mobile-wide m-radius"
+                                            onclick="comment()"
+                                            style="width: 110px;"><i
+                                            class="edit icon"></i>Publish
+                                    </a>
+                                    <a id="reset" class="ui origin button m-mobile-wide m-radius"
+                                            onclick="reset()"
+                                            style="width: 110px;"><i
+                                            class="edit icon"></i>Reset
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -459,6 +473,7 @@
 
 
         <!-- Template Main JS File -->
+        <script th:src="@{/js/global.js}"></script>
         <script th:src="@{/lib/prism/tomorrow/prism.js}"></script>
         <script th:src="@{/js/main.js}"></script>
 
@@ -496,6 +511,97 @@
                 viewer: true,
                 height: '600px',
             });
+
+
+            var entityType = "POST";
+            var entityId;
+            var targetId;
+
+            function reset() {
+                entityType = "POST";
+                $('#commentEditor').val('');
+                $('#commentEditor').attr('placeholder', 'Please enter your comment...');
+            }
+
+            function reply(obj) {
+                var commentUserId = $(obj).data('commentuserid');
+                var commentNickname = $(obj).data('commentnickname');
+                var commentId = $(obj).data('commentid');
+
+                $('#commentEditor').val('');
+                $('#commentEditor').attr('placeholder', 'Reply to ' + commentNickname + '...');
+
+                entityType = 'COMMENT';
+                entityId = commentId;
+                targetId = commentUserId;
+
+                document.querySelector('#commentEditor').scrollIntoView({
+                    behavior: "smooth",
+                });
+            }
+
+            function comment() {
+                if (!checkComment()) {
+                    return;
+                }
+
+                var comment = $('#commentEditor').val();
+                var discussPostId = [[${post.postId}]];
+
+                var formData = new FormData();
+                formData.append('content', comment);
+
+                if (entityType === "POST") {
+                    formData.append('entityType', entityType);
+                    formData.append('entityId', discussPostId);
+                    formData.append('targetId', 0);
+                } else {
+                    formData.append('entityType', entityType);
+                    formData.append('entityId', entityId);
+                    formData.append('targetId', targetId);
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: CONTEXT_PATH + "/comment/add/" + discussPostId,
+                    data: formData,
+                    datatype: 'json',
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        data = $.parseJSON(data);
+                        // 刷新页面
+                        if (data.code === 0) {
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
+
+            function checkComment() {
+                if ($('#commentEditor').val() === "") {
+                    document.querySelector('#commentField').classList.add("error");
+                    $(document.querySelector('#commentField')).shake(2, 10, 400);
+                    return false;
+                }
+                return true;
+            }
+
+            function removeClass() {
+                document.querySelector('#commentField').classList.remove("error");
+            }
+
+            jQuery.fn.shake = function (intShakes /*Amount of shakes*/, intDistance /*Shake distance*/, intDuration /*Time duration*/) {
+                this.each(function () {
+                    var jqNode = $(this);
+                    jqNode.css({position: 'relative'});
+                    for (var x = 1; x <= intShakes; x++) {
+                        jqNode.animate({left: (intDistance * -1)}, (((intDuration / intShakes) / 4)))
+                            .animate({left: intDistance}, ((intDuration / intShakes) / 2))
+                            .animate({left: 0}, (((intDuration / intShakes) / 4)));
+                    }
+                });
+                return this;
+            }
         </script>
     </body>
 </html>

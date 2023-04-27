@@ -20,7 +20,7 @@
     <select id="selectDiscussPosts" resultType="DiscussPost">
         SELECT <include refid="selectFields"></include>
         FROM discuss_post
-        WHERE status != 2
+        WHERE status != 'DELETE'
         <if test="userId != 0">
             AND user_id = #{userId}
         </if>
@@ -31,7 +31,7 @@
     <select id="selectDiscussPostRows" resultType="int">
         SELECT COUNT(user_id)
         FROM discuss_post
-        WHERE status != 2
+        WHERE status != 'DELETE'
         <if test="userId != 0">
             AND user_id = #{userId}
         </if>
@@ -46,6 +46,19 @@
         SELECT <include refid="selectFields"></include>
         FROM discuss_post
         WHERE post_id = #{postId}
+        AND status != 'DELETE'
     </select>
+    
+    <update id="updateCommentCount">
+        UPDATE discuss_post
+        SET comment_count = #{commentCount}
+        WHERE post_id = #{postId}
+    </update>
+
+    <update id="updateDiscussPost" parameterType="DiscussPost">
+        UPDATE discuss_post
+        SET title = #{title}, content = #{content}, first_image_url = #{firstImageUrl}
+        WHERE post_id = #{postId}
+    </update>
 
 </mapper>

@@ -187,7 +187,9 @@
                     <a class="item" th:href="@{/profile/setting}">Profile Setting</a>
                     <a class="item active" th:href="@{/profile/submissions}">My Submissions</a>
                     <a class="item" th:href="@{/profile/blogs}">My Blogs</a>
-                    <a class="item" th:href="@{/profile/message}">Message</a>
+                    <a class="item" th:href="@{/message/letter/list}">Message
+                        <div class="floating ui red label" th:utext="${letterUnReadCount}" th:if="${letterUnReadCount != 0}">22</div>
+                    </a>
                 </div>
 
                 <div style="margin: 30px;">

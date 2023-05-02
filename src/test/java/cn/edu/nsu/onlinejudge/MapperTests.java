@@ -153,18 +153,18 @@ public class MapperTests {
             System.out.println(message);
         }
 
-        int count = messageMapper.selectConversationCount(1);
-        System.out.println(count);
-
-        list = messageMapper.selectLetters("1_2", 0, 10);
-        for (Message message : list) {
-            System.out.println(message);
-        }
-
-        count = messageMapper.selectLetterCount("1_2");
-        System.out.println(count);
-
-        count = messageMapper.selectLetterUnreadCount(2, null);
-        System.out.println(count);
+//        int count = messageMapper.selectConversationCount(1);
+//        System.out.println(count);
+//
+//        list = messageMapper.selectLetters("1_2", 0, 10);
+//        for (Message message : list) {
+//            System.out.println(message);
+//        }
+//
+//        count = messageMapper.selectLetterCount("1_2");
+//        System.out.println(count);
+//
+//        count = messageMapper.selectLetterUnreadCount(2, null);
+//        System.out.println(count);
     }
 }

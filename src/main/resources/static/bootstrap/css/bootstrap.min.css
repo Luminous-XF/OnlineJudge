@@ -5756,18 +5756,18 @@ textarea.form-control-lg {
     word-wrap: break-word
 }
 
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1055;
-    display: none;
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-    outline: 0
-}
+/*.modal {*/
+/*    position: fixed;*/
+/*    top: 0;*/
+/*    left: 0;*/
+/*    z-index: 1055;*/
+/*    display: none;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    overflow-x: hidden;*/
+/*    overflow-y: auto;*/
+/*    outline: 0*/
+/*}*/
 
 .modal-dialog {
     position: relative;

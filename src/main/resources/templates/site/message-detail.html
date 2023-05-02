@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Profile</title>
+        <title>Message Detail</title>
         <meta content="" name="description">
         <meta content="" name="keywords">
 
@@ -26,13 +26,7 @@
         <link th:href="@{/css/style.css}" rel="stylesheet">
     </head>
 
-    <style>
-        .m-background {
-            background: url("../../static/images/background/bg-2.jpg");
-            background-attachment: fixed;
-            background-size: 100%;
-        }
-    </style>
+
     <body>
         <!-- ======= Header ======= -->
         <header id="header" class="fixed-top">
@@ -185,68 +179,39 @@
         <!-- ======= Main Section ======= -->
 
         <div class="ui container" style="margin-top: 100px;">
+            <!-- ======= Message ======== -->
             <div class="ui segment m-radius">
-                <div class="ui tabular menu">
-                    <a class="item active" th:href="@{/profile/preview}">Profile</a>
-                    <a class="item" th:href="@{/profile/setting}">Profile Setting</a>
-                    <a class="item" th:href="@{/profile/submissions}">My Submissions</a>
-                    <a class="item" th:href="@{/profile/blogs}">My Blogs</a>
-                    <a class="item" th:href="@{/message/letter/list}">Message
-                        <div class="floating ui red label" th:utext="${letterUnReadCount}" th:if="${letterUnReadCount != 0}">22</div>
-                    </a>
-                </div>
+                <h2 class="header">
+                    Message with <span th:utext="${target.nickname}">petr</span>
+                </h2>
 
-                <div class="ui grid" style="margin: 30px;">
-                    <div class="eleven wide column">
-                        <div class="ui list">
-                            <div class="item" style="font-size: 40px; color: black">
-                                <span>
-                                    <strong th:utext="${loginUser.nickname}">Luminous</strong>
-                                    <i class="mars icon blue" th:if="${loginUser.gender.key == 1}"></i>
-                                    <i class="venus icon pink" th:if="${loginUser.gender.key == 2}"></i>
-                                </span>
+                <div id="message" class="ui comments overflow-auto"
+                     style="margin-right: 20px; margin-left: 20px; height: 500px; max-width: 1080px;">
+                    <div class="comment" th:each="map:${letters}" style="margin-bottom: 20px;">
+                        <a class="avatar">
+                            <img th:src="${map.fromUser.headerUrl}">
+                        </a>
+                        <div class="content" style="max-width: 600px;">
+                            <a class="author" th:utext="${map.fromUser.nickname}">Matt</a>
+                            <div class="metadata">
+                                <span class="date" th:utext="${#dates.format(map.letter.createTime,'yyyy-MM-dd HH:mm:ss')}">今天下午 5:42</span>
                             </div>
-
-
-                            <div class="item" style="margin-top: 25px;">
-                                <strong style="margin-right: 5px;">
-                                    <i class="address book icon"></i>UserName:</strong>
-                                <span th:utext="${loginUser.username}">19380120319</span>
-                            </div>
-
-                            <div class="item" style="margin-top: 10px;">
-                                <strong style="margin-right: 5px;">
-                                    <i class="book icon"></i>Blogs:</strong>
-                                <span>33</span>
-                            </div>
-
-                            <div class="item" style="margin-top: 10px;">
-                                <strong style="margin-right: 5px;">
-                                    <i class="check circle icon"></i>Solved:</strong>
-                                <span th:utext="${loginUser.solved}">233</span>
-                            </div>
-
-                            <div class="item" style="margin-top: 10px;">
-                                <strong style="margin-right: 5px;">
-                                    <i class="thumbs up icon"></i>Praise:
-                                </strong>
-                                <span>520</span>
-                            </div>
-
-                            <div class="item" style="margin-top: 10px;">
-                                <strong style="margin-right: 5px;">
-                                    <i class="tag icon"></i>Brief:</strong>
-                            </div>
-
-                            <p class="ui text" style="margin-top: 10px;" th:utext="${loginUser.brief}">
-                                Why sleep long, when forever rest after death！
-                            </p>
+                            <div class="text" th:utext="${map.letter.content}">太赞了！</div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="five wide column">
-                        <img class="border" th:src="@{${loginUser.headerUrl}}" alt=""
-                             style="height: 300px; width: 300px;">
+                <form class="ui reply form" style="margin: 20px;">
+                    <div class="field">
+                        <textarea id="letterEditor"></textarea>
+                    </div>
+                </form>
+
+                <div class="actions text-end" style="margin-right: 18px;">
+                    <div class="ui positive button"
+                         th:data-targetid="${target.userId}"
+                         onclick="sendLetter(this)">
+                        Send
                     </div>
                 </div>
             </div>
@@ -340,6 +305,56 @@
                 on: 'click',
                 position: 'bottom center'
             });
+
+            $(function () {
+                var ele = document.getElementById("message");
+                if (ele.scrollHeight > ele.clientHeight) {
+                    ele.scrollTop = ele.scrollHeight;
+                    ele.style.opacity = 1;
+                }
+            });
+
+            function showLetterDetail(obj) {
+
+                var formData = new FormData();
+
+                $.ajax({
+                    type: 'GET',
+                    url: CONTEXT_PATH + "/message/letter/detail/" + conversationId,
+                    data: formData,
+                    datatype: 'json',
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        data = $.parseJSON(data);
+                    }
+                });
+            }
+
+            function sendLetter(obj) {
+                var targetId = $(obj).data('targetid');
+                var content = $('#letterEditor').val();
+
+                var formData = new FormData();
+                formData.append('targetUserId', targetId);
+                formData.append('content', content);
+
+                $.ajax({
+                    type: 'POST',
+                    url: CONTEXT_PATH + "/message/letter/send",
+                    data: formData,
+                    datatype: 'json',
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        data = $.parseJSON(data);
+                        // 刷新页面
+                        if (data.code === 0) {
+                            window.location.reload();
+                        }
+                    }
+                });
+            }
         </script>
     </body>
 </html>

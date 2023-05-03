@@ -1,7 +1,7 @@
 package cn.edu.nsu.onlinejudge.controller;
 
 import cn.edu.nsu.onlinejudge.annotation.LoginRequired;
-import cn.edu.nsu.onlinejudge.common.Enum.CommentTypeEnum;
+import cn.edu.nsu.onlinejudge.common.Enum.EntityTypeEnum;
 import cn.edu.nsu.onlinejudge.common.Enum.PostStatusEnum;
 import cn.edu.nsu.onlinejudge.common.Enum.PostTypeEnum;
 import cn.edu.nsu.onlinejudge.entity.Comment;
@@ -205,7 +205,7 @@ public class ForumController {
         // 回复: 评论的评论
         // 评论列表
         List<Comment> commentList = commentService.findCommentsByEntity(
-                CommentTypeEnum.POST, blog.getPostId(), page.getOffset(), page.getLimit());
+                EntityTypeEnum.POST, blog.getPostId(), page.getOffset(), page.getLimit());
         // 评论VO列表
         List<Map<String, Object>> commentVoList = new ArrayList<>();
         if (commentList != null) {
@@ -219,7 +219,7 @@ public class ForumController {
 
                 // 回复列表
                 List<Comment> replyList = commentService.findCommentsByEntity(
-                        CommentTypeEnum.COMMENT, comment.getCommentId(), 0, Integer.MAX_VALUE);
+                        EntityTypeEnum.COMMENT, comment.getCommentId(), 0, Integer.MAX_VALUE);
                 // 回复VO列表
                 List<Map<String, Object>> replyVoList = new ArrayList<>();
                 if (replyList != null) {

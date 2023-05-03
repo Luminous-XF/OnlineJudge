@@ -1,14 +1,10 @@
 package cn.edu.nsu.onlinejudge.common.Enum;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import org.omg.CORBA.UNKNOWN;
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public enum CommentTypeEnum {
+public enum EntityTypeEnum {
 
     POST(0, "博客的评论"),
 
@@ -19,9 +15,9 @@ public enum CommentTypeEnum {
 
     public final String value;
 
-    private static Map<Integer, GenderEnum> map;
+    private static Map<Integer, EntityTypeEnum> map;
 
-    CommentTypeEnum (int key, String value) {
+    EntityTypeEnum(int key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -32,12 +28,12 @@ public enum CommentTypeEnum {
 
     static {
         map = new HashMap<>();
-        for (GenderEnum type : GenderEnum.values()) {
+        for (EntityTypeEnum type : EntityTypeEnum.values()) {
             map.put(type.key, type);
         }
     }
 
-    public static GenderEnum fromKey(int key) {
+    public static EntityTypeEnum fromKey(int key) {
         return map.get(key);
     }
 }

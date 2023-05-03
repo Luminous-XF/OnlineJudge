@@ -1,6 +1,6 @@
 package cn.edu.nsu.onlinejudge.service;
 
-import cn.edu.nsu.onlinejudge.common.Enum.CommentTypeEnum;
+import cn.edu.nsu.onlinejudge.common.Enum.EntityTypeEnum;
 import cn.edu.nsu.onlinejudge.common.SensitiveFilter;
 import cn.edu.nsu.onlinejudge.dao.CommentMapper;
 import cn.edu.nsu.onlinejudge.entity.Comment;
@@ -26,12 +26,12 @@ public class CommentService {
     @Autowired
     private DiscussPostService discussPostService;
 
-    public List<Comment> findCommentsByEntity(CommentTypeEnum entityType, int entityId, int offset, int limit) {
+    public List<Comment> findCommentsByEntity(EntityTypeEnum entityType, int entityId, int offset, int limit) {
         return commentMapper.selectCommentByEntity(entityType, entityId, offset, limit);
     }
 
 
-    public int findCommentCountByEntity(CommentTypeEnum entityType, int entityId) {
+    public int findCommentCountByEntity(EntityTypeEnum entityType, int entityId) {
         return commentMapper.selectCountByEntity(entityType, entityId);
     }
 
@@ -49,7 +49,7 @@ public class CommentService {
 
 
         // 更新评论数量
-        if (comment.getEntityType() == CommentTypeEnum.POST) {
+        if (comment.getEntityType() == EntityTypeEnum.POST) {
             int count = commentMapper.selectCountByEntity(comment.getEntityType(), comment.getEntityId());
             System.out.println(count);
             discussPostService.updateCommentCount(comment.getEntityId(), count);

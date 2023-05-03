@@ -194,7 +194,8 @@
                         <div class="content" style="max-width: 600px;">
                             <a class="author" th:utext="${map.fromUser.nickname}">Matt</a>
                             <div class="metadata">
-                                <span class="date" th:utext="${#dates.format(map.letter.createTime,'yyyy-MM-dd HH:mm:ss')}">今天下午 5:42</span>
+                                <span class="date"
+                                      th:utext="${#dates.format(map.letter.createTime,'yyyy-MM-dd HH:mm:ss')}">今天下午 5:42</span>
                             </div>
                             <div class="text" th:utext="${map.letter.content}">太赞了！</div>
                         </div>
@@ -208,11 +209,10 @@
                 </form>
 
                 <div class="actions text-end" style="margin-right: 18px;">
-                    <div class="ui positive button"
-                         th:data-targetid="${target.userId}"
-                         onclick="sendLetter(this)">
-                        Send
-                    </div>
+                    <a class="ui positive button"
+                       href="javascript:;"
+                       th:data-targetid="${target.userId}"
+                       th:onclick="sendLetter(this)">Send</a>
                 </div>
             </div>
         </div>
@@ -314,46 +314,24 @@
                 }
             });
 
-            function showLetterDetail(obj) {
-
-                var formData = new FormData();
-
-                $.ajax({
-                    type: 'GET',
-                    url: CONTEXT_PATH + "/message/letter/detail/" + conversationId,
-                    data: formData,
-                    datatype: 'json',
-                    processData: false,
-                    contentType: false,
-                    success: function (data) {
-                        data = $.parseJSON(data);
-                    }
-                });
-            }
 
             function sendLetter(obj) {
                 var targetId = $(obj).data('targetid');
                 var content = $('#letterEditor').val();
 
-                var formData = new FormData();
-                formData.append('targetUserId', targetId);
-                formData.append('content', content);
-
-                $.ajax({
-                    type: 'POST',
-                    url: CONTEXT_PATH + "/message/letter/send",
-                    data: formData,
-                    datatype: 'json',
-                    processData: false,
-                    contentType: false,
-                    success: function (data) {
+                $.post(
+                    CONTEXT_PATH + "/message/letter/send",
+                    {'targetUserId': targetId, 'content': content},
+                    function (data) {
                         data = $.parseJSON(data);
                         // 刷新页面
                         if (data.code === 0) {
                             window.location.reload();
+                        } else {
+                            alert(data.msg);
                         }
                     }
-                });
+                );
             }
         </script>
     </body>

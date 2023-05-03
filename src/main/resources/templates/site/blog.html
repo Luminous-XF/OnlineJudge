@@ -225,8 +225,11 @@
                     <div class="ui attached positive message justify-content-end" style="display: flex;">
                         <div class="ui middle horizontal link list">
                             <div class="item">
-                                <a href="#"><i class="thumbs up outline icon"></i></a>
-                                <span th:utext="${post.likes}">19</span>
+                                <a href="javascript:;" th:onclick="|like(this, 0, ${post.postId});|">
+                                    <i class="thumbs up outline icon"></i>
+                                    <span th:utext="${post.likes}">19</span>
+                                </a>
+
                                 <!-- <a href="#"><i class="violet thumbs up outline icon"></i></a> 19-->
                             </div>
 
@@ -571,7 +574,7 @@
                         data = $.parseJSON(data);
                         // 刷新页面
                         if (data.code === 0) {
-                            window.location.reload();
+
                         }
                     }
                 });
@@ -601,6 +604,21 @@
                     }
                 });
                 return this;
+            }
+
+            function like(btn, entityType, entityId) {
+                $.post(
+                    CONTEXT_PATH + "/like",
+                    {"entityType": entityType, "entityId": entityId},
+                    function (data) {
+                        data = $.parseJSON(data);
+                        if (data.code === 0) {
+                            $(btn).children("span").text(data.likeCount);
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                );
             }
         </script>
     </body>

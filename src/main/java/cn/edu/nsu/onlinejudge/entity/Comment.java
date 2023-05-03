@@ -1,7 +1,7 @@
 package cn.edu.nsu.onlinejudge.entity;
 
 import cn.edu.nsu.onlinejudge.common.Enum.CommentStatusEnum;
-import cn.edu.nsu.onlinejudge.common.Enum.CommentTypeEnum;
+import cn.edu.nsu.onlinejudge.common.Enum.EntityTypeEnum;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,7 +12,7 @@ public class Comment implements Serializable {
 
     private int userId;
 
-    private CommentTypeEnum entityType;
+    private EntityTypeEnum entityType;
 
     private int entityId;
 
@@ -41,11 +41,11 @@ public class Comment implements Serializable {
         this.userId = userId;
     }
 
-    public CommentTypeEnum getEntityType() {
+    public EntityTypeEnum getEntityType() {
         return entityType;
     }
 
-    public void setEntityType(CommentTypeEnum entityType) {
+    public void setEntityType(EntityTypeEnum entityType) {
         this.entityType = entityType;
     }
 

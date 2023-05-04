@@ -65,6 +65,7 @@ public class MessageController {
         int letterUnReadCount = messageService.findLetterUnreadCount(user.getUserId(), null);
         model.addAttribute("letterUnReadCount", letterUnReadCount);
 
+
         return "/site/profile-message";
     }
 

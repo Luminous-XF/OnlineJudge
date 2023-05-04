@@ -8,7 +8,9 @@ public enum EntityTypeEnum {
 
     POST(0, "博客的评论"),
 
-    COMMENT(1, "评论回复");
+    COMMENT(1, "评论回复"),
+
+    LIKE(2, "点赞");
 
 
     public final int key;

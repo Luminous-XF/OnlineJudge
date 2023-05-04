@@ -33,6 +33,12 @@
         AND entity_id = #{entityId}
     </select>
 
+    <select id="findCommentById" resultType="Comment">
+        SELECT <include refid="selectFields"></include>
+        FROM comment
+        WHERE comment_id = #{commentId}
+    </select>
+
     <insert id="insertComment" parameterType="Comment">
         INSERT INTO comment(<include refid="insertFields"></include>)
         VALUES(#{commentId}, #{userId}, #{entityType}, #{entityId}, #{targetId}, #{content}, #{status},  #{createTime})

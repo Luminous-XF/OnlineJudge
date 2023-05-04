@@ -9,7 +9,10 @@ public enum MessageStatusEnum {
 
     HAVEREAD(1, "已读"),
 
-    DELETE(2, "删除");
+    MESSAGE(2, "消息"),
+
+    DELETE(3, "删除");
+
 
 
     public final int key;

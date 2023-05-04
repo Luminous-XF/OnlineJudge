@@ -198,7 +198,7 @@
                             <div class="ui three wide column">
                                 <div class="align-items-center" style="display: flex;">
                                     <a th:href="@{|/message/letter/detail/${map.conversation.conversationId}|}">
-                                        <img th:src="${map.target.headerUrl}" alt="" style="height: 30px; width: 30px;" class="ui avatar image"></a>
+                                        <img th:if="${map.conversation.status != 'Message'}"  th:src="${map.target.headerUrl}"alt="" style="height: 30px; width: 30px;" class="ui avatar image"></a>
                                     <a th:href="@{|/message/letter/detail/${map.conversation.conversationId}|}"
                                        class="overflow-hidden" style="margin-left: 5px;" th:utext="${map.target.nickname}">19380120319</a>
                                 </div>

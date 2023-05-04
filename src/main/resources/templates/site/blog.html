@@ -225,7 +225,7 @@
                     <div class="ui attached positive message justify-content-end" style="display: flex;">
                         <div class="ui middle horizontal link list">
                             <div class="item">
-                                <a href="javascript:;" th:onclick="|like(this, 0, ${post.postId});|">
+                                <a href="javascript:;" th:onclick="|like(this, 0, ${post.postId}, ${post.userId});|">
                                     <i class="thumbs up outline icon"></i>
                                     <span th:utext="${post.likes}">19</span>
                                 </a>
@@ -606,10 +606,10 @@
                 return this;
             }
 
-            function like(btn, entityType, entityId) {
+            function like(btn, entityType, entityId, entityUserId) {
                 $.post(
                     CONTEXT_PATH + "/like",
-                    {"entityType": entityType, "entityId": entityId},
+                    {"entityType": entityType, "entityId": entityId, "entityUserId" : entityUserId},
                     function (data) {
                         data = $.parseJSON(data);
                         if (data.code === 0) {

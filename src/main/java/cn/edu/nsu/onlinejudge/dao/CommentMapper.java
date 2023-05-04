@@ -14,4 +14,6 @@ public interface CommentMapper {
     int selectCountByEntity(EntityTypeEnum entityType, int entityId);
 
     int insertComment(Comment comment);
+
+    Comment findCommentById(int commentId);
 }

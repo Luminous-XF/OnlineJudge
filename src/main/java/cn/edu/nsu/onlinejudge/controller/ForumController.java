@@ -97,9 +97,6 @@ public class ForumController {
     @ResponseBody
     public String addDiscussPost(String title, String content, MultipartFile firstImage) {
         User user = hostHolder.getUser();
-        if (user == null) {
-            return OnlineJudgeUtil.getJSONString(403, "You are not logged in!");
-        }
 
         if (StringUtils.isBlank(title)) {
             return OnlineJudgeUtil.getJSONString(1, "Title can not be empty!");
@@ -131,10 +128,6 @@ public class ForumController {
     @RequestMapping(path = "/edit-post/{postId}", method = RequestMethod.GET)
     public String editDiscussPost(@PathVariable int postId, Model model) {
         User user = hostHolder.getUser();
-        if (user == null) {
-            // TODO
-            return "/error/403";
-        }
 
         DiscussPost oldPost = discussPostService.findDiscussPostById(postId);
         if (oldPost == null) {
@@ -145,7 +138,7 @@ public class ForumController {
 
         model.addAttribute("post", oldPost);
         model.addAttribute("editFlag", true);
-        return "/site/blog-input";
+        return "/site/blog-change";
     }
 
     @LoginRequired

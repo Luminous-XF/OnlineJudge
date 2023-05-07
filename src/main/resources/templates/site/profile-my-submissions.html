@@ -183,12 +183,27 @@
         <div class="ui container" style="margin-top: 100px;">
             <div class="ui segment m-radius">
                 <div class="ui tabular menu">
-                    <a class="item" th:href="@{/profile/preview}">Profile</a>
-                    <a class="item" th:href="@{/profile/setting}">Profile Setting</a>
-                    <a class="item active" th:href="@{/profile/submissions}">My Submissions</a>
-                    <a class="item" th:href="@{/profile/blogs}">My Blogs</a>
-                    <a class="item" th:href="@{/message/letter/list}">Message
-                        <div class="floating ui red label" th:utext="${letterUnReadCount}" th:if="${letterUnReadCount != 0}">22</div>
+                    <a class="item" th:href="@{|/profile/preview/${owner.userId}|}">Profile</a>
+                    <a class="item" th:if="${owner.userId == loginUser.userId}" th:href="@{|/profile/setting|}">Profile Setting</a>
+                    <a class="item active" th:href="@{|/profile/submissions/${owner.userId}|}">Submissions</a>
+                    <a class="item" th:href="@{|/profile/blogs/${owner.userId}|}">Blogs</a>
+                    <a class="item"
+                       th:if="${loginUser.userId == owner.userId}"
+                       th:href="@{|/profile/message|}">Message
+                        <div class="floating ui red label"
+                             th:utext="${letterUnReadCount}"
+                             th:if="${letterUnReadCount != 0}">
+                            22
+                        </div>
+                    </a>
+                    <a class="item"
+                       th:if="${loginUser.userId != owner.userId}"
+                       th:href="@{|/message/letter/detail/${owner.userId}|}">Message
+                        <div class="floating ui red label"
+                             th:utext="${letterUnReadCount}"
+                             th:if="${letterUnReadCount != 0}">
+                            22
+                        </div>
                     </a>
                 </div>
 

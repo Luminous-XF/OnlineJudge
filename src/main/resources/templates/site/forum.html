@@ -281,12 +281,12 @@
                                         <div class="item">
 
                                             <div class="content">
-                                                <a href="#">
+                                                <a th:href="@{|/profile/preview/${map.user.userId}|}">
                                                     <img th:src="${map.user.headerUrl}" alt=""
                                                          class="ui avatar image">
                                                 </a>
 
-                                                <a href="#" th:utext="${map.user.nickname}"></a>
+                                                <a th:href="@{|/profile/preview/${map.user.userId}|}" th:utext="${map.user.nickname}"></a>
                                             </div>
                                         </div>
                                         <div class="item">

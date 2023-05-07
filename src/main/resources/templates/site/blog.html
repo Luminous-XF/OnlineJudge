@@ -192,9 +192,9 @@
                         <div class="ui horizontal link list align-items-center">
                             <div class="item">
                                 <div class="align-items-center" style="display: flex;">
-                                    <a href="#"><img th:src="@{${author.headerUrl}}" alt=""
+                                    <a th:href="@{|/profile/preview/${author.userId}|}"><img th:src="@{${author.headerUrl}}" alt=""
                                                      style="height: 30px; width: 30px;" class="ui avatar image"></a>
-                                    <a href="#" style="margin-left: 5px;" th:utext="${author.nickname}">Luminous</a>
+                                    <a th:href="@{|/profile/preview/${author.userId}|}" style="margin-left: 5px;" th:utext="${author.nickname}">Luminous</a>
                                 </div>
                             </div>
                             <div class="item">

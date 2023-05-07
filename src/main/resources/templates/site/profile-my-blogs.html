@@ -21,9 +21,12 @@
         <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
         <link th:href="@{/bootstrap/icons/bootstrap-icons.css}" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
+        <link href="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.css" rel="stylesheet"/>
 
         <!-- Template Main CSS File -->
         <link th:href="@{/css/style.css}" rel="stylesheet">
+        <link th:href="@{/css/typo.css}" rel="stylesheet">
+        <link th:href="@{/lib/prism/tomorrow/prism.css}" rel="stylesheet">
     </head>
 
     <style>
@@ -183,56 +186,84 @@
         <div class="ui container" style="margin-top: 100px;">
             <div class="ui segment m-radius">
                 <div class="ui tabular menu">
-                    <a class="item" th:href="@{/profile/preview}">Profile</a>
-                    <a class="item" th:href="@{/profile/setting}">Profile Setting</a>
-                    <a class="item" th:href="@{/profile/submissions}">My Submissions</a>
-                    <a class="item active" th:href="@{/profile/blogs}">My Blogs</a>
-                    <a class="item" th:href="@{/message/letter/list}">Message
-                        <div class="floating ui red label" th:utext="${letterUnReadCount}" th:if="${letterUnReadCount != 0}">22</div>
+                    <a class="item" th:href="@{|/profile/preview/${owner.userId}|}">Profile</a>
+                    <a class="item" th:if="${owner.userId == loginUser.userId}" th:href="@{|/profile/setting|}">Profile Setting</a>
+                    <a class="item" th:href="@{|/profile/submissions/${owner.userId}|}">Submissions</a>
+                    <a class="item active" th:href="@{|/profile/blogs/${owner.userId}|}">Blogs</a>
+                    <a class="item"
+                       th:if="${loginUser.userId == owner.userId}"
+                       th:href="@{|/profile/message|}">Message
+                        <div class="floating ui red label"
+                             th:utext="${letterUnReadCount}"
+                             th:if="${letterUnReadCount != 0}">
+                            22
+                        </div>
+                    </a>
+                    <a class="item"
+                       th:if="${loginUser.userId != owner.userId}"
+                       th:href="@{|/message/letter/detail/${owner.userId}|}">Message
+                        <div class="floating ui red label"
+                             th:utext="${letterUnReadCount}"
+                             th:if="${letterUnReadCount != 0}">
+                            22
+                        </div>
                     </a>
                 </div>
 
-                <div style="margin: 30px;">
+                <div style="margin: 30px;" th:each="map:${discussPosts}">
 
                     <div class="ui padded vertical segment">
                         <div class="ui mobile reversed stackable grid">
-                            <div class="nine wide column">
-                                <h3 class="ui header">
-                                    <a href="#" style="color: black">你真的了解编程吗？</a>
-                                    <a class="ui violet label item">置顶</a>
-                                    <a class="ui orange label item">精华</a>
-                                </h3>
+                            <div th:class="|${map.post.firstImageUrl == null ? 'sixteen' : 'nine'} wide column typo typo-selection|">
+                                <h2 class=" ui header">
+                                    <a th:href="@{|/blog/detail/${map.post.postId}|}" style="color: black; border-bottom: transparent;"
+                                       th:utext="${map.post.title}">你真的了解编程吗？</a>
+                                    <a class="ui violet label item" th:if="${map.post.type} == 1">置顶</a>
+                                    <a class="ui orange label item" th:if="${map.post.status} == 1">精华</a>
+                                </h2>
 
-                                <p class="m-text m-text-overflow">和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
+                                <div class="blog-content m-text m-text-overflow" th:utext="${map.post.content}">
+                                    和我们日常使用的中文、英语一样,
+                                    编程语言也是一门用于沟通的语言.
                                     只不过"编程语言"是和计算机沟通的语言. 而"
-                                    程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                    用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
+                                    程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务,
+                                    将解决问题的步骤,
+                                    用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行,
+                                    最后完成任务.
                                     和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
                                     只不过"编程语言"是和计算机沟通的语言. 而"
-                                    程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                    用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
+                                    程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务,
+                                    将解决问题的步骤,
+                                    用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行,
+                                    最后完成任务.
                                     和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
                                     只不过"编程语言"是和计算机沟通的语言. 而"
-                                    程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                    用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
+                                    程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务,
+                                    将解决问题的步骤,
+                                    用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行,
+                                    最后完成任务.
                                     和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
                                     只不过"编程语言"是和计算机沟通的语言. 而"
-                                    程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                    用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
+                                    程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务,
+                                    将解决问题的步骤,
+                                    用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行,
+                                    最后完成任务.
                                     和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
                                     只不过"编程语言"是和计算机沟通的语言. 而"
-                                    程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                    用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                </p>
+                                    程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务,
+                                    将解决问题的步骤,
+                                    用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行,
+                                    最后完成任务.
+                                </div>
                             </div>
 
-                            <div class="seven wide column">
-                                <a href="#" target="_blank">
-                                    <img src="https://picsum.photos/id/0/800/450" alt=""
-                                         class="ui rounded image">
+                            <div class="seven wide column" th:if="${map.post.firstImageUrl != null}">
+                                <a th:href="@{|/blog/detail/${map.post.postId}|}" target="_blank">
+                                    <img th:src="@{${map.post.firstImageUrl}}" alt=""
+                                         class="ui rounded image" style="height: 282px; width: 452px;">
                                 </a>
                             </div>
-                        </div>
+                        </div >
 
                         <div class="ui grid">
                             <div class="eleven wide column">
@@ -240,20 +271,17 @@
                                     <div class="item">
 
                                         <div class="content">
-                                            <a href="#">
-                                                <img src="../../static/images/avatar/avatar-1.jpg" alt=""
+                                            <a th:href="@{|/profile/preview/${map.user.userId}|}">
+                                                <img th:src="${map.user.headerUrl}" alt=""
                                                      class="ui avatar image">
                                             </a>
 
-                                            <a href="#">Luminous</a>
+                                            <a th:href="@{|/profile/preview/${map.user.userId}|}" th:utext="${map.user.nickname}"></a>
                                         </div>
                                     </div>
                                     <div class="item">
-                                        <i class="calendar icon"></i> 2021-12-02
-                                    </div>
-                                    <div class="item">
-                                        <i class="eye icon"></i>
-                                        1024
+                                        <i class="calendar icon"></i> [(${#dates.format(map.post.createTime,
+                                        'yyyy-MM-dd HH:mm:ss')})]
                                     </div>
                                 </div>
                             </div>
@@ -261,14 +289,14 @@
                             <div class="right aligned five wide column">
                                 <div class="ui middle horizontal link list">
                                     <div class="item">
-                                        <i class="thumbs up outline icon"></i> 19
+                                        <i class="thumbs up outline icon"></i> [(${map.post.likes})]
                                     </div>
 
                                     <div class="item">
-                                        <i class="comment outline icon"></i> 25
+                                        <i class="comment outline icon"></i> [(${map.post.commentCount})]
                                     </div>
 
-                                    <div class="item">
+                                    <div class="item" th:if="${loginUser != null}">
                                         <a class="blogEditorButton">
                                             <i class="bars icon"></i>
                                         </a>
@@ -276,9 +304,9 @@
                                         <div class="ui flowing popup transition hidden m-radius blogEditor"
                                              style="width: 180px;">
                                             <table class="table">
-                                                <tr>
+                                                <tr th:if="${loginUser.userId == map.user.userId}">
                                                     <td>
-                                                        <a href="#">
+                                                        <a th:href="@{|/edit-post/${map.post.postId}|}">
                                                             <div class="text-start">
                                                                 <i class="edit icon"
                                                                    style="margin-right: 10px;"></i>Edit
@@ -335,1323 +363,27 @@
                                     </div>
                                 </div>
                             </div>
-
-                        </div>
-
-                        <div class="ui padded vertical segment">
-                            <div class="ui mobile reversed stackable grid">
-                                <div class="nine wide column">
-                                    <h3 class="ui header">
-                                        <a href="#" style="color: black">你真的了解编程吗？</a>
-                                        <a class="ui violet label item">置顶</a>
-                                        <a class="ui orange label item">精华</a>
-                                    </h3>
-
-                                    <p class="m-text m-text-overflow">和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                    </p>
-                                </div>
-
-                                <div class="seven wide column">
-                                    <a href="#" target="_blank">
-                                        <img src="https://picsum.photos/id/0/800/450" alt=""
-                                             class="ui rounded image">
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="ui grid">
-                                <div class="eleven wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-
-                                            <div class="content">
-                                                <a href="#">
-                                                    <img src="../../static/images/avatar/avatar-1.jpg" alt=""
-                                                         class="ui avatar image">
-                                                </a>
-
-                                                <a href="#">Luminous</a>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <i class="calendar icon"></i> 2021-12-02
-                                        </div>
-                                        <div class="item">
-                                            <i class="eye icon"></i>
-                                            1024
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="right aligned five wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-                                            <i class="thumbs up outline icon"></i> 19
-                                        </div>
-
-                                        <div class="item">
-                                            <i class="comment outline icon"></i> 25
-                                        </div>
-
-                                        <div class="item">
-                                            <a class="blogEditorButton">
-                                                <i class="bars icon"></i>
-                                            </a>
-
-                                            <div class="ui flowing popup transition hidden m-radius blogEditor"
-                                                 style="width: 180px;">
-                                                <table class="table">
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="edit icon"
-                                                                       style="margin-right: 10px;"></i>Edit
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Pin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Unpin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="trash alternate icon"
-                                                                       style="margin-right: 10px;"></i>Delete
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="exclamation triangle icon"
-                                                                       style="margin-right: 10px;"></i>Report
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ui padded vertical segment">
-                            <div class="ui mobile reversed stackable grid">
-                                <div class="nine wide column">
-                                    <h3 class="ui header">
-                                        <a href="#" style="color: black">你真的了解编程吗？</a>
-                                        <a class="ui violet label item">置顶</a>
-                                        <a class="ui orange label item">精华</a>
-                                    </h3>
-
-                                    <p class="m-text m-text-overflow">和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                    </p>
-                                </div>
-
-                                <div class="seven wide column">
-                                    <a href="#" target="_blank">
-                                        <img src="https://picsum.photos/id/0/800/450" alt=""
-                                             class="ui rounded image">
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="ui grid">
-                                <div class="eleven wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-
-                                            <div class="content">
-                                                <a href="#">
-                                                    <img src="../../static/images/avatar/avatar-1.jpg" alt=""
-                                                         class="ui avatar image">
-                                                </a>
-
-                                                <a href="#">Luminous</a>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <i class="calendar icon"></i> 2021-12-02
-                                        </div>
-                                        <div class="item">
-                                            <i class="eye icon"></i>
-                                            1024
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="right aligned five wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-                                            <i class="thumbs up outline icon"></i> 19
-                                        </div>
-
-                                        <div class="item">
-                                            <i class="comment outline icon"></i> 25
-                                        </div>
-
-                                        <div class="item">
-                                            <a class="blogEditorButton">
-                                                <i class="bars icon"></i>
-                                            </a>
-
-                                            <div class="ui flowing popup transition hidden m-radius blogEditor"
-                                                 style="width: 180px;">
-                                                <table class="table">
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="edit icon"
-                                                                       style="margin-right: 10px;"></i>Edit
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Pin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Unpin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="trash alternate icon"
-                                                                       style="margin-right: 10px;"></i>Delete
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="exclamation triangle icon"
-                                                                       style="margin-right: 10px;"></i>Report
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ui padded vertical segment">
-                            <div class="ui mobile reversed stackable grid">
-                                <div class="nine wide column">
-                                    <h3 class="ui header">
-                                        <a href="#" style="color: black">你真的了解编程吗？</a>
-                                        <a class="ui violet label item">置顶</a>
-                                        <a class="ui orange label item">精华</a>
-                                    </h3>
-
-                                    <p class="m-text m-text-overflow">和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                    </p>
-                                </div>
-
-                                <div class="seven wide column">
-                                    <a href="#" target="_blank">
-                                        <img src="https://picsum.photos/id/0/800/450" alt=""
-                                             class="ui rounded image">
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="ui grid">
-                                <div class="eleven wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-
-                                            <div class="content">
-                                                <a href="#">
-                                                    <img src="../../static/images/avatar/avatar-1.jpg" alt=""
-                                                         class="ui avatar image">
-                                                </a>
-
-                                                <a href="#">Luminous</a>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <i class="calendar icon"></i> 2021-12-02
-                                        </div>
-                                        <div class="item">
-                                            <i class="eye icon"></i>
-                                            1024
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="right aligned five wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-                                            <i class="thumbs up outline icon"></i> 19
-                                        </div>
-
-                                        <div class="item">
-                                            <i class="comment outline icon"></i> 25
-                                        </div>
-
-                                        <div class="item">
-                                            <a class="blogEditorButton">
-                                                <i class="bars icon"></i>
-                                            </a>
-
-                                            <div class="ui flowing popup transition hidden m-radius blogEditor"
-                                                 style="width: 180px;">
-                                                <table class="table">
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="edit icon"
-                                                                       style="margin-right: 10px;"></i>Edit
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Pin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Unpin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="trash alternate icon"
-                                                                       style="margin-right: 10px;"></i>Delete
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="exclamation triangle icon"
-                                                                       style="margin-right: 10px;"></i>Report
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ui padded vertical segment">
-                            <div class="ui mobile reversed stackable grid">
-                                <div class="nine wide column">
-                                    <h3 class="ui header">
-                                        <a href="#" style="color: black">你真的了解编程吗？</a>
-                                        <a class="ui violet label item">置顶</a>
-                                        <a class="ui orange label item">精华</a>
-                                    </h3>
-
-                                    <p class="m-text m-text-overflow">和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                    </p>
-                                </div>
-
-                                <div class="seven wide column">
-                                    <a href="#" target="_blank">
-                                        <img src="https://picsum.photos/id/0/800/450" alt=""
-                                             class="ui rounded image">
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="ui grid">
-                                <div class="eleven wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-
-                                            <div class="content">
-                                                <a href="#">
-                                                    <img src="../../static/images/avatar/avatar-1.jpg" alt=""
-                                                         class="ui avatar image">
-                                                </a>
-
-                                                <a href="#">Luminous</a>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <i class="calendar icon"></i> 2021-12-02
-                                        </div>
-                                        <div class="item">
-                                            <i class="eye icon"></i>
-                                            1024
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="right aligned five wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-                                            <i class="thumbs up outline icon"></i> 19
-                                        </div>
-
-                                        <div class="item">
-                                            <i class="comment outline icon"></i> 25
-                                        </div>
-
-                                        <div class="item">
-                                            <a class="blogEditorButton">
-                                                <i class="bars icon"></i>
-                                            </a>
-
-                                            <div class="ui flowing popup transition hidden m-radius blogEditor"
-                                                 style="width: 180px;">
-                                                <table class="table">
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="edit icon"
-                                                                       style="margin-right: 10px;"></i>Edit
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Pin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Unpin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="trash alternate icon"
-                                                                       style="margin-right: 10px;"></i>Delete
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="exclamation triangle icon"
-                                                                       style="margin-right: 10px;"></i>Report
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ui padded vertical segment">
-                            <div class="ui mobile reversed stackable grid">
-                                <div class="nine wide column">
-                                    <h3 class="ui header">
-                                        <a href="#" style="color: black">你真的了解编程吗？</a>
-                                        <a class="ui violet label item">置顶</a>
-                                        <a class="ui orange label item">精华</a>
-                                    </h3>
-
-                                    <p class="m-text m-text-overflow">和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                    </p>
-                                </div>
-
-                                <div class="seven wide column">
-                                    <a href="#" target="_blank">
-                                        <img src="https://picsum.photos/id/0/800/450" alt=""
-                                             class="ui rounded image">
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="ui grid">
-                                <div class="eleven wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-
-                                            <div class="content">
-                                                <a href="#">
-                                                    <img src="../../static/images/avatar/avatar-1.jpg" alt=""
-                                                         class="ui avatar image">
-                                                </a>
-
-                                                <a href="#">Luminous</a>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <i class="calendar icon"></i> 2021-12-02
-                                        </div>
-                                        <div class="item">
-                                            <i class="eye icon"></i>
-                                            1024
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="right aligned five wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-                                            <i class="thumbs up outline icon"></i> 19
-                                        </div>
-
-                                        <div class="item">
-                                            <i class="comment outline icon"></i> 25
-                                        </div>
-
-                                        <div class="item">
-                                            <a class="blogEditorButton">
-                                                <i class="bars icon"></i>
-                                            </a>
-
-                                            <div class="ui flowing popup transition hidden m-radius blogEditor"
-                                                 style="width: 180px;">
-                                                <table class="table">
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="edit icon"
-                                                                       style="margin-right: 10px;"></i>Edit
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Pin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Unpin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="trash alternate icon"
-                                                                       style="margin-right: 10px;"></i>Delete
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="exclamation triangle icon"
-                                                                       style="margin-right: 10px;"></i>Report
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ui padded vertical segment">
-                            <div class="ui mobile reversed stackable grid">
-                                <div class="nine wide column">
-                                    <h3 class="ui header">
-                                        <a href="#" style="color: black">你真的了解编程吗？</a>
-                                        <a class="ui violet label item">置顶</a>
-                                        <a class="ui orange label item">精华</a>
-                                    </h3>
-
-                                    <p class="m-text m-text-overflow">和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                    </p>
-                                </div>
-
-                                <div class="seven wide column">
-                                    <a href="#" target="_blank">
-                                        <img src="https://picsum.photos/id/0/800/450" alt=""
-                                             class="ui rounded image">
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="ui grid">
-                                <div class="eleven wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-
-                                            <div class="content">
-                                                <a href="#">
-                                                    <img src="../../static/images/avatar/avatar-1.jpg" alt=""
-                                                         class="ui avatar image">
-                                                </a>
-
-                                                <a href="#">Luminous</a>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <i class="calendar icon"></i> 2021-12-02
-                                        </div>
-                                        <div class="item">
-                                            <i class="eye icon"></i>
-                                            1024
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="right aligned five wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-                                            <i class="thumbs up outline icon"></i> 19
-                                        </div>
-
-                                        <div class="item">
-                                            <i class="comment outline icon"></i> 25
-                                        </div>
-
-                                        <div class="item">
-                                            <a class="blogEditorButton">
-                                                <i class="bars icon"></i>
-                                            </a>
-
-                                            <div class="ui flowing popup transition hidden m-radius blogEditor"
-                                                 style="width: 180px;">
-                                                <table class="table">
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="edit icon"
-                                                                       style="margin-right: 10px;"></i>Edit
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Pin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Unpin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="trash alternate icon"
-                                                                       style="margin-right: 10px;"></i>Delete
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="exclamation triangle icon"
-                                                                       style="margin-right: 10px;"></i>Report
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ui padded vertical segment">
-                            <div class="ui mobile reversed stackable grid">
-                                <div class="nine wide column">
-                                    <h3 class="ui header">
-                                        <a href="#" style="color: black">你真的了解编程吗？</a>
-                                        <a class="ui violet label item">置顶</a>
-                                        <a class="ui orange label item">精华</a>
-                                    </h3>
-
-                                    <p class="m-text m-text-overflow">和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                    </p>
-                                </div>
-
-                                <div class="seven wide column">
-                                    <a href="#" target="_blank">
-                                        <img src="https://picsum.photos/id/0/800/450" alt=""
-                                             class="ui rounded image">
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="ui grid">
-                                <div class="eleven wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-
-                                            <div class="content">
-                                                <a href="#">
-                                                    <img src="../../static/images/avatar/avatar-1.jpg" alt=""
-                                                         class="ui avatar image">
-                                                </a>
-
-                                                <a href="#">Luminous</a>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <i class="calendar icon"></i> 2021-12-02
-                                        </div>
-                                        <div class="item">
-                                            <i class="eye icon"></i>
-                                            1024
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="right aligned five wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-                                            <i class="thumbs up outline icon"></i> 19
-                                        </div>
-
-                                        <div class="item">
-                                            <i class="comment outline icon"></i> 25
-                                        </div>
-
-                                        <div class="item">
-                                            <a class="blogEditorButton">
-                                                <i class="bars icon"></i>
-                                            </a>
-
-                                            <div class="ui flowing popup transition hidden m-radius blogEditor"
-                                                 style="width: 180px;">
-                                                <table class="table">
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="edit icon"
-                                                                       style="margin-right: 10px;"></i>Edit
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Pin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Unpin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="trash alternate icon"
-                                                                       style="margin-right: 10px;"></i>Delete
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="exclamation triangle icon"
-                                                                       style="margin-right: 10px;"></i>Report
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ui padded vertical segment">
-                            <div class="ui mobile reversed stackable grid">
-                                <div class="nine wide column">
-                                    <h3 class="ui header">
-                                        <a href="#" style="color: black">你真的了解编程吗？</a>
-                                        <a class="ui violet label item">置顶</a>
-                                        <a class="ui orange label item">精华</a>
-                                    </h3>
-
-                                    <p class="m-text m-text-overflow">和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                    </p>
-                                </div>
-
-                                <div class="seven wide column">
-                                    <a href="#" target="_blank">
-                                        <img src="https://picsum.photos/id/0/800/450" alt=""
-                                             class="ui rounded image">
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="ui grid">
-                                <div class="eleven wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-
-                                            <div class="content">
-                                                <a href="#">
-                                                    <img src="../../static/images/avatar/avatar-1.jpg" alt=""
-                                                         class="ui avatar image">
-                                                </a>
-
-                                                <a href="#">Luminous</a>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <i class="calendar icon"></i> 2021-12-02
-                                        </div>
-                                        <div class="item">
-                                            <i class="eye icon"></i>
-                                            1024
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="right aligned five wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-                                            <i class="thumbs up outline icon"></i> 19
-                                        </div>
-
-                                        <div class="item">
-                                            <i class="comment outline icon"></i> 25
-                                        </div>
-
-                                        <div class="item">
-                                            <a class="blogEditorButton">
-                                                <i class="bars icon"></i>
-                                            </a>
-
-                                            <div class="ui flowing popup transition hidden m-radius blogEditor"
-                                                 style="width: 180px;">
-                                                <table class="table">
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="edit icon"
-                                                                       style="margin-right: 10px;"></i>Edit
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Pin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Unpin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="trash alternate icon"
-                                                                       style="margin-right: 10px;"></i>Delete
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="exclamation triangle icon"
-                                                                       style="margin-right: 10px;"></i>Report
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="ui padded vertical segment">
-                            <div class="ui mobile reversed stackable grid">
-                                <div class="nine wide column">
-                                    <h3 class="ui header">
-                                        <a href="#" style="color: black">你真的了解编程吗？</a>
-                                        <a class="ui violet label item">置顶</a>
-                                        <a class="ui orange label item">精华</a>
-                                    </h3>
-
-                                    <p class="m-text m-text-overflow">和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                        和我们日常使用的中文、英语一样, 编程语言也是一门用于沟通的语言.
-                                        只不过"编程语言"是和计算机沟通的语言. 而"
-                                        程序", 就是使用计算机能够理解的语言书写的一连串命令. 而"编程"就是我们为了完成某项任务, 将解决问题的步骤,
-                                        用计算机能够理解的语言写成指令, 这就是"编程". 而后, 计算机会根据这些指令一步步执行, 最后完成任务.
-                                    </p>
-                                </div>
-
-                                <div class="seven wide column">
-                                    <a href="#" target="_blank">
-                                        <img src="https://picsum.photos/id/0/800/450" alt=""
-                                             class="ui rounded image">
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="ui grid">
-                                <div class="eleven wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-
-                                            <div class="content">
-                                                <a href="#">
-                                                    <img src="../../static/images/avatar/avatar-1.jpg" alt=""
-                                                         class="ui avatar image">
-                                                </a>
-
-                                                <a href="#">Luminous</a>
-                                            </div>
-                                        </div>
-                                        <div class="item">
-                                            <i class="calendar icon"></i> 2021-12-02
-                                        </div>
-                                        <div class="item">
-                                            <i class="eye icon"></i>
-                                            1024
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="right aligned five wide column">
-                                    <div class="ui middle horizontal link list">
-                                        <div class="item">
-                                            <i class="thumbs up outline icon"></i> 19
-                                        </div>
-
-                                        <div class="item">
-                                            <i class="comment outline icon"></i> 25
-                                        </div>
-
-                                        <div class="item">
-                                            <a class="blogEditorButton">
-                                                <i class="bars icon"></i>
-                                            </a>
-
-                                            <div class="ui flowing popup transition hidden m-radius blogEditor"
-                                                 style="width: 180px;">
-                                                <table class="table">
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="edit icon"
-                                                                       style="margin-right: 10px;"></i>Edit
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Pin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="thumbtack icon"
-                                                                       style="margin-right: 10px;"></i>Unpin
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="trash alternate icon"
-                                                                       style="margin-right: 10px;"></i>Delete
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td>
-                                                            <a href="#">
-                                                                <div class="text-start">
-                                                                    <i class="exclamation triangle icon"
-                                                                       style="margin-right: 10px;"></i>Report
-                                                                </div>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- 分页 -->
-                <nav aria-label="..." style="position: relative; margin-top: 50px;">
+                <nav aria-label="..." style="position: relative; margin-top: 50px;" th:if="${page.rows} > 0">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" style="color: #47536e">Previous</a>
+                        <li th:class="|page-item ${page.current==1?'disabled':''}|">
+                            <a class="page-link" th:href="@{${page.path}(current=${page.current-1})}"
+                               style="color: #47536e">Previous</a>
                         </li>
-                        <li class="page-item"><a class="page-link m-active" href="#"
-                                                 style="color: #47536e">1</a>
+                        <li class="page-item"
+                            th:each="idx:${#numbers.sequence(page.from, page.to)}">
+                            <a th:class="|page-link ${page.current==idx?'m-active':''}|"
+                               th:href="@{${page.path}(current=${idx})}" style="color: #47536e"
+                               th:text="${idx}">1</a>
                         </li>
-                        <li class="page-item" aria-current="page">
-                            <a class="page-link" href="#" style="color: #47536e">2</a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#" style="color: #47536e">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" style="color: #47536e">Next</a>
+                        <li th:class="|page-item ${page.current==page.total?'disabled':''}|">
+                            <a class="page-link" th:href="@{${page.path}(current=${page.current+1})}"
+                               style="color: #47536e">Next</a>
                         </li>
                     </ul>
                 </nav>
@@ -1717,10 +449,14 @@
         <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
         <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
         <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+        <script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.js"></script>
+        <script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.js"></script>
+
 
         <!-- Template Main JS File -->
         <script th:src="@{/js/main.js}"></script>
         <script th:src="@{/js/global.js}"></script>
+        <script th:src="@{/lib/prism/tomorrow/prism.js}"></script>
 
         <script>
             $('.qq').popup();
@@ -1745,6 +481,21 @@
                 popup: $('.blogEditor.popup'),
                 on: 'click',
                 position: 'bottom center'
+            });
+
+            const {Editor} = toastui;
+            $(function () {
+                var p = document.querySelectorAll('.blog-content');
+                var viewer = new Array(p.length);
+                for (var i = 0; i < p.length; i++) {
+                    var content = p[i].textContent;
+                    viewer[i] = new Editor({
+                        el: p[i],
+                        initialValue: content,
+                        viewer: true,
+                        height: '600px',
+                    });
+                }
             });
         </script>
     </body>

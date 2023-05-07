@@ -2,10 +2,17 @@ package cn.edu.nsu.onlinejudge.controller;
 
 
 import cn.edu.nsu.onlinejudge.annotation.LoginRequired;
+import cn.edu.nsu.onlinejudge.entity.DiscussPost;
+import cn.edu.nsu.onlinejudge.entity.Message;
+import cn.edu.nsu.onlinejudge.entity.Page;
 import cn.edu.nsu.onlinejudge.entity.User;
+import cn.edu.nsu.onlinejudge.service.DiscussPostService;
+import cn.edu.nsu.onlinejudge.service.MessageService;
 import cn.edu.nsu.onlinejudge.service.ProfileService;
 import cn.edu.nsu.onlinejudge.common.HostHolder;
+import cn.edu.nsu.onlinejudge.service.UserService;
 import cn.edu.nsu.onlinejudge.util.OnlineJudgeUtil;
+import cn.edu.nsu.onlinejudge.util.TextUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -47,15 +57,53 @@ public class ProfileController {
     @Autowired
     private HostHolder hostHolder;
 
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private DiscussPostService discussPostService;
 
     /**
-     * 个人信息页-个人信息总览页面入口
+     * 个其他用户人信息页-个人信息总览页面入口
      *
      * @return
      */
     @LoginRequired
     @RequestMapping(path = "/profile/preview", method = RequestMethod.GET)
-    public String profilePreview() {
+    public String profilePreview(Model model) {
+        User user = hostHolder.getUser();
+
+        int letterUnReadCount = messageService.findLetterUnreadCount(user.getUserId(), null);
+        model.addAttribute("letterUnReadCount", letterUnReadCount);
+        model.addAttribute("owner", user);
+
+        return "/site/profile";
+    }
+
+    /**
+     * 个其他用户人信息页-个人信息总览页面入口
+     *
+     * @return
+     */
+    @LoginRequired
+    @RequestMapping(path = "/profile/preview/{ownerId}", method = RequestMethod.GET)
+    public String profilePreview(Model model, @PathVariable String ownerId) {
+        User user = hostHolder.getUser();
+
+        if (user.getUserId() == Integer.parseInt(ownerId)) {
+            // 查询未读消息数量
+            int letterUnReadCount = messageService.findLetterUnreadCount(user.getUserId(), null);
+            model.addAttribute("letterUnReadCount", letterUnReadCount);
+            model.addAttribute("owner", user);
+        } else {
+            user = userService.findUserByUserId(Integer.parseInt(ownerId));
+            int letterUnReadCount = 0;
+            model.addAttribute("letterUnReadCount", letterUnReadCount);
+            model.addAttribute("owner", user);
+        }
 
         return "/site/profile";
     }
@@ -69,6 +117,12 @@ public class ProfileController {
     @LoginRequired
     @RequestMapping(path = "/profile/setting", method = RequestMethod.GET)
     public String profileSetting(Model model) {
+        User user = hostHolder.getUser();
+        // 查询未读消息数量
+        int letterUnReadCount = messageService.findLetterUnreadCount(user.getUserId(), null);
+        model.addAttribute("letterUnReadCount", letterUnReadCount);
+        model.addAttribute("owner", user);
+
 
         return "/site/profile-setting";
     }
@@ -81,9 +135,76 @@ public class ProfileController {
      */
     @LoginRequired
     @RequestMapping(path = "/profile/submissions", method = RequestMethod.GET)
-    public String profileSubmissions() {
+    public String profileSubmissions(Model model) {
+        User user = hostHolder.getUser();
+        // 查询未读消息数量
+        int letterUnReadCount = messageService.findLetterUnreadCount(user.getUserId(), null);
+        model.addAttribute("letterUnReadCount", letterUnReadCount);
+        model.addAttribute("owner", user);
 
         return "/site/profile-my-submissions";
+    }
+
+
+    /**
+     * 个人信息页-个人提交页面入口
+     *
+     * @return
+     */
+    @LoginRequired
+    @RequestMapping(path = "/profile/submissions/{ownerId}", method = RequestMethod.GET)
+    public String profileSubmissions(Model model, @PathVariable String ownerId) {
+        User user = hostHolder.getUser();
+        // 查询未读消息数量
+        int letterUnReadCount = 0;
+        model.addAttribute("letterUnReadCount", letterUnReadCount);
+
+        User owner = userService.findUserByUserId(Integer.parseInt(ownerId));
+        model.addAttribute("owner", owner);
+
+
+        return "/site/profile-my-submissions";
+    }
+
+
+    /**
+     * 个人信息页-他人博客页面入口
+     *
+     * @return
+     */
+    @LoginRequired
+    @RequestMapping(path = "/profile/blogs", method = RequestMethod.GET)
+    public String profileBlogs(Model model, Page page) {
+        User user = hostHolder.getUser();
+        // 查询未读消息数量
+        int letterUnReadCount = 0;
+        model.addAttribute("letterUnReadCount", letterUnReadCount);
+
+        page.setRows(discussPostService.findDiscussPostRows(0));
+        page.setPath("/forum");
+
+        List<DiscussPost> list = discussPostService.findDiscussPosts(0, page.getOffset(), page.getLimit());
+        List<Map<String, Object>> discussPosts = new ArrayList<>();
+
+        if (list != null) {
+            for (DiscussPost post : list) {
+                Map<String, Object> map = new HashMap<>();
+
+                User author = userService.findUserByUserId(post.getUserId());
+
+                post.setContent(TextUtil.markDownToText(post.getContent()));
+                map.put("post", post);
+                map.put("user", author);
+
+                discussPosts.add(map);
+            }
+        }
+
+        model.addAttribute("discussPosts", discussPosts);
+        model.addAttribute("owner", user);
+
+
+        return "/site/profile-my-blogs";
     }
 
 
@@ -93,15 +214,72 @@ public class ProfileController {
      * @return
      */
     @LoginRequired
-    @RequestMapping(path = "/profile/blogs", method = RequestMethod.GET)
-    public String profileBlogs() {
+    @RequestMapping(path = "/profile/blogs/{ownerId}", method = RequestMethod.GET)
+    public String profileBlogs(Model model, Page page, @PathVariable String ownerId) {
+        User user = hostHolder.getUser();
+        // 查询未读消息数量
+        int letterUnReadCount = messageService.findLetterUnreadCount(user.getUserId(), null);
+        model.addAttribute("letterUnReadCount", letterUnReadCount);
+
+        page.setRows(discussPostService.findDiscussPostRows(Integer.parseInt(ownerId)));
+        page.setPath("/forum");
+
+        List<DiscussPost> list = discussPostService.findDiscussPosts(Integer.parseInt(ownerId), page.getOffset(), page.getLimit());
+        List<Map<String, Object>> discussPosts = new ArrayList<>();
+
+        if (list != null) {
+            for (DiscussPost post : list) {
+                Map<String, Object> map = new HashMap<>();
+
+                User author = userService.findUserByUserId(post.getUserId());
+
+                post.setContent(TextUtil.markDownToText(post.getContent()));
+                map.put("post", post);
+                map.put("user", author);
+
+                discussPosts.add(map);
+            }
+        }
+
+        model.addAttribute("discussPosts", discussPosts);
+        User owner = userService.findUserByUserId(Integer.parseInt(ownerId));
+        model.addAttribute("owner", owner);
 
         return "/site/profile-my-blogs";
     }
 
     @LoginRequired
     @RequestMapping(path = "/profile/message", method = RequestMethod.GET)
-    public String profileMessage() {
+    public String profileMessage(Model model, Page page) {
+        User user = hostHolder.getUser();
+
+        // 分页信息
+        page.setLimit(10);
+        page.setPath("letter/list");
+        page.setRows(messageService.findConversationCount(user.getUserId()));
+        // 会话列表
+        List<Message> conversationList = messageService.findConversations(
+                user.getUserId(), page.getOffset(), page.getLimit());
+        List<Map<String, Object>> conversations = new ArrayList<>();
+        if (conversationList != null) {
+            for (Message message : conversationList) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("conversation", message);
+                map.put("letterCount", messageService.findLetterCount(message.getConversationId()));
+                map.put("unReadCount", messageService.findLetterUnreadCount(user.getUserId(), message.getConversationId()));
+                int targetId = user.getUserId() == message.getFromId() ? message.getToId() : message.getFromId();
+                map.put("target", userService.findUserByUserId(targetId));
+                conversations.add(map);
+            }
+        }
+
+        model.addAttribute("conversations", conversations);
+
+        // 查询未读消息数量
+        int letterUnReadCount = messageService.findLetterUnreadCount(user.getUserId(), null);
+        model.addAttribute("letterUnReadCount", letterUnReadCount);
+        model.addAttribute("owner", user);
+
 
         return "/site/profile-message";
     }
@@ -197,7 +375,8 @@ public class ProfileController {
 
     @LoginRequired
     @RequestMapping(path = "/change-profile", method = RequestMethod.POST)
-    public String changeProfile(String nickname, @RequestParam(value = "gender", defaultValue = "0") int gender, String brief) {
+    public String changeProfile(String nickname,
+                                @RequestParam(value = "gender", defaultValue = "0") int gender, String brief) {
 
         System.out.println(nickname + " " + gender + " " + brief);
         profileService.changeProfile(nickname, gender, brief);

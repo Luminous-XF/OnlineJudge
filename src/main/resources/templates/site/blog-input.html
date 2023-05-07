@@ -191,7 +191,6 @@
                             <h1>Title</h1>
                             <input class=""
                                    id="title"
-                                   th:value="${post.title}"
                                    name="title"
                                    onclick="hideInfo()"
                                    type="text">
@@ -211,9 +210,8 @@
                         </div>
 
                         <img src="" id="firstImage" style="width: 900px; display: none">
-                        <img th:src="@{${post.firstImageUrl}}" th:if="${editFlag != null}" id="initFirstImage" style="width: 900px;">
 
-                        <div id="content" th:utext="${post.content}" style="display: none"></div>
+                        <div id="content" style="display: none"></div>
                         <div class="field" style="margin-top: 50px;">
                             <h1>Content</h1>
                             <div id="editor" style="z-index: 1050 !important;"></div>
@@ -356,37 +354,12 @@
                 var title = $("#title").val();
                 var firstImage = $("#inputGroupFile04")[0].files[0];
                 var content = editor.getMarkdown();
-                var uri = [[${editFlag == null}]] ? "/add-post" : "/edit-post/" + [[${post.postId}]];
+                var uri = "/add-post";
 
                 var formData = new FormData();
                 formData.append('title', title);
                 formData.append('firstImage', firstImage);
                 formData.append('content', content);
-                if ([[${editFlag != null}]]) {
-                    formData.append('firstImageChangeFlag', firstImageChangeFlag);
-                }
-                // 发送异步请求
-                // $.post(
-                //     CONTEXT_PATH + "/add-post",
-                //     // {"title": title, "content": content, "firstImage": firstImage},
-                //     formData,
-                //     function (data) {
-                //         data = $.parseJSON(data);
-                //         alert(data)
-                //         // 在提示框中显示返回消息
-                //         $("#hintTitle").text(data.msg);
-                //         // 显示提示框
-                //         $("#hintModel").modal("show");
-                //         // 2秒后自动隐藏
-                //         setTimeout(function () {
-                //             $("#hintModel").modal("hide");
-                //             // 刷新页面
-                //             // if (data.code === 0) {
-                //             //     window.location.reload();
-                //             // }
-                //         }, 2000);
-                //     }
-                // )
 
                 $.ajax({
                     type: 'POST',
@@ -415,10 +388,6 @@
                         setTimeout(function () {
                             $("#hintSuccessModel").hide();
                             $("#hintFailModel").hide();
-                            // 刷新页面
-                            // if (data.code === 0) {
-                            //     window.location.reload();
-                            // }
                         }, 3000);
                     }
                 });

@@ -72,6 +72,12 @@ public class MessageController {
 
     @RequestMapping(path = "/message/letter/detail/{conversationId}", method = RequestMethod.GET)
     public String getLetterDetail(@PathVariable("conversationId") String conversationId, Model model) {
+        if (!conversationId.contains("_")) {
+            int id1 = Integer.parseInt(conversationId);
+            int id2 = hostHolder.getUser().getUserId();
+            conversationId = Math.min(id1, id2) + "_" + Math.max(id1, id2);
+        }
+
         // 分页信息
         Page page = new Page();
         page.setLimit(100);

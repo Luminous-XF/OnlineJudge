@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -199,348 +199,44 @@
                                     <th class="col-5" style="font-size: 2px;">Personal Signature</th>
                                 </tr>
 
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">1</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-                                       
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
+                                <x th:each="map, mapStat:${userList}">
+                                    <tr>
+                                        <td class="text-center" style="height: 70px;" th:utext="${(page.current - 1) * 20 + mapStat.index + 1}">1</td>
+                                        <td>
+                                            <div class="align-items-center" style="display: flex;">
+                                                <a th:href="@{|/profile/preview/${map.userId}|}"><img th:src="${map.headerUrl}" alt="" style="height: 30px; border-radius: 1rem"></a>
+                                                <a th:href="@{|/profile/preview/${map.userId}|}" style="margin-left: 5px;" th:utext="${map.username}">19380120319</a>
+                                            </div>
 
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">2</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">3</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">4</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">5</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">6</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">7</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">8</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">9</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">10</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">11</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">12</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">13</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">14</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">15</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">16</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">17</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">18</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">19</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center" style="height: 50px;">20</td>
-                                    <td>
-                                        <div class="align-items-center" style="display: flex;">
-                                            <a href="#"><img src="../../static/images/avatar/avatar-1.jpg" alt="" style="height: 30px; border-radius: 1rem"></a>
-                                            <a href="#" style="margin-left: 5px;">19380120319</a>
-                                        </div>
-
-                                    </td>
-                                    <td class="text-center"><a href="#">Luminous</a></td>
-                                    <td>2333</td>
-                                    <td>233</td>
-                                    <td>23.33%</td>
-                                    <td>Why sleep long, when forever rest after death！</td>
-                                </tr>
-
-
-
-
-
+                                        </td>
+                                        <td class="text-center"><a th:href="@{|/profile/preview/${map.userId}|}" th:utext="${map.nickname}">Luminous</a></td>
+                                        <td th:utext="${map.solved}">2333</td>
+                                        <td th:utext="${map.submit}">233</td>
+                                        <td>
+                                            <span th:utext="${#numbers.formatDecimal(map.solved * 1.0 / map.submit * 100, 1, 'COMMA', 2, 'POINT')}">50.23</span> %</td>
+                                        <td th:utext="${map.brief}">Why sleep long, when forever rest after death！</td>
+                                    </tr>
+                                </x>
                             </table>
 
 
                             <!-- 分页 -->
-                            <nav aria-label="..." style="position: relative; margin-top: 50px;">
+                            <nav aria-label="..." style="position: relative; margin-top: 50px;"
+                                 th:if="${page.rows} > 0">
                                 <ul class="pagination justify-content-center">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" style="color: #47536e">Previous</a>
+                                    <li th:class="|page-item ${page.current==1?'disabled':''}|">
+                                        <a class="page-link" th:href="@{${page.path}(current=${page.current-1})}"
+                                           style="color: #47536e">Previous</a>
                                     </li>
-                                    <li class="page-item"><a class="page-link m-active" href="#" style="color: #47536e">1</a>
+                                    <li class="page-item"
+                                        th:each="idx:${#numbers.sequence(page.from, page.to)}">
+                                        <a th:class="|page-link ${page.current==idx?'m-active':''}|"
+                                           th:href="@{${page.path}(current=${idx})}" style="color: #47536e"
+                                           th:text="${idx}">1</a>
                                     </li>
-                                    <li class="page-item" aria-current="page">
-                                        <a class="page-link" href="#" style="color: #47536e">2</a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#" style="color: #47536e">3</a>
-                                    </li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" style="color: #47536e">Next</a>
+                                    <li th:class="|page-item ${page.current==page.total?'disabled':''}|">
+                                        <a class="page-link" th:href="@{${page.path}(current=${page.current+1})}"
+                                           style="color: #47536e">Next</a>
                                     </li>
                                 </ul>
                             </nav>

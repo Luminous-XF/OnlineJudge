@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +9,7 @@
         <meta content="" name="keywords">
 
         <!-- Favicons -->
-        <link href="../../static/images/nsu/nsu-school-badge-icon.ico" rel="icon" type="image/x-icon">
+        <link th:href="@{/images/nsu/nsu-school-badge-icon.ico}" rel="icon" type="image/x-icon">
 
 
         <!-- Google Fonts -->
@@ -17,15 +17,15 @@
               rel="stylesheet">
 
 
+
         <!-- Vendor CSS Files -->
-        <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../static/bootstrap/icons/bootstrap-icons.css" rel="stylesheet">
+        <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+        <link th:href="@{/bootstrap/icons/bootstrap-icons.css}" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css" rel="stylesheet">
 
-
         <!-- Template Main CSS File -->
-        <link href="../../static/css/typo.css" rel="stylesheet">
-        <link href="../../static/css/style.css" rel="stylesheet">
+        <link th:href="@{/css/style.css}" rel="stylesheet">
+        <link th:href="@{/static/css/typo.css}" rel="stylesheet">
     </head>
 
     <style>
@@ -100,7 +100,8 @@
                                 <table class="table">
                                     <tr>
                                         <td class="align-items-center" style="display: flex;">
-                                            <a th:href="@{/profile/preview}"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                            <a th:href="@{/profile/preview}"><img th:src="@{${loginUser.headerUrl}}"
+                                                                                  alt=""
                                                                                   style="height: 50px; width: 50px; margin-right: 10px;"
                                                                                   class="ui avatar image">
                                                 Luminous</a>
@@ -111,7 +112,8 @@
                                         <td>
                                             <a th:href="@{/profile/setting}">
                                                 <div>
-                                                    <i class="user icon" style="margin-right: 10px;"></i>Profile Settings
+                                                    <i class="user icon" style="margin-right: 10px;"></i>Profile
+                                                    Settings
                                                 </div>
                                             </a>
                                         </td>
@@ -121,7 +123,8 @@
                                         <td>
                                             <a th:href="@{/profile/submissions}">
                                                 <div>
-                                                    <i class="upload icon" style="margin-right: 10px;"></i>My Submissions
+                                                    <i class="upload icon" style="margin-right: 10px;"></i>My
+                                                    Submissions
                                                 </div>
                                             </a>
                                         </td>
@@ -159,7 +162,8 @@
                                 </table>
 
                                 <div class="text-end">
-                                    <button th:onclick="|window.location.href='@{/logout}'|" class="ui basic m-radius button">
+                                    <button th:onclick="|window.location.href='@{/logout}'|"
+                                            class="ui basic m-radius button">
                                         Logout
                                         <i class="sign-out icon" style="margin-left: 10px;"></i>
                                     </button>
@@ -187,40 +191,29 @@
                 <div class="col-lg-9 col-md-7">
                     <!-- Problem Body -->
                     <div class="ui segment m-radius typo typo-selection">
-                        <h1 class="text-center m-problem-h">ISBN号码</h1>
+                        <h1 class="text-center m-problem-h" th:utext="${problem.problemTitle}">ISBN号码</h1>
 
                         <hr style="height: 1px;">
 
-                        <p class="m-problem-text">
+                        <p class="m-problem-text" th:utext="${problem.problemComment}">
                             &nbsp;&nbsp;&nbsp;&nbsp;每一本正式出版的图书都有一个ISBN号码与之对应，ISBN码包括9位数字、1位识别码和3位分隔符，
                             其规定格式如“x-xxx-xxxxx-x”，其中符号“-”就是分隔符（键盘上的减号），最后一位是识别码，例如0-670-82162-4就是一个
                             标准的ISBN码。ISBN码的首位数字表示书籍的出版语言，例如0代表英语；第一个分隔符“-”之后的三位数字代表出版社，例如670代
                             表维京出版社；第二个分隔符后的五位数字代表该书在该出版社的编号；最后一位为识别码。
                         </p>
 
-                        <p class="m-problem-text">
-                            识别码的计算方法如下： <br>首位数字乘以1
-                            加上次位数字乘以2……以此类推，用所得的结果mod 11，所得的余数即为识别码，如果余数为10，则识别码为大写字母X。例如ISBN号
-                            码0-670-82162-4中的识别码4是这样得到的：对067082162这9个数字，从左至右，分别乘以1，2，...,9,再求和，即0×1+6×2+
-                            ……+2×9=158，然后取158 mod 11的结果4作为识别码。
-                        </p>
-
-                        <p class="m-problem-text">
-                            &nbsp;&nbsp;&nbsp;&nbsp;你的任务是编写程序判断输入的ISBN号码中识别码是否正确，如果正确，则 仅输出“Right”；如果错
-                            误，则输出你认为是正确的ISBN号码。
-                        </p>
 
                         <h3 class="m-problem-h">Input</h3>
-                        <p class="m-problem-text">
+                        <p class="m-problem-text" th:utext="${problem.input}">
                             只有一行，是一个字符序列，表示一本书的ISBN号码（保证输入符合ISBN号码的格式要求）。
                         </p>
 
                         <h3 class="m-problem-h">Output</h3>
-                        <p class="m-problem-text">
+                        <p class="m-problem-text" th:utext="${problem.output}">
                             只有一行，假如输入的ISBN号码的识别码正确，那么输出“Right”，否则，按照规定的格式，输出正确的ISBN号码（包括分隔符“-”）。
                         </p>
 
-                        <div style="margin-top: 75px;">
+                        <div style="margin-top: 75px;" th:each="map, mapStat:${sampleDataList}">
                             <!--                            <div class="row" style="margin-left: 9px;">-->
                             <!--                                <h2 class="col-11 m-sample-h">Sample Input 1</h2>-->
                             <!--                                <i class="col-1 btn one wide btn ui copy icon"></i>-->
@@ -229,23 +222,20 @@
                             <!--                                 style="margin-left: 20px; margin-right: 20px; margin-top: -5px;!important;">1 2 3123</pre>-->
 
 
-                            <h3 class="m-sample-h" style="margin-left: 20px; margin-right: 20px;">Sample Input 1</h3>
-                            <pre class="ui segment m-problem-sample m-problem-text user-select-all">1 2 3123</pre>
+                            <h3 class="m-sample-h" style="margin-left: 20px; margin-right: 20px;">
+                                Sample Input <span th:utext="${mapStat.index + 1}">1</span>
+                            </h3>
+                            <pre class="ui segment m-problem-sample m-problem-text user-select-all" th:utext="${map.sampleInput}">1 2 3123</pre>
 
-                            <h3 class="m-sample-h" style="margin-left: 20px; margin-right: 20px;">Sample Output 1</h3>
-                            <pre class="ui segment m-problem-sample m-problem-text user-select-all">123</pre>
-
-
-                            <h3 class="m-sample-h" style="margin-left: 20px; margin-right: 20px;">Sample Input 2</h3>
-                            <pre class="ui segment m-problem-sample m-problem-text user-select-all">4 5 6456</pre>
-
-                            <h3 class="m-sample-h" style="margin-left: 20px; margin-right: 20px;">Sample Output 2</h3>
-                            <pre class="ui segment m-problem-sample m-problem-text user-select-all">123</pre>
+                            <h3 class="m-sample-h" style="margin-left: 20px; margin-right: 20px;">
+                                Sample Output <span th:utext="${mapStat.index + 1}">1</span>
+                            </h3>
+                            <pre class="ui segment m-problem-sample m-problem-text user-select-all" th:utext="${map.sampleOutput}">123</pre>
                         </div>
 
 
                         <h3 class="m-problem-h">Note</h3>
-                        <p class="m-problem-text">
+                        <p class="m-problem-text" th:utext="${problem.note}">
                             注意输入输入出格式！
                         </p>
 
@@ -306,7 +296,7 @@
                         <div class=" ui segment m-bottom-radius">
                             <table class="table " style="border: transparent">
                                 <tr class="row" style="margin:0 auto">
-                                    <td class="col-lg-6 col-md-4 col-sm-12">
+                                    <td class="col-lg-6 col-md-4 col-sm-12" th:utext="${problem.problemNumber}">
                                         <strong>ID</strong>
                                     </td>
                                     <td class="col-lg-6 col-md-8 col-sm-8">
@@ -319,7 +309,9 @@
                                         <strong><i class="ui stopwatch icon"></i></strong>
                                     </td>
 
-                                    <td class="col-lg-6 col-md-8 col-sm-8">2000ms</td>
+                                    <td class="col-lg-6 col-md-8 col-sm-8">
+                                        <span th:utext="${problem.timeLimit}"></span>ms
+                                    </td>
                                 </tr>
 
                                 <tr class="row" style="margin:0 auto">
@@ -327,7 +319,9 @@
                                         <strong><i class="ui microchip icon"></i></strong>
                                     </td>
 
-                                    <td class="col-lg-6 col-md-8 col-sm-8">65536K</td>
+                                    <td class="col-lg-6 col-md-8 col-sm-8">
+                                        <span th:utext="${problem.memoryLimit}"></span>K
+                                    </td>
                                 </tr>
 
                                 <tr class="row" style="margin:0 auto">
@@ -335,7 +329,9 @@
                                         <strong>Difficulty</strong>
                                     </td>
 
-                                    <td class="col-lg-6 col-md-8 col-sm-8">easy</td>
+                                    <td class="col-lg-6 col-md-8 col-sm-8" th:if="${problem.difficulty == 1}">easy</td>
+                                    <td class="col-lg-6 col-md-8 col-sm-8" th:if="${problem.difficulty == 2}">medium</td>
+                                    <td class="col-lg-6 col-md-8 col-sm-8" th:if="${problem.difficulty == 3}">hard</td>
                                 </tr>
 
                                 <tr class="row" style="margin:0 auto">
@@ -359,7 +355,7 @@
                                         <strong>Source</strong>
                                     </td>
 
-                                    <td class="col-lg-6 col-md-8 col-sm-8"><a href="#">Hong Kong Regional Online
+                                    <td class="col-lg-6 col-md-8 col-sm-8"><a href="#" th:utext="${problem.source}">Hong Kong Regional Online
                                         Preliminary 2016</a></td>
                                 </tr>
 
@@ -376,7 +372,9 @@
                                         <strong>Author</strong>
                                     </td>
 
-                                    <td class="col-lg-6 col-md-8 col-sm-8"><a href="#">Luminous</a></td>
+                                    <td class="col-lg-6 col-md-8 col-sm-8">
+                                        <a th:href="@{|/profile/preview/${author.userId}|}">Luminous</a>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -502,12 +500,12 @@
 
 
         <!-- Vendor JS Files -->
-        <script src="../../static/js/jquery-3.6.1.min.js"></script>
-        <script src="../../static/bootstrap/js/bootstrap.min.js"></script>
+        <script th:src="@{/js/jquery-3.6.1.min.js}"></script>
+        <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
         <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 
         <!-- Template Main JS File -->
-        <script src="../../static/js/main.js"></script>
+        <script th:src="@{/js/main.js}"></script>
 
         <script>
             $('.qq').popup();

@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 
 @Service
@@ -51,6 +48,14 @@ public class UserService {
 
 
     public User findUserByUsername(String username) {return userMapper.selectByUsername(username); }
+
+    public List<User> findUserBySolvedRange(int offset, int limit) {
+        return userMapper.selectUserBySolvedRange(offset, limit);
+    }
+
+    public int findUserBySolvedRangeRows() {
+        return userMapper.findUserBySolvedRangeRows();
+    }
 
 
     /**

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nsu.onlinejudge.dao.SampleDataMapper">
+
+    <sql id="selectFields">
+        problem_id, sample_input, sample_output, sample_id, status
+    </sql>
+
+    <sql id="insertFields">
+        problem_id, sample_input, sample_output, sample_id, status
+    </sql>
+
+
+    <select id="selectSampleData" resultType="SampleData">
+        SELECT <include refid="selectFields"></include>
+        FROM sample_data
+        WHERE problem_id = ${problemId}
+        AND status = 0
+        ORDER BY sample_id
+    </select>
+</mapper>

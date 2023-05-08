@@ -5,6 +5,8 @@ import cn.edu.nsu.onlinejudge.common.Enum.GenderEnum;
 import cn.edu.nsu.onlinejudge.common.Enum.UserActivationStatusEnum;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 
@@ -13,6 +15,10 @@ public interface UserMapper {
     User selectByUsername(String username);
 
     User selectByEmail(String email);
+
+    List<User> selectUserBySolvedRange(int offset, int limit);
+
+    int findUserBySolvedRangeRows();
 
     int insertUser(User user);
 

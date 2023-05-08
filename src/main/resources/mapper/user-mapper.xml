@@ -37,6 +37,20 @@
         WHERE email = #{email}
     </select>
 
+    <select id="selectUserBySolvedRange" resultType="User">
+        SELECT <include refid="selectFields"></include>
+        FROM user
+        WHERE status = 'SUCCESS' AND defunct = 'NORMAL'
+        ORDER BY solved DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="findUserBySolvedRangeRows" resultType="int">
+        SELECT COUNT(user_id)
+        FROM user
+        WHERE status = 'SUCCESS' AND defunct = 'NORMAL'
+    </select>
+
     <insert id="insertUser" parameterType="User" keyProperty="userId">
         INSERT INTO user (<include refid="insertFields"></include>)
         VALUES (#{username}, #{nickname}, #{password}, #{salt}, #{email}, #{type}, #{status}, #{activationCode},

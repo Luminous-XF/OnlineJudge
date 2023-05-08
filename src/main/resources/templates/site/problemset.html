@@ -27,148 +27,152 @@
 
 
     <body>
-    <!-- ======= Header ======= -->
-    <header id="header" class="fixed-top">
-        <div class="container d-flex align-items-center justify-content-between">
-            <div class="logo">
-                <a th:href="@{/index}">
-                    <img th:src="@{/images/nsu/nsu-school-badge.png}" alt="" class="img-fluid">&nbsp;
-                    <strong>NSU Online Judge</strong>
-                </a>
+        <!-- ======= Header ======= -->
+        <header id="header" class="fixed-top">
+            <div class="container d-flex align-items-center justify-content-between">
+                <div class="logo">
+                    <a th:href="@{/index}">
+                        <img th:src="@{/images/nsu/nsu-school-badge.png}" alt="" class="img-fluid">&nbsp;
+                        <strong>NSU Online Judge</strong>
+                    </a>
+                </div>
+
+
+                <nav id="navbar" class="navbar">
+                    <ul>
+                        <li>
+                            <a th:href="@{/index}" class="nav-link scroll d-inline-block">
+                                <i class="home icon"></i>Home
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/problemset}" class="nav-link scrollto d-inline-block active">
+                                <i class="book icon"></i>Problems
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/status}" class="nav-link scrollto d-inline-block">
+                                <i class="database icon"></i>Status
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/rating}" class="nav-link scrollto d-inline-block">
+                                <i class="chart bar icon"></i>Rating
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/contests}" class="nav-link scrollto d-inline-block">
+                                <i class="trophy icon"></i>Contests
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/forum}" class="nav-link scrollto d-inline-block">
+                                <i class="chat dots fill icon"></i>Forum
+                            </a>
+                        </li>
+
+                        <li>
+                            <a th:href="@{/faq}" class="nav-link scrollto d-inline-block">
+                                <i class="question circle icon"></i>F.A.Q
+                            </a>
+                        </li>
+
+                        <li th:if="${loginUser == null}">
+                            <a class="getstarted scrollto" th:href="@{/login}">Get Started</a>
+                        </li>
+
+                        <li class="align-items-center" style="display:flex;" th:if="${loginUser != null}">
+                            <a href="#" id="infoButton"><img th:src="@{${loginUser.headerUrl}}" alt=""
+                                                             class="ui avatar image">
+                                Luminous</a>
+
+                            <div class="ui info flowing popup transition hidden m-radius" style="width: 280px;">
+                                <table class="table">
+                                    <tr>
+                                        <td class="align-items-center" style="display: flex;">
+                                            <a th:href="@{/profile/preview}"><img th:src="@{${loginUser.headerUrl}}"
+                                                                                  alt=""
+                                                                                  style="height: 50px; width: 50px; margin-right: 10px;"
+                                                                                  class="ui avatar image">
+                                                Luminous</a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/setting}">
+                                                <div>
+                                                    <i class="user icon" style="margin-right: 10px;"></i>Profile
+                                                    Settings
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/submissions}">
+                                                <div>
+                                                    <i class="upload icon" style="margin-right: 10px;"></i>My
+                                                    Submissions
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/blogs}">
+                                                <div>
+                                                    <i class="book icon" style="margin-right: 10px;"></i>My Blogs
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>
+                                            <a th:href="@{/profile/message}">
+                                                <div>
+                                                    <i class="mail icon" style="margin-right: 10px;"></i>Message
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+                                    <tr th:if="${loginUser.type.key == 1}">
+                                        <td>
+                                            <a th:href="@{/admin/dashboard}">
+                                                <div>
+                                                    <i class="user md icon" style="margin-right: 10px;"></i>Administration
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <div class="text-end">
+                                    <button th:onclick="|window.location.href='@{/logout}'|"
+                                            class="ui basic m-radius button">
+                                        Logout
+                                        <i class="sign-out icon" style="margin-left: 10px;"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <i class="bi bi-list mobile-nav-toggle"></i>
+                </nav><!-- .navbar -->
+
             </div>
 
-
-            <nav id="navbar" class="navbar">
-                <ul>
-                    <li>
-                        <a th:href="@{/index}" class="nav-link scroll d-inline-block">
-                            <i class="home icon"></i>Home
-                        </a>
-                    </li>
-
-                    <li>
-                        <a th:href="@{/problemset}" class="nav-link scrollto d-inline-block active">
-                            <i class="book icon"></i>Problems
-                        </a>
-                    </li>
-
-                    <li>
-                        <a th:href="@{/status}" class="nav-link scrollto d-inline-block">
-                            <i class="database icon"></i>Status
-                        </a>
-                    </li>
-
-                    <li>
-                        <a th:href="@{/rating}" class="nav-link scrollto d-inline-block">
-                            <i class="chart bar icon"></i>Rating
-                        </a>
-                    </li>
-
-                    <li>
-                        <a th:href="@{/contests}" class="nav-link scrollto d-inline-block">
-                            <i class="trophy icon"></i>Contests
-                        </a>
-                    </li>
-
-                    <li>
-                        <a th:href="@{/forum}" class="nav-link scrollto d-inline-block">
-                            <i class="chat dots fill icon"></i>Forum
-                        </a>
-                    </li>
-
-                    <li>
-                        <a th:href="@{/faq}" class="nav-link scrollto d-inline-block">
-                            <i class="question circle icon"></i>F.A.Q
-                        </a>
-                    </li>
-
-                    <li th:if="${loginUser == null}">
-                        <a class="getstarted scrollto" th:href="@{/login}">Get Started</a>
-                    </li>
-
-                    <li class="align-items-center" style="display:flex;" th:if="${loginUser != null}">
-                        <a href="#" id="infoButton"><img th:src="@{${loginUser.headerUrl}}" alt=""
-                                                         class="ui avatar image">
-                            Luminous</a>
-
-                        <div class="ui info flowing popup transition hidden m-radius" style="width: 280px;">
-                            <table class="table">
-                                <tr>
-                                    <td class="align-items-center" style="display: flex;">
-                                        <a th:href="@{/profile/preview}"><img th:src="@{${loginUser.headerUrl}}" alt=""
-                                                                              style="height: 50px; width: 50px; margin-right: 10px;"
-                                                                              class="ui avatar image">
-                                            Luminous</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <a th:href="@{/profile/setting}">
-                                            <div>
-                                                <i class="user icon" style="margin-right: 10px;"></i>Profile Settings
-                                            </div>
-                                        </a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <a th:href="@{/profile/submissions}">
-                                            <div>
-                                                <i class="upload icon" style="margin-right: 10px;"></i>My Submissions
-                                            </div>
-                                        </a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <a th:href="@{/profile/blogs}">
-                                            <div>
-                                                <i class="book icon" style="margin-right: 10px;"></i>My Blogs
-                                            </div>
-                                        </a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <a th:href="@{/profile/message}">
-                                            <div>
-                                                <i class="mail icon" style="margin-right: 10px;"></i>Message
-                                            </div>
-                                        </a>
-                                    </td>
-                                </tr>
-
-                                <tr th:if="${loginUser.type.key == 1}">
-                                    <td>
-                                        <a th:href="@{/admin/dashboard}">
-                                            <div>
-                                                <i class="user md icon" style="margin-right: 10px;"></i>Administration
-                                            </div>
-                                        </a>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <div class="text-end">
-                                <button th:onclick="|window.location.href='@{/logout}'|" class="ui basic m-radius button">
-                                    Logout
-                                    <i class="sign-out icon" style="margin-left: 10px;"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-
-                <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav><!-- .navbar -->
-
-        </div>
-
-    </header><!-- End Header -->
+        </header><!-- End Header -->
 
 
         <!-- ======= Main Section ======= -->
@@ -198,408 +202,50 @@
                                     </th>
                                 </tr>
 
+                                <x th:each="map:${problems}">
+                                    <tr>
+                                        <td style="height: 50px;">
+                                            <div th:utext="${map.problem.problemNumber}">10001</div>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{|/problem/${map.problem.problemId}|}" th:utext="${map.problem.problemTitle}">A+B=?</a>
+                                        </td>
+                                        <td class="text-end">
+                                            <div class="text-secondary" style="font-size: 7px;">模拟</div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center easy" th:if="${map.problem.difficulty == 1}">
+                                                <strong>easy</strong></div>
+                                            <div class="text-center medium" th:if="${map.problem.difficulty == 2}">
+                                                <strong>medium</strong></div>
+                                            <div class="text-center hard" th:if="${map.problem.difficulty == 3}">
+                                                <strong>hard</strong></div>
+                                        </td>
 
-                                <tr class="solved">
-                                    <td style="height: 50px;">
-                                        <div>10001</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">A+B=?</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <!--<button class="ui teal tiny basic button m-radius">模拟</button>-->
-                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">102</div>
-                                    </td>
-                                </tr>
-
-
-                                <tr>
-                                    <td style="height: 50px;">
-                                        <div>10002</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">陶陶摘苹果</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">133</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="attempted">
-                                    <td style="height: 50px;">
-                                        <div>10003</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">不高兴的津津</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="solved">
-                                    <td style="height: 50px;">
-                                        <div>10004</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">数字反转</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟，字符串</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center medium"><strong>medium</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>10005</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">校门外的树</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">数据结构，字符串</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center hard"><strong>hard</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
-
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>10006</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">A+B=?</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">102</div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td style="height: 50px;">
-                                        <div>10007</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">陶陶摘苹果</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟，排序</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">133</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="attempted">
-                                    <td style="height: 50px;">
-                                        <div>10008</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">不高兴的津津</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>10009</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">数字反转</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟，字符串</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center medium"><strong>medium</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>100010</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">校门外的树</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">数据结构，线段树</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center hard"><strong>hard</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
-
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>10011</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">A+B=?</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">102</div>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td style="height: 50px;">
-                                        <div>10012</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">陶陶摘苹果</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">133</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>10013</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">不高兴的津津</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="solved">
-                                    <td style="height: 50px;">
-                                        <div>10014</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">数字反转</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟，字符串</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center medium"><strong>medium</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>10015</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">校门外的树</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">数据结构，线段树</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center hard"><strong>hard</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
-
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>10016</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">A+B=?</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">102</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>10017</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">陶陶摘苹果</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟，排序</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">133</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>10018</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">不高兴的津津</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center easy"><strong>easy</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>10019</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">数字反转</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">模拟，字符串，字符串， 字符串，字符串</div>
-
-                                    </td>
-                                    <td>
-                                        <div class="text-center medium"><strong>medium</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
-
-                                <tr class="">
-                                    <td style="height: 50px;">
-                                        <div>10020</div>
-                                    </td>
-                                    <td>
-                                        <a href="#">校门外的树</a>
-                                    </td>
-                                    <td class="text-end">
-                                        <div class="text-secondary" style="font-size: 7px;">数据结构，线段树，线段树，线段树，线段树</div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center hard"><strong>hard</strong></div>
-                                    </td>
-
-                                    <td>
-                                        <div class="text-center">443</div>
-                                    </td>
-                                </tr>
+                                        <td>
+                                            <div class="text-center" th:utext="${map.problem.accepted}">102</div>
+                                        </td>
+                                    </tr>
+                                </x>
                             </table>
 
                             <!-- 分页 -->
-                            <nav aria-label="..." style="position: relative; margin-top: 50px;">
+                            <nav aria-label="..." style="position: relative; margin-top: 50px;"
+                                 th:if="${page.rows} > 0">
                                 <ul class="pagination justify-content-center">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" style="color: #47536e">Previous</a>
+                                    <li th:class="|page-item ${page.current==1?'disabled':''}|">
+                                        <a class="page-link" th:href="@{${page.path}(current=${page.current-1})}"
+                                           style="color: #47536e">Previous</a>
                                     </li>
-                                    <li class="page-item"><a class="page-link m-active" href="#" style="color: #47536e">1</a>
+                                    <li class="page-item"
+                                        th:each="idx:${#numbers.sequence(page.from, page.to)}">
+                                        <a th:class="|page-link ${page.current==idx?'m-active':''}|"
+                                           th:href="@{${page.path}(current=${idx})}" style="color: #47536e"
+                                           th:text="${idx}">1</a>
                                     </li>
-                                    <li class="page-item" aria-current="page">
-                                        <a class="page-link" href="#" style="color: #47536e">2</a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#" style="color: #47536e">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" style="color: #47536e">Next</a>
+                                    <li th:class="|page-item ${page.current==page.total?'disabled':''}|">
+                                        <a class="page-link" th:href="@{${page.path}(current=${page.current+1})}"
+                                           style="color: #47536e">Next</a>
                                     </li>
                                 </ul>
                             </nav>
@@ -619,10 +265,10 @@
 
                         <div class="ui segment m-bottom-radius">
                             <div class="ui search">
-                                <div class="ui icon input">
-                                    <input class="prompt" type="text" placeholder="Search ID or Name">
+                                <form th:action="@{/problemset/search}" method="post" class="ui icon input">
+                                    <input class="prompt" type="text" name="param" placeholder="Search ID or Name">
                                     <i class="search icon"></i>
-                                </div>
+                                </form>
                                 <div class="results"></div>
                             </div>
                         </div>
@@ -643,65 +289,18 @@
                                     <th class="col-2 text-center">AC</th>
                                 </tr>
 
-                                <tr>
-                                    <td class="text-center">1</td>
-                                    <td class="text-center"><strong>AAA</strong></td>
-                                    <td class="text-center">1000</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center">2</td>
-                                    <td class="text-center"><strong>BBB</strong></td>
-                                    <td class="text-center">999</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center">3</td>
-                                    <td class="text-center"><strong>CCC</strong></td>
-                                    <td class="text-center">888</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center">4</td>
-                                    <td class="text-center"><strong>DDD</strong></td>
-                                    <td class="text-center">777</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center">5</td>
-                                    <td class="text-center"><strong>EEE</strong></td>
-                                    <td class="text-center">666</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center">6</td>
-                                    <td class="text-center"><strong>FFF</strong></td>
-                                    <td class="text-center">555</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center">7</td>
-                                    <td class="text-center"><strong>GGG</strong></td>
-                                    <td class="text-center">444</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center">8</td>
-                                    <td class="text-center"><strong>HHH</strong></td>
-                                    <td class="text-center">333</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center">9</td>
-                                    <td class="text-center"><strong>III</strong></td>
-                                    <td class="text-center">222</td>
-                                </tr>
-
-                                <tr>
-                                    <td class="text-center">10</td>
-                                    <td class="text-center"><strong>JJJ</strong></td>
-                                    <td class="text-center">111</td>
-                                </tr>
+                                <x th:each="map, mapStat:${users}">
+                                    <tr>
+                                        <td class="text-center" th:utext="${mapStat.index + 1}">1</td>
+                                        <td class="text-center">
+                                            <a th:href="@{|/profile/preview/${map.user.userId}|}" th:utext="${map.user.nickname}"
+                                               style="color: #0a001f; font-weight: 700">
+                                                AAA
+                                            </a>
+                                        </td>
+                                        <td class="text-center" th:utext="${map.user.solved}">1000</td>
+                                    </tr>
+                                </x>
                             </table>
                         </div>
                     </div>
@@ -738,7 +337,6 @@
 
 
         <!-- End Main -->
-
 
 
         <!-- ======= Footer ======= -->

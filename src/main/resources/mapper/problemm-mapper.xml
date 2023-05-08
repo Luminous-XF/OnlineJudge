@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.nsu.onlinejudge.dao.ProblemMapper">
+
+    <sql id="selectFields">
+        problem_id, problem_number, problem_title, problem_comment, input, output, spj, note, difficulty,
+            author, memory_limit, time_limit, source, submit, accepted, create_time, status
+    </sql>
+
+    <sql id="insertFields">
+        problem_number, problem_title, problem_comment, input, output, spj, note, difficulty,
+            author, memory_limit, time_limit, source, submit, accepted, create_time, status
+    </sql>
+
+
+    <select id="selectProblems" resultType="Problem">
+        SELECT <include refid="selectFields"></include>
+        FROM problem
+        WHERE status in
+        <foreach collection="statusList" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        ORDER BY problem_number
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectProblemRows" resultType="int">
+        SELECT COUNT(problem_id)
+        FROM problem
+        WHERE status in
+        <foreach collection="statusList" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectProblemsByTitleOrNumber" resultType="Problem">
+        SELECT <include refid="selectFields"></include>
+        FROM problem
+        WHERE
+        status in
+        <foreach collection="statusList" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        AND problem_number LIKE CONCAT('%', #{param}, '%') OR problem_title LIKE CONCAT('%', #{param}, '%')
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectProblemsByTitleOrNumberRows" resultType="int">
+        SELECT COUNT(problem_id)
+        FROM problem
+        WHERE
+        status in
+        <foreach collection="statusList" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        AND problem_number LIKE CONCAT('%', #{param}, '%') OR problem_title LIKE CONCAT('%', #{param}, '%')
+    </select>
+
+    <select id="selectProblemById" resultType="Problem">
+        SELECT <include refid="selectFields"></include>
+        FROM problem
+        WHERE problem_id = #{problemId}
+        AND status in
+        <foreach collection="statusList" item="item" index="index" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>
